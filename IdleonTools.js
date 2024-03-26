@@ -2,8 +2,8 @@
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  try to take over the world!
-// @author       You
+// @description  Bad Lava F
+// @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=legendsofidleon.com
 // @grant        none
@@ -22,9 +22,9 @@
     document.getElementById("content-container-inner").style.padding = "0px";
 
     //Create a global var to store everything so we can access it from console.
-    var ITE = window.ITE = {}; //Elements
-    var ITF = window.ITF = {}; //Functions
-    var ITG = window.ITG = {}; //Globals
+    let ITE = window.ITE = {}; //Elements
+    let ITF = window.ITF = {}; //Functions
+    let ITG = window.ITG = {}; //Globals
 
     //Retrieve the game element and the bounding client rect
     ITE.game = document.getElementById('openfl-content');
@@ -35,11 +35,44 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GLOBAL VARS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     ITG.B_GrindTimeRatio = { "X": 0.57, "Y": 0.53 };
     ITG.B_Codex = { "X": 0.743750, "Y": 0.940559 };
     ITG.B_Items = { "X": 0.605208, "Y": 0.940559 };
     ITG.B_StorageInCodex = { "X": 0.585417, "Y": 0.361888 };
     ITG.B_DepositAll = { "X": 0.094792, "Y": 0.381119 };
+    ITG.B_ToggleAutoAttack = { "X": 0.462500, "Y": 0.938811 };
+    ITG.B_ColoNextWave = { "X": 0.355208, "Y": 0.106209 };
+    ITG.B_RestartBoss = { "X": 0.243789, "Y": 0.132812 };
+
+    ITG.B_W1Colo = { "X": 0.733333, "Y": 0.419580 };
+    ITG.B_W1ColoEnterUp = { "X": 0.677083, "Y": 0.419580 };
+    ITG.B_W1ColoEnterLow = { "X": 0.677083, "Y": 0.307692 };
+    ITG.B_W1ColoExit = { "X": 0.770833, "Y": 0.629371 };
+
+    ITG.B_W2Colo = { "X": 0.760417, "Y": 0.506993 };
+    ITG.B_W2ColoEnterUp = { "X": 0.820833, "Y": 0.223776 };
+    ITG.B_W2ColoEnterLow = { "X": 0.820833, "Y": 0.314685 };
+    ITG.B_W2ColoExit = { "X": 0.898958, "Y": 0.349650 };
+
+    ITG.B_W3Colo = { "X": 0.703125, "Y": 0.529720 };
+    ITG.B_W3ColoEnter = { "X": 0.771875, "Y": 0.491259 };
+    ITG.B_W3ColoExit = { "X": 0.106250, "Y": 0.783217 };
+
+    ITG.B_W3Boss = { "X": 0.089674, "Y": 0.756392 };
+    ITG.B_W3BossItemsStart = { "X": 0.556770, "Y": 0.791364 };
+    ITG.B_W3BossItemsEnd = { "X": 0.968370, "Y": 0.792784 };
+    ITG.B_W3BossEnterPortal = { "X": 0.710417, "Y": 0.618881 };
+    ITG.B_W3BossEnterButton = { "X": 0.766667, "Y": 0.449301 };
+    ITG.B_W3BossExitPortal = { "X": 0.955208, "Y": 0.484266 };
+
+    ITG.keyNameToKeyCodeMap = {
+        'a': 65, 'b': 66, 'c': 67, 'd': 68, 'e': 69, 'f': 70, 'g': 71, 'h': 72, 'i': 73, 'j': 74, 
+        'k': 75, 'l': 76, 'm': 77, 'n': 78, 'o': 79, 'p': 80, 'q': 81, 'r': 82, 's': 83, 't': 84, 
+        'u': 85, 'v': 86, 'w': 87, 'x': 88, 'y': 89, 'z': 90,
+        '0': 48, '1': 49, '2': 50, '3': 51, '4': 52, '5': 53, '6': 54, '7': 55, '8': 56, '9': 57,
+        'Escape': 27, 'Enter': 13, 'Backspace': 8, 'Tab': 9, 'Ctrl': 17, 'Shift': 16
+    };
 
     console.log("Idleon Tools Global vars declared");
 
@@ -47,9 +80,15 @@
     // HELPER FUNCTIONS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ITF.sleep = function (ms) {
+        return new Promise(
+            resolve => setTimeout(resolve, ms)
+        );
+    }
+
     //Simulate mouse event function
     ITF.simulateMouseEvent = function (eventName, x, y) {
-        document.getElementById('openfl-content').dispatchEvent(new MouseEvent(eventName, {
+        ITE.game.dispatchEvent(new MouseEvent(eventName, {
             view: window,
             bubbles: true,
             cancelable: true,
@@ -60,307 +99,530 @@
     };
 
     ITF.calculateCords = function(ratio) {
-        var box = ITE.game.getBoundingClientRect(); //Update it just in case
+        let box = ITE.game.getBoundingClientRect(); //Update it just in case
         return { "X": box.left + (box.right - box.left) * ratio.X, "Y": box.top + (box.bottom - box.top) * ratio.Y };
     }
 
     //Simulate mouse click function by screen game window ratio (0 - 1.0)
-    ITF.simulateMouseClickRatio = function (ratio) {
-        var coords = ITF.calculateCords(ratio)
+    ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0) {
+        let coords = ITF.calculateCords(ratio)
         ITF.simulateMouseEvent("mousedown", coords.X, coords.Y);
         ITF.simulateMouseEvent("mouseup", coords.X, coords.Y);
         ITF.simulateMouseEvent("click", coords.X, coords.Y);
+        await ITF.sleep(delayAfter);
     };
 
-    ITF.sleep = function (ms) {
-        return new Promise(
-            resolve => setTimeout(resolve, ms)
-        );
+    ITF.simulateMouseClicksInRangeRatios = async function(startRatio, endRatio, clicksAmount, clickDelay = 10, delayAfter = 0)
+    {
+        let xRatioDiff = endRatio.X - startRatio.X;
+        let yRatioDiff = endRatio.Y - startRatio.Y;
+        let xDeltaRatioPerClick = xRatioDiff / clicksAmount;
+        let yDeltaRatioPerClick = yRatioDiff / clicksAmount;
+
+        for (let i = 0; i < clicksAmount; ++i) {
+            let xDeltaRatio = xDeltaRatioPerClick * i;
+            let yDeltaRatio = yDeltaRatioPerClick * i;
+
+            let finalRatio = { "X": startRatio.X + xDeltaRatio, "Y": startRatio.Y + yDeltaRatio };
+
+            await ITF.simulateMouseClickRatio(finalRatio, clickDelay);
+        }
+
+        await ITF.sleep(delayAfter);
+    }
+
+    ITF.simulateMouseDrag = async function(startRatio, endRatio, duration, eventsPerSecond = 30, delayAfter = 0)
+    {
+        // Calculate start and end coordinates
+        const startCoords = ITF.calculateCords(startRatio);
+        const endCoords = ITF.calculateCords(endRatio);
+
+        // Calculate the interval (in milliseconds) between events based on eventsPerSecond
+        const interval = 1000 / eventsPerSecond;
+
+        // Calculate the number of steps based on duration and desired framerate (e.g., 60fps)
+        const steps = Math.floor(duration / interval);
+        const deltaX = (endCoords.X - startCoords.X) / steps;
+        const deltaY = (endCoords.Y - startCoords.Y) / steps;
+
+        //console.log("EventsPerSecond: " + eventsPerSecond + " interval: " + interval + " steps: " + steps);
+
+        // Simulate mouse down at start position
+        ITF.simulateMouseEvent("mousedown", startCoords.X, startCoords.Y);
+
+        for (let currentStep = 0; currentStep < steps; ++currentStep) {
+            // Calculate the current position
+            const currentX = startCoords.X + deltaX * currentStep;
+            const currentY = startCoords.Y + deltaY * currentStep;
+
+            // Simulate mouse move event at current position
+            ITF.simulateMouseEvent("mousemove", currentX, currentY);
+            
+            //console.log("LoopStep: " + currentStep + " currentX: " + currentX + " currentY: " + currentY);
+
+            // Continue dragging
+            await ITF.sleep(interval);
+        }
+
+        // Simulate mouse up at end position
+        //ITF.simulateMouseEvent("mouseup", endCoords.X, endCoords.Y);
+        ITF.simulateMouseEvent("click", endCoords.X, endCoords.Y);
+
+        await ITF.sleep(delayAfter);
+    }
+
+    ITF.simulateKeyEvent = function(keyName, event) {
+        const keyCode = ITG.keyNameToKeyCodeMap[keyName] || 0; // Default to 0 if keyName not found
+        // Create the event specifying 'keydown' as type and with necessary options
+        const keyboardEvent = new KeyboardEvent(event, {
+            key: keyName,
+            keyCode: keyCode, // This is for demonstration; in practice, this might not have the desired effect
+            which: keyCode, // Similarly deprecated and for demonstration
+            altKey: false,
+            ctrlKey: false,
+            shiftKey: false,
+            metaKey: false,
+            bubbles: true, // Event should bubble for visibility
+            cancelable: true
+            });
+
+        ITE.game.dispatchEvent(keyboardEvent);
+    }
+
+    // Function to simulate a key event
+    ITF.simulateKeyPress = async function(keyName, delayAfter = 0) {
+        ITF.simulateKeyEvent(keyName, 'keydown')
+        ITF.simulateKeyEvent(keyName, 'keyup')
+        await ITF.sleep(delayAfter);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // GUI
+    // DEBUG FUNCTIONS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //Test
-    ITE.vsc = document.createElement('div');
-    ITE.vsc.classList.add('vsc-controller');
-    ITE.vsc.setAttribute('style', 'position: absolute; z-index: 1');
-    ITE.game.insertBefore(ITE.vsc, ITE.game.firstChild);
-    ITE.shadowRoot = ITE.vsc.attachShadow({ mode: 'open' });
-    ITE.styleElement = document.createElement('style');
-    ITE.styleElement.textContent = `
-        * {
-        line-height: 1.8em;
-        font-family: sans-serif;
-        font-size: 13px;
+    // Function to attach event listeners to ITE.game for debugging events
+    ITF.attachEventDebugListeners = function() {
+        // Define a handler function that logs event details
+        function logEventDetails(event) {
+            console.log(`Event Type: ${event.type}`);
+            console.log(`isTrusted: ${event.isTrusted}`);
+            if (event.type.startsWith('key')) {
+                console.log(`Key: ${event.key}`);
+                console.log(`KeyCode (deprecated): ${event.keyCode}`);
+                console.log(`Shift: ${event.shiftKey}`);
+                console.log(`Ctrl: ${event.ctrlKey}`);
+                console.log(`Alt: ${event.altKey}`);
+                console.log(`Meta: ${event.metaKey}`);
+            } else if (event.type.startsWith('mouse')) {
+                console.log(`Button: ${event.button}`);
+                console.log(`ClientX: ${event.clientX}`);
+                console.log(`ClientY: ${event.clientY}`);
+            }
+            // Prevent the event from doing its default action
+            // event.preventDefault();
+            console.log('----------------------');
         }
 
-        :host(:hover) #controls {
-        display: inline;
-        }
+        // Attach the event listener for various event types
+        const eventTypes = ['keydown', 'keyup', 'mousedown', 'mouseup', 'mousemove', 'click'];
+        eventTypes.forEach(type => {
+            window.addEventListener(type, logEventDetails);
+        });
 
-        #controller {
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        background: black;
-        color: white;
-
-        border-radius: 6px;
-        padding: 4px;
-        margin: 10px 10px 10px 15px;
-
-        cursor: default;
-        z-index: 9999999;
-        }
-
-        #controller:hover {
-        opacity: 0.7;
-        }
-
-        #controller:hover > .draggable {
-        margin-right: 0.8em;
-        }
-
-        #controls {
-        display: none;
-        }
-
-        #controller.dragging {
-        cursor: -moz-grabbing;
-        opacity: 0.7;
-        }
-
-        #controller.dragging #controls {
-        display: inline;
-        }
-
-        .draggable {
-        cursor: -moz-grab;
-        }
-
-        .draggable:active {
-        cursor: -moz-grabbing;
-        }
-
-        button {
-        opacity: 1;
-        cursor: pointer;
-        color: black;
-        background: white;
-        font-weight: normal;
-        border-radius: 5px;
-        padding: 1px 5px 3px 5px;
-        font-size: 14px;
-        line-height: 14px;
-        border: 0px solid white;
-        font-family: "Lucida Console", Monaco, monospace;
-        margin: 0px 2px 2px 2px;
-        transition: background 0.2s, color 0.2s;
-        }
-
-        button:focus {
-        outline: 0;
-        }
-
-        button:hover {
-        opacity: 1;
-        background: #2196f3;
-        color: #ffffff;
-        }
-
-        button:active {
-        background: #2196f3;
-        color: #ffffff;
-        font-weight: bold;
-        }
-
-        button.rw {
-        opacity: 0.65;
-        }
-
-        button.hideButton {
-        opacity: 0.65;
-        margin-right: 2px;
-        }
-    `;
-
-    var divElement = document.createElement('div');
-    divElement.setAttribute('id', 'controller');
-    divElement.setAttribute('style', 'top: 42px; left: 196px; opacity: 0.3;');
-    divElement.setAttribute('class', '');
-
-    // Create span elements for the inner content
-    var span1 = document.createElement('span');
-    span1.setAttribute('data-action', 'drag');
-    span1.setAttribute('class', 'draggable');
-    span1.textContent = '1.80';
-
-    var span2 = document.createElement('span');
-    span2.setAttribute('id', 'controls');
-
-    var button1 = document.createElement('button');
-    button1.setAttribute('data-action', 'rewind');
-    button1.setAttribute('class', 'rw');
-    button1.textContent = '«';
-    button1.addEventListener('pointerdown', (e) => { console.log("button1"); e.preventDefault(); e.stopPropagation(); });
-
-    var button2 = document.createElement('button');
-    button2.setAttribute('data-action', 'slower');
-    button2.textContent = '−';
-    button2.addEventListener('pointerdown', () => { console.log("button2"); });
-
-    var button3 = document.createElement('button');
-    button3.setAttribute('data-action', 'faster');
-    button3.textContent = '+';
-    button3.addEventListener('pointerdown', () => { console.log("button3"); });
-
-    var button4 = document.createElement('button');
-    button4.setAttribute('data-action', 'advance');
-    button4.setAttribute('class', 'rw');
-    button4.textContent = '»';
-    button4.addEventListener('pointerdown', () => { console.log("button4"); });
-
-    var button5 = document.createElement('button');
-    button5.setAttribute('data-action', 'display');
-    button5.setAttribute('class', 'hideButton');
-    button5.textContent = '×';
-    button5.addEventListener('pointerdown', () => { console.log("button5"); });
-
-    // Append span elements to the div
-    divElement.appendChild(span1);
-    divElement.appendChild(span2);
-
-    // Append buttons to the span with id 'controls'
-    span2.appendChild(button1);
-    span2.appendChild(button2);
-    span2.appendChild(button3);
-    span2.appendChild(button4);
-    span2.appendChild(button5);
-
-
-
-
-    ITE.shadowRoot.appendChild(ITE.styleElement);
-    ITE.shadowRoot.appendChild(divElement);
-
-
-
-
-
-
-
-    ITE.shadowRoot.querySelector(".draggable").addEventListener(
-        "mousedown",
-        (e) => {
-            //runAction(e.target.dataset["action"], false, e);
-            handleDrag(false, e);
-            e.stopPropagation();
-        },
-        true
-    );
-
-    ITE.shadowRoot
-        .querySelector("#controller")
-        .addEventListener("click", (e) => e.stopPropagation(), false);
-    ITE.shadowRoot
-        .querySelector("#controller")
-        .addEventListener("mousedown", (e) => e.stopPropagation(), false);
-
-    function handleDrag(video, e) {
-        const controller = ITE.vsc;
-        const shadowController = controller.shadowRoot.querySelector("#controller");
-
-        // Find nearest parent of same size as video parent.
-        var parentElement = controller.parentElement;
-        while (
-            parentElement.parentNode &&
-            parentElement.parentNode.offsetHeight === parentElement.offsetHeight &&
-            parentElement.parentNode.offsetWidth === parentElement.offsetWidth
-        ) {
-            parentElement = parentElement.parentNode;
-        }
-
-        //video.classList.add("vcs-dragging");
-        shadowController.classList.add("dragging");
-
-        const initialMouseXY = [e.clientX, e.clientY];
-        const initialControllerXY = [
-            parseInt(shadowController.style.left),
-            parseInt(shadowController.style.top)
-        ];
-
-        const startDragging = (e) => {
-            let style = shadowController.style;
-            let dx = e.clientX - initialMouseXY[0];
-            let dy = e.clientY - initialMouseXY[1];
-            style.left = initialControllerXY[0] + dx + "px";
-            style.top = initialControllerXY[1] + dy + "px";
-        };
-
-        const stopDragging = () => {
-            parentElement.removeEventListener("mousemove", startDragging);
-            parentElement.removeEventListener("mouseup", stopDragging);
-            parentElement.removeEventListener("mouseleave", stopDragging);
-
-            shadowController.classList.remove("dragging");
-            //video.classList.remove("vcs-dragging");
-        };
-
-        parentElement.addEventListener("mouseup", stopDragging);
-        parentElement.addEventListener("mouseleave", stopDragging);
-        parentElement.addEventListener("mousemove", startDragging);
+        console.log('Debug event listeners attached to window');
     }
 
+    // Call the function to attach the event listeners
+    //ITF.attachEventDebugListeners();
 
-
-
-
-
-
-
-
-
-
-
-
-    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // GAME FUNCTIONS
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////
     /// AutoClickGrindTime
     //////////////////
-    ITF.startAutoClickGrindTime = async function () {
+    ITF.setEnabledAutoClickGrindTime = async function (isEnabled) {
+        if (ITG.autoClickGrindTimeEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoClickGrindTimeEnabled && !isEnabled)
+        {
+            ITG.autoClickGrindTimeEnabled = false;
+            console.log("ITF.setEnabledAutoClickGrindTime stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoClickGrindTimeEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoClickGrindTime started.");
+
         ITG.autoClickGrindTimeEnabled = true;
         while (ITG.autoClickGrindTimeEnabled) {
-            ITF.simulateMouseClickRatio(ITG.B_GrindTimeRatio);
-            await ITF.sleep(7500);
+            await ITF.simulateMouseClickRatio(ITG.B_GrindTimeRatio, 7500);
         }
-    };
-
-    ITF.stopAutoClickGrindTime = function () {
-        ITG.autoClickGrindTimeEnabled = false;
     };
 
     //////////////////
     /// AutoDepositAllCombat
     //////////////////
-    ITF.startAutoDepositAllCombat = async function () {
-        ITG.startAutoDepositAllCombatEnabled = true;
-        while (ITG.startAutoDepositAllCombatEnabled) {
-            ITF.simulateMouseClickRatio(ITG.B_Codex);
-            await ITF.sleep(500);
-            ITF.simulateMouseClickRatio(ITG.B_StorageInCodex);
-            await ITF.sleep(500);
-            ITF.simulateMouseClickRatio(ITG.B_DepositAll);
-            await ITF.sleep(500);
-            ITF.simulateMouseClickRatio(ITG.B_Items); //To close
-            await ITF.sleep(60000); //Each minute
+    ITF.setEnabledAutoDepositAllCombat = async function (isEnabled) {
+        if (ITG.autoDepositAllCombat == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoDepositAllCombat && !isEnabled)
+        {
+            ITG.autoDepositAllCombat = false;
+            console.log("ITF.setEnabledAutoDepositAllCombat stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoDepositAllCombat = isEnabled;
+        console.log("ITF.setEnabledAutoDepositAllCombat started.");
+
+        while (ITG.autoDepositAllCombatEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_Codex, 500);
+            await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 500);
+            await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 500);
+            await ITF.simulateMouseClickRatio(ITG.B_Items, 60000); //To close and wait one more minute
         }
     };
 
-    ITF.stopAutoDepositAllCombat = function () {
-        ITG.startAutoDepositAllCombatEnabled = false;
+    //////////////////
+    /// AutoColoW1
+    //////////////////
+    ITF.setEnabledAutoColoW1 = async function (isEnabled) {
+        if (ITG.autoColoW1Enabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoColoW1Enabled && !isEnabled)
+        {
+            ITG.autoColoW1Enabled = false;
+            console.log("ITF.setEnabledAutoColoW1 stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoColoW1Enabled = isEnabled;
+        console.log("ITF.setEnabledAutoColoW1 started.");
+        
+        while (ITG.autoColoW1Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W1Colo, 6000); //Click Colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W1ColoEnterUp, 2000); //Enter Colosseum. First try to enter with the button Y location from when we already completed one colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W1ColoEnterLow, 2000); //Enter Colosseum. Just in case click the lower one (This will only work the first time we enter the map)
+	        await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
+            //The orb duration is about 155 seconds at lvl 312. In W1 maybe we can squeeze two runs per orb.
+            //155 seconds Minus (13) = 142 seconds → half each round = 71 seconds → 71 seconds * 10 next wave spam = 710
+            for (let i = 0; i < 710; ++i)
+            {
+                await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
+            }
+
+            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
+            await ITF.simulateMouseClickRatio(ITG.B_W1ColoExit, 2850); //Click Exit Portal
+        }
     };
+
+    //////////////////
+    /// AutoColoW2
+    //////////////////
+    ITF.setEnabledAutoColoW2 = async function (isEnabled) {
+        if (ITG.autoColoW2Enabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoColoW2Enabled && !isEnabled)
+        {
+            ITG.autoColoW2Enabled = false;
+            console.log("ITF.setEnabledAutoColoW2 stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoColoW2Enabled = isEnabled;
+        console.log("ITF.setEnabledAutoColoW2 started.");
+        
+        while (ITG.autoColoW2Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W2Colo, 6000); //Click Colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W2ColoEnterUp, 2000); //Enter Colosseum. First try to enter with the button Y location from when we already completed one colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W2ColoEnterLow, 2000); //Enter Colosseum. Just in case click the lower one (This will only work the first time we enter the map)
+	        await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
+            //The orb duration is about 155 seconds at lvl 312. In W2 we cannot squeze two runs per orb as the this colo is slower... 1 run per orb better.
+            //155 seconds Minus (13) = 142 seconds → full duration each round = 144 seconds → 144 seconds * 10 next wave spam = 1440
+            for (let i = 0; i < 1440; ++i)
+            {
+                await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
+            }
+
+            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
+            await ITF.simulateMouseClickRatio(ITG.B_W2ColoExit, 2850); //Click Exit Portal
+        }
+    };
+
+    //////////////////
+    /// AutoColoW3
+    //////////////////
+    ITF.setEnabledAutoColoW3 = async function (isEnabled) {
+        if (ITG.autoColoW3Enabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoColoW3Enabled && !isEnabled)
+        {
+            ITG.autoColoW3Enabled = false;
+            console.log("ITF.setEnabledAutoColoW3 stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoColoW3Enabled = isEnabled;
+        console.log("ITF.setEnabledAutoColoW3 started.");
+        
+        while (ITG.autoColoW3Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W3Colo, 6000); //Click Colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W3ColoEnter, 2000); //Enter Colosseum
+	        await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
+            //The orb duration is about 155 seconds at lvl 312. In W3 maybe we could squeeze two runs per orb but we will wait to ensure always a full orb when opening chests
+            //155 seconds Minus (13) = 142 seconds → full duration each round = 144 seconds → 144 seconds * 10 next wave spam = 1440
+            for (let i = 0; i < 1350; ++i)
+            {
+                await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
+            }
+
+            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
+            await ITF.simulateMouseClickRatio(ITG.B_W3ColoExit, 13850); //Click Exit Portal and wait for orb cooldown
+        }
+    };
+
+    //////////////////
+    /// AutoBossW3
+    //////////////////
+    ITF.setEnabledAutoBossW3 = async function (isEnabled) {
+        if (ITG.autoBossW3Enabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoBossW3Enabled && !isEnabled)
+        {
+            ITG.autoBossW3Enabled = false;
+            console.log("ITF.setEnabledAutoBossW3 stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoBossW3Enabled = isEnabled;
+        console.log("ITF.setEnabledAutoBossW3 started.");
+        
+        while (ITG.autoBossW3Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossEnterPortal, 450); //Click Enter Portal	
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossEnterButton, 2500); //Click Enter Button	
+	        await ITF.simulateMouseClickRatio(ITG.B_W3Boss, 12000); //Boss
+            await ITF.simulateMouseDrag(ITG.B_W3BossItemsStart, ITG.B_W3BossItemsEnd, 750, 30, 100);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 2000);
+            await ITF.simulateMouseDrag(ITG.B_W3BossItemsStart, ITG.B_W3BossItemsEnd, 750, 30, 100);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 2000);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossExitPortal, 750); //Click Exit Portal
+            await ITF.simulateKeyPress('w', 3250); //Try to go through the portal with the W key and wait for the map to change
+        }
+    };
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // GUI FUNCTIONS
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function createCheckbox(onChangeCallback, labelText) {
+        // Create a container for the checkbox and label text
+        let container = document.createElement('div');
+        container.setAttribute('class', 'checkbox-container');
+
+        // Create label element
+        let label = document.createElement('label');
+        label.setAttribute('class', 'switch');
+        
+        // Create the checkbox input
+        let input = document.createElement('input');
+        input.setAttribute('type', 'checkbox');
+
+        // Create the slider span
+        let span = document.createElement('span');
+        span.setAttribute('class', 'slider');
+        
+        // Append the checkbox and slider to the label
+        label.appendChild(input);
+        label.appendChild(span);
+
+        // Add an event listener for the checkbox state change
+        input.addEventListener('change', function(event) {
+            if (typeof onChangeCallback === 'function') {
+                onChangeCallback(this.checked); // Pass the checked status and name to the callback
+            }
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+        });
+
+        // Create a text label
+        var text = document.createElement('span');
+        text.setAttribute('class', 'checkbox-label');
+        text.textContent = labelText; // Set the text content to the passed labelText
+
+        // Append the label and text to the container
+        container.appendChild(label);
+        container.appendChild(text);
+
+        return container;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // GUI
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    ITE.mainDiv = document.createElement('div');
+    ITE.mainDiv.setAttribute('style', 'position: absolute; z-index: 1');
+    ITE.game.insertBefore(ITE.mainDiv, ITE.game.firstChild);
+    ITE.shadowRoot = ITE.mainDiv.attachShadow({ mode: 'open' });
+    ITE.styleElement = document.createElement('style');
+    ITE.styleElement.textContent = `
+        #overlay {
+            position: absolute;
+            top: 0; /* Adjusted to be in the top left corner */
+            left: 0; /* Adjusted to be in the top left corner */
+            width: 15px; /* Small mode default width */
+            height: 10px; /* Small mode default height */
+            background-color: rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex; /* To center content */
+            align-items: center; /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
+            overflow: hidden; /* Hide children overflow */
+        }
+
+        .normalButton {
+            width: 75px;
+            height: 40px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+          
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+          
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+        }
+          
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+          
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+          
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+          
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center; /* Aligns the checkbox and label vertically */
+            gap: 8px; /* Adds some space between the checkbox and the label text */
+        }
+        
+        .checkbox-label {
+            color: white;
+            /* Your styles for the label text */
+        }
+    `;
+
+    ITE.shadowRoot.appendChild(ITE.styleElement);
+
+    ITE.overlayDiv = document.createElement('div');
+    ITE.overlayDiv.setAttribute('id', 'overlay');
+
+    ITE.contentDiv = document.createElement('div');
+    ITE.contentDiv.style.display = 'none'
+
+    ITE.W1ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW1, "W1 Colo")
+    ITE.contentDiv.appendChild(ITE.W1ColoCheckbox);
+    ITE.W2ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW2, "W2 Colo")
+    ITE.contentDiv.appendChild(ITE.W2ColoCheckbox);
+    ITE.W3ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW3, "W3 Colo")
+    ITE.contentDiv.appendChild(ITE.W3ColoCheckbox);
+
+    ITE.W3BossCheckbox = createCheckbox(ITF.setEnabledAutoBossW3, "W3 Boss")
+    ITE.contentDiv.appendChild(ITE.W3BossCheckbox);
+
+    ITE.AutoDepositAllCombatCheckbox = createCheckbox(ITF.setEnabledAutoDepositAllCombat, "Auto combat deposit")
+    ITE.contentDiv.appendChild(ITE.AutoDepositAllCombatCheckbox);
+
+    ITE.AutoClickGrindTimeCheckbox = createCheckbox(ITF.setEnabledAutoClickGrindTime, "Grind Time Spam")
+    ITE.contentDiv.appendChild(ITE.AutoClickGrindTimeCheckbox);
+
+    ITE.overlayDiv.appendChild(ITE.contentDiv);
+
+    ITE.overlayDiv.addEventListener('mouseenter', () => {
+        const gameRect = ITE.game.getBoundingClientRect();
+        ITE.overlayDiv.style.width = gameRect.width + 'px';
+        ITE.overlayDiv.style.height = gameRect.height + 'px';
+        ITE.contentDiv.style.display = 'block'; // Show the content when big
+    });
+      
+    ITE.overlayDiv.addEventListener('mouseleave', () => {
+        ITE.overlayDiv.style.width = 15 + 'px';
+        ITE.overlayDiv.style.height = 10 + 'px';
+        ITE.contentDiv.style.display = 'none'; // Hide the content when small
+    });
+
+    ITE.shadowRoot.appendChild(ITE.overlayDiv);
 })();
