@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -591,7 +591,8 @@
     ITE.overlayDiv.setAttribute('id', 'overlay');
 
     ITE.contentDiv = document.createElement('div');
-    ITE.contentDiv.style.display = 'none'
+    ITE.contentDiv.style.display = 'none';
+    ITE.contentDiv.style.userSelect = 'none';
 
     ITE.W1ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW1, "W1 Colo")
     ITE.contentDiv.appendChild(ITE.W1ColoCheckbox);
