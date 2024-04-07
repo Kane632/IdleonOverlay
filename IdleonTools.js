@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -65,6 +65,16 @@
     ITG.B_W3BossEnterPortal = { "X": 0.710417, "Y": 0.618881 };
     ITG.B_W3BossEnterButton = { "X": 0.766667, "Y": 0.449301 };
     ITG.B_W3BossExitPortal = { "X": 0.955208, "Y": 0.484266 };
+
+    ITG.B_PlayerMenu = { "X": 0.888542, "Y": 0.935315};
+    ITG.B_PlayerMenuLeft = { "X": 0.295833, "Y": 0.750000};
+    ITG.B_PlayerMenuRight = { "X": 0.755208, "Y": 0.750000};
+    ITG.B_PlayerMenuP1 = { "X": 0.333333, "Y": 0.332168};
+    ITG.B_PlayerMenuP2 = { "X": 0.517708, "Y": 0.332168};
+    ITG.B_PlayerMenuP3 = { "X": 0.717708, "Y": 0.332168};
+    ITG.B_PlayerMenuP4 = { "X": 0.333333, "Y": 0.580420};
+    ITG.B_PlayerMenuP5 = { "X": 0.517708, "Y": 0.580420};
+    ITG.B_PlayerMenuP6 = { "X": 0.717708, "Y": 0.580420};
 
     ITG.keyNameToKeyCodeMap = {
         'a': 65, 'b': 66, 'c': 67, 'd': 68, 'e': 69, 'f': 70, 'g': 71, 'h': 72, 'i': 73, 'j': 74, 
@@ -173,7 +183,6 @@
 
     ITF.simulateKeyEvent = function(keyName, event) {
         const keyCode = ITG.keyNameToKeyCodeMap[keyName] || 0; // Default to 0 if keyName not found
-        // Create the event specifying 'keydown' as type and with necessary options
         const keyboardEvent = new KeyboardEvent(event, {
             key: keyName,
             keyCode: keyCode, // This is for demonstration; in practice, this might not have the desired effect
@@ -269,20 +278,20 @@
     /// AutoDepositAllCombat
     //////////////////
     ITF.setEnabledAutoDepositAllCombat = async function (isEnabled) {
-        if (ITG.autoDepositAllCombat == isEnabled) //Ignore as it already is the same state
+        if (ITG.autoDepositAllCombatEnabled == isEnabled) //Ignore as it already is the same state
         {
             return;
         }
 
-        if (ITG.autoDepositAllCombat && !isEnabled)
+        if (ITG.autoDepositAllCombatEnabled && !isEnabled)
         {
-            ITG.autoDepositAllCombat = false;
+            ITG.autoDepositAllCombatEnabled = false;
             console.log("ITF.setEnabledAutoDepositAllCombat stopped.");
             return;
         }
 
         //Remaining case start it.
-        ITG.autoDepositAllCombat = isEnabled;
+        ITG.autoDepositAllCombatEnabled = isEnabled;
         console.log("ITF.setEnabledAutoDepositAllCombat started.");
 
         while (ITG.autoDepositAllCombatEnabled) {
@@ -290,6 +299,52 @@
             await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 500);
             await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 500);
             await ITF.simulateMouseClickRatio(ITG.B_Items, 60000); //To close and wait one more minute
+        }
+    };
+
+    //////////////////
+    /// AutoArchers2MClaim
+    //////////////////
+    ITF.setEnabledAutoArcher2MClaim = async function (isEnabled) {
+        if (ITG.AutoArcher2MClaimEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.AutoArcher2MClaimEnabled && !isEnabled)
+        {
+            ITG.AutoArcher2MClaimEnabled = false;
+            console.log("ITF.setEnabledAutoArcher2MClaim stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.AutoArcher2MClaimEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoArcher2MClaim started.");
+
+        while (ITG.AutoArcher2MClaimEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuLeft, 500); //Ensure is first page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP2, 2000); //Click first archer
+            await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
+
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuRight, 500); //Ensure is second page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP2, 2000); //Click second archer
+            await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
+
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuRight, 500); //Ensure is second page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP4, 2000); //Click third and last archer
+            await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
+
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuLeft, 500); //Ensure is first page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP1, 2000); //Click active character
+
+            //Sleep for 100 seconds in order to start again with a 2 min mark. 
+            // Also add the 2 seconds from the last Enter key that is not needed and 2 more just in case to ensure always 2 min claim at minimum.
+            await ITF.sleep(102000) 
         }
     };
 
@@ -609,6 +664,9 @@
 
     ITE.AutoClickGrindTimeCheckbox = createCheckbox(ITF.setEnabledAutoClickGrindTime, "Grind Time Spam")
     ITE.contentDiv.appendChild(ITE.AutoClickGrindTimeCheckbox);
+
+    ITE.AutoArcher2MClaimCheckbox = createCheckbox(ITF.setEnabledAutoArcher2MClaim, "Archer 2M claim")
+    ITE.contentDiv.appendChild(ITE.AutoArcher2MClaimCheckbox);
 
     ITE.overlayDiv.appendChild(ITE.contentDiv);
 
