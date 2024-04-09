@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -343,8 +343,8 @@
             await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP1, 2000); //Click active character
 
             //Sleep for 100 seconds in order to start again with a 2 min mark. 
-            // Also add the 2 seconds from the last Enter key that is not needed and 2 more just in case to ensure always 2 min claim at minimum.
-            await ITF.sleep(102000) 
+            // Also add the 2 seconds from the last Enter key that is not needed plus an extra 13 seconds just in case
+            await ITF.sleep(115000) 
         }
     };
 
@@ -644,10 +644,10 @@
 
     ITE.overlayDiv = document.createElement('div');
     ITE.overlayDiv.setAttribute('id', 'overlay');
+    ITE.overlayDiv.style.userSelect = 'none';
 
     ITE.contentDiv = document.createElement('div');
     ITE.contentDiv.style.display = 'none';
-    ITE.contentDiv.style.userSelect = 'none';
 
     ITE.W1ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW1, "W1 Colo")
     ITE.contentDiv.appendChild(ITE.W1ColoCheckbox);
@@ -670,18 +670,37 @@
 
     ITE.overlayDiv.appendChild(ITE.contentDiv);
 
-    ITE.overlayDiv.addEventListener('mouseenter', () => {
+    ITF.maximizeOverlay = function(event) {
         const gameRect = ITE.game.getBoundingClientRect();
         ITE.overlayDiv.style.width = gameRect.width + 'px';
         ITE.overlayDiv.style.height = gameRect.height + 'px';
         ITE.contentDiv.style.display = 'block'; // Show the content when big
-    });
-      
-    ITE.overlayDiv.addEventListener('mouseleave', () => {
+    }
+    
+    ITF.minimizeOverlay = function(event) {
         ITE.overlayDiv.style.width = 15 + 'px';
         ITE.overlayDiv.style.height = 10 + 'px';
         ITE.contentDiv.style.display = 'none'; // Hide the content when small
+    }
+
+    ITF.stopMousePropagation = function(event) {
+        if (ITE.contentDiv.style.display === 'block') {
+            event.stopPropagation();
+        }
+    }
+
+    ITE.overlayDiv.addEventListener('mouseenter', ITF.maximizeOverlay);
+    ITE.overlayDiv.addEventListener('mouseleave', ITF.minimizeOverlay);
+    window.addEventListener('keyup', (event) => {
+        if ((event.key === 'Escape' || event.keyCode === 27) && ITE.contentDiv.style.display === 'block') {
+            ITF.minimizeOverlay();
+            event.stopPropagation();
+        }
     });
+
+    window.addEventListener('mousedown', ITF.stopMousePropagation, true);
+    window.addEventListener('mouseup', ITF.stopMousePropagation, true);
+    window.addEventListener('click', ITF.stopMousePropagation, true);
 
     ITE.shadowRoot.appendChild(ITE.overlayDiv);
 })();
