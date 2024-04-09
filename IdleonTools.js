@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.5
+// @version      0.6
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -527,6 +527,7 @@
         // Add an event listener for the checkbox state change
         input.addEventListener('change', function(event) {
             if (typeof onChangeCallback === 'function') {
+                ITF.minimizeOverlay();
                 onChangeCallback(this.checked); // Pass the checked status and name to the callback
             }
             event.stopPropagation();
@@ -698,9 +699,10 @@
         }
     });
 
-    window.addEventListener('mousedown', ITF.stopMousePropagation, true);
-    window.addEventListener('mouseup', ITF.stopMousePropagation, true);
-    window.addEventListener('click', ITF.stopMousePropagation, true);
+    //Disabled this for now because it also blocks the scripts simulated mouse events
+    //window.addEventListener('mousedown', ITF.stopMousePropagation, true);
+    //window.addEventListener('mouseup', ITF.stopMousePropagation, true);
+    //window.addEventListener('click', ITF.stopMousePropagation, true);
 
     ITE.shadowRoot.appendChild(ITE.overlayDiv);
 })();
