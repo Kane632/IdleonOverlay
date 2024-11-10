@@ -69,6 +69,11 @@
     ITG.B_W3BossEnterButton = { "X": 0.766667, "Y": 0.449301 };
     ITG.B_W3BossExitPortal = { "X": 0.955208, "Y": 0.484266 };
 
+    ITG.B_W5Boss = { "X": 0.7177777920765959, "Y": 0.5051244509516838 }
+    ITG.B_W5BossEnterPortal = { "X": 0.4183948575730473, "Y": 0.4355783308931186 }
+    ITG.B_W5BossEnterButton = { "X": 0.47687130420235113, "Y": 0.2613469985358712 }
+    ITG.B_W5BossExitPortal = { "X": 0.17831198162315895, "Y": 0.7459736456808199 }
+
     ITG.B_PlayerMenu = { "X": 0.888542, "Y": 0.935315};
     ITG.B_PlayerMenuLeft = { "X": 0.295833, "Y": 0.750000};
     ITG.B_PlayerMenuRight = { "X": 0.755208, "Y": 0.750000};
@@ -554,6 +559,36 @@
         }
     };
 
+    //////////////////
+    /// AutoBossW5
+    //////////////////
+    ITF.setEnabledAutoBossW5 = async function (isEnabled) {
+        if (ITG.autoBossW5Enabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoBossW5Enabled && !isEnabled)
+        {
+            ITG.autoBossW5Enabled = false;
+            console.log("ITF.setEnabledAutoBossW5 stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoBossW5Enabled = isEnabled;
+        console.log("ITF.setEnabledAutoBossW5 started.");
+        
+        while (ITG.autoBossW5Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W5BossEnterPortal, 1000); 
+            await ITF.simulateMouseClickRatio(ITG.B_W5BossEnterButton, 2500);
+            await ITF.simulateMouseClickRatio(ITG.B_W5Boss, 15000);
+            await ITF.simulateMouseClickRatio(ITG.B_W5BossExitPortal, 750); //Click Exit Portal
+            await ITF.simulateKeyPress('w', 2000); //Try to go through the portal with the W key and wait for the map to change
+        }
+    };
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GUI FUNCTIONS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -714,6 +749,8 @@
 
     ITE.W3BossCheckbox = createCheckbox(ITF.setEnabledAutoBossW3, "W3 Boss")
     ITE.contentDiv.appendChild(ITE.W3BossCheckbox);
+    ITE.W5BossCheckbox = createCheckbox(ITF.setEnabledAutoBossW5, "W5 Boss")
+    ITE.contentDiv.appendChild(ITE.W5BossCheckbox);
 
     ITE.AutoDepositAllCombatCheckbox = createCheckbox(ITF.setEnabledAutoDepositAllCombat, "Auto combat deposit")
     ITE.contentDiv.appendChild(ITE.AutoDepositAllCombatCheckbox);
