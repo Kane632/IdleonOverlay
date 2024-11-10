@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.7
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
