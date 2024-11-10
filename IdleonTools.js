@@ -54,6 +54,7 @@
     ITG.B_W2ColoEnterUp = { "X": 0.820833, "Y": 0.223776 };
     ITG.B_W2ColoEnterLow = { "X": 0.820833, "Y": 0.314685 };
     ITG.B_W2ColoExit = { "X": 0.898958, "Y": 0.349650 };
+    ITG.B_W2ClickerShinyFish = { "X": 0.060417, "Y": 0.804196 };
 
     ITG.B_W3Colo = { "X": 0.703125, "Y": 0.529720 };
     ITG.B_W3ColoEnter = { "X": 0.771875, "Y": 0.491259 };
@@ -345,6 +346,31 @@
             //Sleep for 100 seconds in order to start again with a 2 min mark. 
             // Also add the 2 seconds from the last Enter key that is not needed plus an extra 13 seconds just in case
             await ITF.sleep(115000) 
+        }
+    };
+
+    //////////////////
+    /// AutoW2ClickerShinyFish
+    //////////////////
+    ITF.setEnabledAutoW2ClickerShinyFish = async function (isEnabled) {
+        if (ITG.AutoW2ClickerShinyFishEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.AutoW2ClickerShinyFishEnabled && !isEnabled)
+        {
+            ITG.AutoW2ClickerShinyFishEnabled = false;
+            console.log("ITF.setEnabledAutoW2ClickerShinyFish stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.AutoW2ClickerShinyFishEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoW2ClickerShinyFish started.");
+
+        while (ITG.AutoW2ClickerShinyFishEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_W2ClickerShinyFish, (3 * 60 + 0) * 1000); //Click Shiny Fish
         }
     };
 
@@ -668,6 +694,9 @@
 
     ITE.AutoArcher2MClaimCheckbox = createCheckbox(ITF.setEnabledAutoArcher2MClaim, "Archer 2M claim")
     ITE.contentDiv.appendChild(ITE.AutoArcher2MClaimCheckbox);
+
+    ITE.AutoW2ClickerShinyFishCheckbox = createCheckbox(ITF.setEnabledAutoW2ClickerShinyFish, "W2 Shiny Fish Claim")
+    ITE.contentDiv.appendChild(ITE.AutoW2ClickerShinyFishCheckbox);
 
     ITE.overlayDiv.appendChild(ITE.contentDiv);
 
