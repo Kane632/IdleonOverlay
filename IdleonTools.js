@@ -36,6 +36,8 @@
     // GLOBAL VARS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ITG.CurrentMouse = { "X": 0.0, "Y": 0.0 };
+
     ITG.B_GrindTimeRatio = { "X": 0.57, "Y": 0.53 };
     ITG.B_Codex = { "X": 0.743750, "Y": 0.940559 };
     ITG.B_Items = { "X": 0.605208, "Y": 0.940559 };
@@ -90,6 +92,33 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // HELPER FUNCTIONS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function clamp(number, min, max) {
+      return Math.max(min, Math.min(number, max));
+    }
+
+    // Update mouse coordinates on every mouse move
+    window.addEventListener('mousemove', (event) => {
+        ITG.CurrentMouse.X = event.clientX;
+        ITG.CurrentMouse.Y = event.clientY;
+    });
+
+    window.addEventListener('keyup', (event) => {
+        if (event.key === 'Home') {
+            // Get the position of ITE.game relative to the viewport
+            const gameRect = ITE.game.getBoundingClientRect();
+
+            // Calculate the coordinates relative to ITE.game
+            const clampX = clamp(ITG.CurrentMouse.X, 0, gameRect.right);
+            const clampY = clamp(ITG.CurrentMouse.Y, 0, gameRect.bottom);
+
+            const ratioX = clampX / gameRect.width;
+            const ratioY = clampY / gameRect.height;
+
+            // Output the relative coordinates to the console
+            console.log(`Mouse coordinates relative to ITE.game: { "X": ${ratioX}, "Y": ${ratioY} }`);
+        }
+    });
 
     ITF.sleep = function (ms) {
         return new Promise(
