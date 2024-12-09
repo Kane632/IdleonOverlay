@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.8
+// @version      0.9
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -84,6 +84,48 @@
     ITG.B_PlayerMenuP5 = { "X": 0.517708, "Y": 0.580420};
     ITG.B_PlayerMenuP6 = { "X": 0.717708, "Y": 0.580420};
 
+    ITG.B_W6FarmingPlants = {
+        "R0C0": { "X": 0.2442, "Y": 0.7306 },
+        "R0C1": { "X": 0.3360, "Y": 0.7306 },
+        "R0C2": { "X": 0.4208, "Y": 0.7306 },
+        "R0C3": { "X": 0.5139, "Y": 0.7306 },
+        "R0C4": { "X": 0.6057, "Y": 0.7306 },
+        "R0C5": { "X": 0.6951, "Y": 0.7306 },
+        "R0C6": { "X": 0.7803, "Y": 0.7306 },
+        "R0C7": { "X": 0.8771, "Y": 0.7306 },
+        "R0C8": { "X": 0.9582, "Y": 0.7306 },
+
+        "R1C0": { "X": 0.2442, "Y": 0.5117 },
+        "R1C1": { "X": 0.3360, "Y": 0.5117 },
+        "R1C2": { "X": 0.4208, "Y": 0.5117 },
+        "R1C3": { "X": 0.5139, "Y": 0.5117 },
+        "R1C4": { "X": 0.6057, "Y": 0.5117 },
+        "R1C5": { "X": 0.6951, "Y": 0.5117 },
+        "R1C6": { "X": 0.7803, "Y": 0.5117 },
+        "R1C7": { "X": 0.8771, "Y": 0.5117 },
+        "R1C8": { "X": 0.9582, "Y": 0.5117 },
+
+        "R2C0": { "X": 0.2442, "Y": 0.3177 },
+        "R2C1": { "X": 0.3360, "Y": 0.3177 },
+        "R2C2": { "X": 0.4208, "Y": 0.3177 },
+        "R2C3": { "X": 0.5139, "Y": 0.3177 },
+        "R2C4": { "X": 0.6057, "Y": 0.3177 },
+        "R2C5": { "X": 0.6951, "Y": 0.3177 },
+        "R2C6": { "X": 0.7803, "Y": 0.3177 },
+        "R2C7": { "X": 0.8771, "Y": 0.3177 },
+        "R2C8": { "X": 0.9582, "Y": 0.3177 },
+
+        "R3C0": { "X": 0.2442, "Y": 0.1105 },
+        "R3C1": { "X": 0.3360, "Y": 0.1105 },
+        "R3C2": { "X": 0.4208, "Y": 0.1105 },
+        "R3C3": { "X": 0.5139, "Y": 0.1105 },
+        "R3C4": { "X": 0.6057, "Y": 0.1105 },
+        "R3C5": { "X": 0.6951, "Y": 0.1105 },
+        "R3C6": { "X": 0.7803, "Y": 0.1105 },
+        "R3C7": { "X": 0.8771, "Y": 0.1105 },
+        "R3C8": { "X": 0.9582, "Y": 0.1105 },
+    }
+
     ITG.keyNameToKeyCodeMap = {
         'a': 65, 'b': 66, 'c': 67, 'd': 68, 'e': 69, 'f': 70, 'g': 71, 'h': 72, 'i': 73, 'j': 74, 
         'k': 75, 'l': 76, 'm': 77, 'n': 78, 'o': 79, 'p': 80, 'q': 81, 'r': 82, 's': 83, 't': 84, 
@@ -121,7 +163,7 @@
             const ratioY = clampY / gameRect.height;
 
             // Output the relative coordinates to the console
-            console.log(`Mouse coordinates relative to ITE.game: { "X": ${ratioX}, "Y": ${ratioY} }`);
+            console.log(`Mouse coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
         }
     });
 
@@ -589,6 +631,31 @@
         }
     };
 
+    //////////////////
+    /// AutoBossW5
+    //////////////////
+    ITF.w6ToggleFarmingLock = async function () {
+        const rows = 4
+        const columns = 9
+
+        await ITF.sleep(250)
+
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                let coordinateString = "R" + i + "C" + j
+                await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants[coordinateString], 50);
+            }
+        }
+        while (ITG.autoBossW5Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W5BossEnterPortal, 1000);
+            await ITF.simulateMouseClickRatio(ITG.B_W5BossEnterButton, 2500);
+            await ITF.simulateMouseClickRatio(ITG.B_W5Boss, 9500);
+            await ITF.simulateMouseClickRatio(ITG.B_W5BossExitPortal, 750); //Click Exit Portal
+            await ITF.simulateKeyPress('w', 2000); //Try to go through the portal with the W key and wait for the map to change
+        }
+    };
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GUI FUNCTIONS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -619,6 +686,44 @@
             if (typeof onChangeCallback === 'function') {
                 ITF.minimizeOverlay();
                 onChangeCallback(this.checked); // Pass the checked status and name to the callback
+            }
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+        });
+
+        // Create a text label
+        var text = document.createElement('span');
+        text.setAttribute('class', 'checkbox-label');
+        text.textContent = labelText; // Set the text content to the passed labelText
+
+        // Append the label and text to the container
+        container.appendChild(label);
+        container.appendChild(text);
+
+        return container;
+    }
+
+    function createButton(onClickedCallback, labelText) {
+        // Create a container for the checkbox and label text
+        let container = document.createElement('div');
+        container.setAttribute('class', 'checkbox-container');
+
+        // Create label element
+        let label = document.createElement('label');
+        label.setAttribute('class', 'switch');
+        
+         // Create the button element
+        let button = document.createElement('button');
+        button.setAttribute('class', 'custom-button');
+        
+        // Append the checkbox and slider to the label
+        label.appendChild(button);
+
+        // Add an event listener for the button click event
+        button.addEventListener('click', function(event) {
+            if (typeof onClickedCallback === 'function') {
+                ITF.minimizeOverlay();
+                onClickedCallback();
             }
             event.stopPropagation();
             event.stopImmediatePropagation();
@@ -751,6 +856,9 @@
     ITE.contentDiv.appendChild(ITE.W3BossCheckbox);
     ITE.W5BossCheckbox = createCheckbox(ITF.setEnabledAutoBossW5, "W5 Boss")
     ITE.contentDiv.appendChild(ITE.W5BossCheckbox);
+
+    ITE.W6FarmingToggleLockButton = createButton(ITF.w6ToggleFarmingLock, "W6 Farming Toggle Lock (Only clicks all plants)")
+    ITE.contentDiv.appendChild(ITE.W6FarmingToggleLockButton);
 
     ITE.AutoDepositAllCombatCheckbox = createCheckbox(ITF.setEnabledAutoDepositAllCombat, "Auto combat deposit")
     ITE.contentDiv.appendChild(ITE.AutoDepositAllCombatCheckbox);
