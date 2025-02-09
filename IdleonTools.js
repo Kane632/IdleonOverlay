@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.9
+// @version      0.10
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -74,16 +74,7 @@
     ITG.B_W5BossEnterButton = { "X": 0.47687130420235113, "Y": 0.2613469985358712 }
     ITG.B_W5BossExitPortal = { "X": 0.17831198162315895, "Y": 0.7459736456808199 }
 
-    ITG.B_PlayerMenu = { "X": 0.888542, "Y": 0.935315};
-    ITG.B_PlayerMenuLeft = { "X": 0.295833, "Y": 0.750000};
-    ITG.B_PlayerMenuRight = { "X": 0.755208, "Y": 0.750000};
-    ITG.B_PlayerMenuP1 = { "X": 0.333333, "Y": 0.332168};
-    ITG.B_PlayerMenuP2 = { "X": 0.517708, "Y": 0.332168};
-    ITG.B_PlayerMenuP3 = { "X": 0.717708, "Y": 0.332168};
-    ITG.B_PlayerMenuP4 = { "X": 0.333333, "Y": 0.580420};
-    ITG.B_PlayerMenuP5 = { "X": 0.517708, "Y": 0.580420};
-    ITG.B_PlayerMenuP6 = { "X": 0.717708, "Y": 0.580420};
-
+    ITG.B_W6FarmingCollectAll = { "X": 0.1042, "Y": 0.2357 }
     ITG.B_W6FarmingPlants = {
         "R0C0": { "X": 0.2442, "Y": 0.7306 },
         "R0C1": { "X": 0.3360, "Y": 0.7306 },
@@ -125,6 +116,16 @@
         "R3C7": { "X": 0.8771, "Y": 0.1105 },
         "R3C8": { "X": 0.9582, "Y": 0.1105 },
     }
+
+    ITG.B_PlayerMenu = { "X": 0.888542, "Y": 0.935315};
+    ITG.B_PlayerMenuLeft = { "X": 0.295833, "Y": 0.750000};
+    ITG.B_PlayerMenuRight = { "X": 0.755208, "Y": 0.750000};
+    ITG.B_PlayerMenuP1 = { "X": 0.333333, "Y": 0.332168};
+    ITG.B_PlayerMenuP2 = { "X": 0.517708, "Y": 0.332168};
+    ITG.B_PlayerMenuP3 = { "X": 0.717708, "Y": 0.332168};
+    ITG.B_PlayerMenuP4 = { "X": 0.333333, "Y": 0.580420};
+    ITG.B_PlayerMenuP5 = { "X": 0.517708, "Y": 0.580420};
+    ITG.B_PlayerMenuP6 = { "X": 0.717708, "Y": 0.580420};
 
     ITG.keyNameToKeyCodeMap = {
         'a': 65, 'b': 66, 'c': 67, 'd': 68, 'e': 69, 'f': 70, 'g': 71, 'h': 72, 'i': 73, 'j': 74, 
@@ -345,7 +346,6 @@
         ITG.autoClickGrindTimeEnabled = isEnabled;
         console.log("ITF.setEnabledAutoClickGrindTime started.");
 
-        ITG.autoClickGrindTimeEnabled = true;
         while (ITG.autoClickGrindTimeEnabled) {
             await ITF.simulateMouseClickRatio(ITG.B_GrindTimeRatio, 7500);
         }
@@ -376,6 +376,31 @@
             await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 500);
             await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 500);
             await ITF.simulateMouseClickRatio(ITG.B_Items, 60000); //To close and wait one more minute
+        }
+    };
+
+    //////////////////
+    /// W6FarmingCollectAll
+    //////////////////
+    ITF.setEnabledAutoW6FarmingCollectAll = async function (isEnabled) {
+        if (ITG.autoW6FarmingCollectAllEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoW6FarmingCollectAllEnabled && !isEnabled)
+        {
+            ITG.autoW6FarmingCollectAllEnabled = false;
+            console.log("ITF.setEnabledAutoW6FarmingCollectAll stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoW6FarmingCollectAllEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoW6FarmingCollectAll started.");
+
+        while (ITG.autoW6FarmingCollectAllEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_W6FarmingCollectAll, 500);
         }
     };
 
@@ -643,17 +668,12 @@
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
                 let coordinateString = "R" + i + "C" + j
-                await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants[coordinateString], 50);
+                await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants[coordinateString], 10);
             }
         }
-        while (ITG.autoBossW5Enabled) 
-        {
-            await ITF.simulateMouseClickRatio(ITG.B_W5BossEnterPortal, 1000);
-            await ITF.simulateMouseClickRatio(ITG.B_W5BossEnterButton, 2500);
-            await ITF.simulateMouseClickRatio(ITG.B_W5Boss, 9500);
-            await ITF.simulateMouseClickRatio(ITG.B_W5BossExitPortal, 750); //Click Exit Portal
-            await ITF.simulateKeyPress('w', 2000); //Try to go through the portal with the W key and wait for the map to change
-        }
+
+        //Click again behind the button to lock/unlock it again
+        await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants["R1C2"], 10);
     };
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -667,7 +687,7 @@
 
         // Create label element
         let label = document.createElement('label');
-        label.setAttribute('class', 'switch');
+        label.setAttribute('class', 'dashboard-switch');
         
         // Create the checkbox input
         let input = document.createElement('input');
@@ -710,7 +730,7 @@
 
         // Create label element
         let label = document.createElement('label');
-        label.setAttribute('class', 'switch');
+        label.setAttribute('class', 'dashboard-button');
         
          // Create the button element
         let button = document.createElement('button');
@@ -766,22 +786,32 @@
             overflow: hidden; /* Hide children overflow */
         }
 
-        .normalButton {
-            width: 75px;
-            height: 40px;
+        .dashboard-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            border-radius: 4px;
+        }
+          
+        .dashboard-switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
         }
 
-        .switch {
+        .dashboard-button {
             position: relative;
             display: inline-block;
             width: 60px;
             height: 34px;
         }
-          
-        .switch input { 
-            opacity: 0;
-            width: 0;
-            height: 0;
+
+        .dashboard-button button{
+            display: block;
+            width: 25%;
+            height: 100%;
+            border-radius: 4px;
         }
           
         .slider {
@@ -828,6 +858,7 @@
             display: flex;
             align-items: center; /* Aligns the checkbox and label vertically */
             gap: 8px; /* Adds some space between the checkbox and the label text */
+            padding: 2px 0px;
         }
         
         .checkbox-label {
@@ -859,6 +890,8 @@
 
     ITE.W6FarmingToggleLockButton = createButton(ITF.w6ToggleFarmingLock, "W6 Farming Toggle Lock (Only clicks all plants)")
     ITE.contentDiv.appendChild(ITE.W6FarmingToggleLockButton);
+    ITE.AutoW6FarmingCollectAllCheckbox = createCheckbox(ITF.setEnabledAutoW6FarmingCollectAll, "W6 Farming Auto Collect")
+    ITE.contentDiv.appendChild(ITE.AutoW6FarmingCollectAllCheckbox);
 
     ITE.AutoDepositAllCombatCheckbox = createCheckbox(ITF.setEnabledAutoDepositAllCombat, "Auto combat deposit")
     ITE.contentDiv.appendChild(ITE.AutoDepositAllCombatCheckbox);
