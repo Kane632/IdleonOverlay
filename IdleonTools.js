@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.10
+// @version      0.11
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -650,7 +650,7 @@
         {
             await ITF.simulateMouseClickRatio(ITG.B_W5BossEnterPortal, 1000); 
             await ITF.simulateMouseClickRatio(ITG.B_W5BossEnterButton, 2500);
-            await ITF.simulateMouseClickRatio(ITG.B_W5Boss, 9500);
+            await ITF.simulateMouseClickRatio(ITG.B_W5Boss, 8750);
             await ITF.simulateMouseClickRatio(ITG.B_W5BossExitPortal, 750); //Click Exit Portal
             await ITF.simulateKeyPress('w', 2000); //Try to go through the portal with the W key and wait for the map to change
         }
