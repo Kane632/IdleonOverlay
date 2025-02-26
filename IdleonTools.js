@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.11
+// @version      0.12
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -38,12 +38,12 @@
 
     ITG.CurrentMouse = { "X": 0.0, "Y": 0.0 };
 
-    ITG.B_GrindTimeRatio = { "X": 0.57, "Y": 0.53 };
-    ITG.B_Codex = { "X": 0.743750, "Y": 0.940559 };
-    ITG.B_Items = { "X": 0.605208, "Y": 0.940559 };
-    ITG.B_StorageInCodex = { "X": 0.585417, "Y": 0.361888 };
-    ITG.B_DepositAll = { "X": 0.094792, "Y": 0.381119 };
-    ITG.B_ToggleAutoAttack = { "X": 0.462500, "Y": 0.938811 };
+    ITG.B_GrindTimeRatio = { "X": 0.6172, "Y": 0.5332 };
+    ITG.B_Codex = { "X": 0.7451, "Y": 0.9296 };
+    ITG.B_Items = { "X": 0.6089, "Y": 0.9391 };
+    ITG.B_StorageInCodex = { "X": 0.5860, "Y": 0.3369 };
+    ITG.B_DepositAll = { "X": 0.0943, "Y": 0.3478 };
+    ITG.B_ToggleAutoAttack = { "X": 0.4619, "Y": 0.9378 };
     ITG.B_ColoNextWave = { "X": 0.355208, "Y": 0.106209 };
     ITG.B_RestartBoss = { "X": 0.243789, "Y": 0.132812 };
 
@@ -156,9 +156,9 @@
             // Get the position of ITE.game relative to the viewport
             const gameRect = ITE.game.getBoundingClientRect();
 
-            // Calculate the coordinates relative to ITE.game
-            const clampX = clamp(ITG.CurrentMouse.X, 0, gameRect.right);
-            const clampY = clamp(ITG.CurrentMouse.Y, 0, gameRect.bottom);
+            // Calculate the coordinates relative to ITE.game. Subtract game rect x and y positions
+            const clampX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right);
+            const clampY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom);
 
             const ratioX = clampX / gameRect.width;
             const ratioY = clampY / gameRect.height;
@@ -188,7 +188,7 @@
 
     ITF.calculateCords = function(ratio) {
         let box = ITE.game.getBoundingClientRect(); //Update it just in case
-        return { "X": box.left + (box.right - box.left) * ratio.X, "Y": box.top + (box.bottom - box.top) * ratio.Y };
+        return { "X": box.left + box.width * ratio.X, "Y": box.top + box.height * ratio.Y };
     }
 
     //Simulate mouse click function by screen game window ratio (0 - 1.0)
