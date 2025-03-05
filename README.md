@@ -18,7 +18,7 @@ The IdleonTools.js script when enabled will add some kind of automation on top o
 ### Installation  <a name="idleon-tools-installation"></a>
 Go to the Tampermonkey extension dashboard. Then inside the Utilities tab import the script with the following url:  
   
-https://gitlab.com/alfred632/tampermonkeyscripts/-/raw/main/IdleonTools.js?ref_type=heads  
+https://raw.githubusercontent.com/Kane632/IdleonOverlay/refs/heads/main/IdleonTools.js  
 
 ![how to import from url](./Docs/Images/IdleonTools/ImportFromUrl.png)  
 
