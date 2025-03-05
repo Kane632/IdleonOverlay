@@ -1,7 +1,3 @@
-# TampermonkeyScripts
-
-This repository contains a collection of Tampermonkey scripts.
-
 # Table of contents
 1. [IdleonTools](#idleon-tools)
     1. [Installation](#idleon-tools-installation)
