@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.12
+// @version      0.13
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -73,6 +73,8 @@
     ITG.B_W5BossEnterPortal = { "X": 0.4183948575730473, "Y": 0.4355783308931186 }
     ITG.B_W5BossEnterButton = { "X": 0.47687130420235113, "Y": 0.2613469985358712 }
     ITG.B_W5BossExitPortal = { "X": 0.17831198162315895, "Y": 0.7459736456808199 }
+    ITG.B_W5GamingHarvestAll = { "X": 0.7150, "Y": 0.0469 }
+    ITG.B_W5Cave15Search = { "X": 0.5115, "Y": 0.2020 }
 
     ITG.B_W6FarmingCollectAll = { "X": 0.1042, "Y": 0.2357 }
     ITG.B_W6FarmingPlants = {
@@ -132,9 +134,27 @@
         'k': 75, 'l': 76, 'm': 77, 'n': 78, 'o': 79, 'p': 80, 'q': 81, 'r': 82, 's': 83, 't': 84, 
         'u': 85, 'v': 86, 'w': 87, 'x': 88, 'y': 89, 'z': 90,
         '0': 48, '1': 49, '2': 50, '3': 51, '4': 52, '5': 53, '6': 54, '7': 55, '8': 56, '9': 57,
-        'Escape': 27, 'Enter': 13, 'Backspace': 8, 'Tab': 9, 'Ctrl': 17, 'Shift': 16
-    };
+        'Escape': 27, 'Enter': 13, 'Backspace': 8, 'Tab': 9, 'Ctrl': 17, 'Shift': 16,
 
+        // Function keys
+        'F1': 112, 'F2': 113, 'F3': 114, 'F4': 115, 'F5': 116, 'F6': 117, 
+        'F7': 118, 'F8': 119, 'F9': 120, 'F10': 121, 'F11': 122, 'F12': 123,
+
+        // Arrow keys
+        'ArrowUp': 38, 'ArrowDown': 40, 'ArrowLeft': 37, 'ArrowRight': 39,
+
+        // Insert, Delete, Home, End
+        'Insert': 45, 'Delete': 46, 'Home': 36, 'End': 35,
+
+        // Page Up / Page Down (Scroll up/down)
+        'PageUp': 33, 'PageDown': 34,
+
+        // Numpad keys
+        'Numpad0': 96, 'Numpad1': 97, 'Numpad2': 98, 'Numpad3': 99, 'Numpad4': 100,
+        'Numpad5': 101, 'Numpad6': 102, 'Numpad7': 103, 'Numpad8': 104, 'Numpad9': 105,
+        'NumpadDecimal': 110, 'NumpadAdd': 107, 'NumpadSubtract': 109, 
+        'NumpadMultiply': 106, 'NumpadDivide': 111, 'NumpadEnter': 13
+    };
     console.log("Idleon Tools Global vars declared");
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,14 +177,55 @@
             const gameRect = ITE.game.getBoundingClientRect();
 
             // Calculate the coordinates relative to ITE.game. Subtract game rect x and y positions
-            const clampX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right);
-            const clampY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom);
+            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
+            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
 
-            const ratioX = clampX / gameRect.width;
-            const ratioY = clampY / gameRect.height;
-
-            // Output the relative coordinates to the console
             console.log(`Mouse coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+        } 
+        else if (event.code === 'Numpad7') {
+            const gameRect = ITE.game.getBoundingClientRect();
+
+            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
+            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
+            const cordX = gameRect.left + gameRect.width * ratioX;
+            const cordY = gameRect.top + gameRect.height * ratioY;
+
+            ITF.simulateMouseEvent("mousedown", cordX, cordY);
+            console.log(`MouseDown event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+        }
+        else if (event.code === 'Numpad8') {
+            const gameRect = ITE.game.getBoundingClientRect();
+
+            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
+            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
+            const cordX = gameRect.left + gameRect.width * ratioX;
+            const cordY = gameRect.top + gameRect.height * ratioY;
+
+            ITF.simulateMouseEvent("mouseup", cordX, cordY);
+            console.log(`MouseUp event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+        }
+        else if (event.code === 'Numpad9') {
+            const gameRect = ITE.game.getBoundingClientRect();
+
+            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
+            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
+            const cordX = gameRect.left + gameRect.width * ratioX;
+            const cordY = gameRect.top + gameRect.height * ratioY;
+
+            ITF.simulateMouseEvent("click", cordX, cordY);
+            console.log(`Click event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+        }
+        else if (event.code === 'NumpadAdd') {
+            const gameRect = ITE.game.getBoundingClientRect();
+
+            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
+            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
+            const cordX = gameRect.left + gameRect.width * ratioX;
+            const cordY = gameRect.top + gameRect.height * ratioY;
+
+            ITF.simulateMouseEvent("mousedown", cordX, cordY);
+            ITF.simulateMouseEvent("mouseup", cordX, cordY);
+            console.log(`Full mouse click event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
         }
     });
 
@@ -187,8 +248,8 @@
     };
 
     ITF.calculateCords = function(ratio) {
-        let box = ITE.game.getBoundingClientRect(); //Update it just in case
-        return { "X": box.left + box.width * ratio.X, "Y": box.top + box.height * ratio.Y };
+        let gameRect = ITE.game.getBoundingClientRect(); //Update it just in case
+        return { "X": gameRect.left + gameRect.width * ratio.X, "Y": gameRect.top + gameRect.height * ratio.Y };
     }
 
     //Simulate mouse click function by screen game window ratio (0 - 1.0)
@@ -196,7 +257,18 @@
         let coords = ITF.calculateCords(ratio)
         ITF.simulateMouseEvent("mousedown", coords.X, coords.Y);
         ITF.simulateMouseEvent("mouseup", coords.X, coords.Y);
-        ITF.simulateMouseEvent("click", coords.X, coords.Y);
+        await ITF.sleep(delayAfter);
+    };
+
+    ITF.simulateMouseDownRatio = async function(ratio, delayAfter = 0) {
+        let coords = ITF.calculateCords(ratio)
+        ITF.simulateMouseEvent("mousedown", coords.X, coords.Y);
+        await ITF.sleep(delayAfter);
+    };
+
+    ITF.simulateMouseUpRatio = async function(ratio, delayAfter = 0) {
+        let coords = ITF.calculateCords(ratio)
+        ITF.simulateMouseEvent("mouseup", coords.X, coords.Y);
         await ITF.sleep(delayAfter);
     };
 
@@ -378,6 +450,57 @@
             await ITF.simulateMouseClickRatio(ITG.B_Items, 60000); //To close and wait one more minute
         }
     };
+
+    //////////////////
+    /// W5GamingHarvestAll
+    //////////////////
+    ITF.setEnabledAutoW5GamingHarvestAll = async function (isEnabled) {
+        if (ITG.autoW5GamingHarvestAllEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoW5GamingHarvestAllEnabled && !isEnabled)
+        {
+            ITG.autoW5GamingHarvestAllEnabled = false;
+            console.log("ITF.setEnabledAutoW5GamingHarvestAll stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoW5GamingHarvestAllEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoW5GamingHarvestAll started.");
+
+        while (ITG.autoW5GamingHarvestAllEnabled) {
+            await ITF.simulateMouseUpRatio(ITG.B_W5GamingHarvestAll, 200);
+        }
+    };
+
+    //////////////////
+    /// W5Cave15Search
+    //////////////////
+    ITF.setEnabledAutoW5Cave15Search = async function (isEnabled) {
+        if (ITG.autoW5Cave15SearchEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoW5Cave15SearchEnabled && !isEnabled)
+        {
+            ITG.autoW5Cave15SearchEnabled = false;
+            console.log("ITF.setEnabledAutoW5Cave15Search stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoW5Cave15SearchEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoW5Cave15Search started.");
+
+        while (ITG.autoW5Cave15SearchEnabled) {
+            await ITF.simulateMouseUpRatio(ITG.B_W5Cave15Search, 100);
+        }
+    };
+
 
     //////////////////
     /// W6FarmingCollectAll
@@ -887,6 +1010,12 @@
     ITE.contentDiv.appendChild(ITE.W3BossCheckbox);
     ITE.W5BossCheckbox = createCheckbox(ITF.setEnabledAutoBossW5, "W5 Boss")
     ITE.contentDiv.appendChild(ITE.W5BossCheckbox);
+
+    ITE.AutoW5GamingHarvestAllCheckbox = createCheckbox(ITF.setEnabledAutoW5GamingHarvestAll, "W5 Gaming Auto Harvest")
+    ITE.contentDiv.appendChild(ITE.AutoW5GamingHarvestAllCheckbox);
+
+    ITE.AutoW5Cave15SearchCheckbox = createCheckbox(ITF.setEnabledAutoW5Cave15Search, "W5 Cave 15 Auto Search")
+    ITE.contentDiv.appendChild(ITE.AutoW5Cave15SearchCheckbox);
 
     ITE.W6FarmingToggleLockButton = createButton(ITF.w6ToggleFarmingLock, "W6 Farming Toggle Lock (Only clicks all plants)")
     ITE.contentDiv.appendChild(ITE.W6FarmingToggleLockButton);

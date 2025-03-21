@@ -9,7 +9,9 @@
 ## IdleonTools.js  <a name="idleon-tools"></a>
 This script is intended to be used in the [Idleon](https://www.legendsofidleon.com/) game.  
 
-The IdleonTools.js script when enabled will add some kind of automation on top of the browser game.  
+The IdleonTools.js script when enabled will add some automations into the browser game.  
+
+These automations are disabled by default and can be toggled with a switch. It is recommended to only enable one automation at a time.  
 
 ### Installation  <a name="idleon-tools-installation"></a>
 Go to the Tampermonkey extension dashboard. Then inside the Utilities tab import the script with the following url:  
@@ -33,7 +35,7 @@ When hovering over it with your mouse it will open this overlay and the script a
 
 ![grey square overlay](./Docs/Images/IdleonTools/Overlay.png)  
 
-To exit this overlay just drag the mouse out of press the ESC key on your keboard.  
+To exit this overlay just drag the mouse out of the game window or press the ESC key on your keboard.  
 
 #### Copy cursor in window coordinates  <a name="idleon-tools-mouse-coordinates"></a>
 Put your mouse anywhere on the game screen and press the HOME key. You can now check your current mouse coordinates in the console output.  
