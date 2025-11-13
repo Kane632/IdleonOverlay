@@ -38,7 +38,12 @@
 
     ITG.CurrentMouse = { "X": 0.0, "Y": 0.0 };
 
-    ITG.B_GrindTimeRatio = { "X": 0.6172, "Y": 0.5332 };
+    ITG.B_AlchemyGrindTimeRatio = { "X": 0.6172, "Y": 0.5332 };
+    ITG.B_AlchemyRoadRaginRatio = { "X": 0.5067, "Y": 0.7296 };
+    ITG.B_AlchemyHeartyDiggyRatio = { "X": 0.5090, "Y": 0.6183 };
+    ITG.B_AlchemySwiftSteppinRatio = { "X": 0.6940, "Y": 0.7346 };
+    ITG.B_AlchemyHammerHammerRatio = { "X": 0.7024, "Y": 0.5835 };
+    ITG.B_AlchemyStableJeniusRatio = { "X": 0.3792, "Y": 0.7286 };
     ITG.B_Codex = { "X": 0.7451, "Y": 0.9296 };
     ITG.B_Items = { "X": 0.6089, "Y": 0.9391 };
     ITG.B_StorageInCodex = { "X": 0.5860, "Y": 0.3369 };
@@ -74,7 +79,87 @@
     ITG.B_W5BossEnterButton = { "X": 0.47687130420235113, "Y": 0.2613469985358712 }
     ITG.B_W5BossExitPortal = { "X": 0.17831198162315895, "Y": 0.7459736456808199 }
     ITG.B_W5GamingHarvestAll = { "X": 0.7150, "Y": 0.0469 }
+    ITG.B_W5GamingShovel = { "X": 0.6360, "Y": 0.1559 }
     ITG.B_W5Cave15Search = { "X": 0.5115, "Y": 0.2020 }
+    ITG.B_W5GamingPlants = {
+        "R0C0": { "X": 0.0893, "Y": 0.2799 },
+        "R0C1": { "X": 0.1389, "Y": 0.2780 },
+        "R0C2": { "X": 0.1933, "Y": 0.2787 },
+        "R0C3": { "X": 0.2586, "Y": 0.2744 },
+        "R0C4": { "X": 0.3212, "Y": 0.2726 },
+        "R0C5": { "X": 0.3830, "Y": 0.2750 },
+        "R0C6": { "X": 0.4442, "Y": 0.2774 },
+        "R0C7": { "X": 0.4990, "Y": 0.2756 },
+        "R0C8": { "X": 0.5585, "Y": 0.2780 },
+        "R0C9": { "X": 0.6163, "Y": 0.2799 },
+        "R0C10": { "X": 0.6714, "Y": 0.2750 },
+        "R0C11": { "X": 0.7210, "Y": 0.2793 },
+
+        "R1C0": { "X": 0.0893, "Y": 0.3482 },
+        "R1C1": { "X": 0.1389, "Y": 0.3482 },
+        "R1C2": { "X": 0.1933, "Y": 0.3482 },
+        "R1C3": { "X": 0.2586, "Y": 0.3482 },
+        "R1C4": { "X": 0.3212, "Y": 0.3482 },
+        "R1C5": { "X": 0.3830, "Y": 0.3482 },
+        "R1C6": { "X": 0.4442, "Y": 0.3482 },
+        "R1C7": { "X": 0.4990, "Y": 0.3482 },
+        "R1C8": { "X": 0.5585, "Y": 0.3482 },
+        "R1C9": { "X": 0.6163, "Y": 0.3482 },
+        "R1C10": { "X": 0.6714, "Y": 0.3482 },
+        "R1C11": { "X": 0.7210, "Y": 0.3482 },
+
+        "R2C0": { "X": 0.0893, "Y": 0.4388 },
+        "R2C1": { "X": 0.1389, "Y": 0.4388 },
+        "R2C2": { "X": 0.1933, "Y": 0.4388 },
+        "R2C3": { "X": 0.2586, "Y": 0.4388 },
+        "R2C4": { "X": 0.3212, "Y": 0.4388 },
+        "R2C5": { "X": 0.3830, "Y": 0.4388 },
+        "R2C6": { "X": 0.4442, "Y": 0.4388 },
+        "R2C7": { "X": 0.4990, "Y": 0.4388 },
+        "R2C8": { "X": 0.5585, "Y": 0.4388 },
+        "R2C9": { "X": 0.6163, "Y": 0.4388 },
+        "R2C10": { "X": 0.6714, "Y": 0.4388 },
+        "R2C11": { "X": 0.7210, "Y": 0.4388 },
+
+        "R3C0": { "X": 0.0893, "Y": 0.5186 },
+        "R3C1": { "X": 0.1389, "Y": 0.5186 },
+        "R3C2": { "X": 0.1933, "Y": 0.5186 },
+        "R3C3": { "X": 0.2586, "Y": 0.5186 },
+        "R3C4": { "X": 0.3212, "Y": 0.5186 },
+        "R3C5": { "X": 0.3830, "Y": 0.5186 },
+        "R3C6": { "X": 0.4442, "Y": 0.5186 },
+        "R3C7": { "X": 0.4990, "Y": 0.5186 },
+        "R3C8": { "X": 0.5585, "Y": 0.5186 },
+        "R3C9": { "X": 0.6163, "Y": 0.5186 },
+        "R3C10": { "X": 0.6714, "Y": 0.5186 },
+        "R3C11": { "X": 0.7210, "Y": 0.5186 },
+
+        "R4C0": { "X": 0.0893, "Y": 0.6214 },
+        "R4C1": { "X": 0.1389, "Y": 0.6214 },
+        "R4C2": { "X": 0.1933, "Y": 0.6214 },
+        "R4C3": { "X": 0.2586, "Y": 0.6214 },
+        "R4C4": { "X": 0.3212, "Y": 0.6214 },
+        "R4C5": { "X": 0.3830, "Y": 0.6214 },
+        "R4C6": { "X": 0.4442, "Y": 0.6214 },
+        "R4C7": { "X": 0.4990, "Y": 0.6214 },
+        "R4C8": { "X": 0.5585, "Y": 0.6214 },
+        "R4C9": { "X": 0.6163, "Y": 0.6214 },
+        "R4C10": { "X": 0.6714, "Y": 0.6214 },
+        "R4C11": { "X": 0.7210, "Y": 0.6214 },
+
+        "R5C0": { "X": 0.0893, "Y": 0.6963 },
+        "R5C1": { "X": 0.1389, "Y": 0.6963 },
+        "R5C2": { "X": 0.1933, "Y": 0.6963 },
+        "R5C3": { "X": 0.2586, "Y": 0.6963 },
+        "R5C4": { "X": 0.3212, "Y": 0.6963 },
+        "R5C5": { "X": 0.3830, "Y": 0.6963 },
+        "R5C6": { "X": 0.4442, "Y": 0.6963 },
+        "R5C7": { "X": 0.4990, "Y": 0.6963 },
+        "R5C8": { "X": 0.5585, "Y": 0.6963 },
+        "R5C9": { "X": 0.6163, "Y": 0.6963 },
+        "R5C10": { "X": 0.6714, "Y": 0.6963 },
+        "R5C11": { "X": 0.7210, "Y": 0.6963 },
+    }
 
     ITG.B_W6FarmingCollectAll = { "X": 0.1042, "Y": 0.2357 }
     ITG.B_W6FarmingPlants = {
@@ -182,7 +267,7 @@
 
             console.log(`Mouse coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
         } 
-        else if (event.code === 'Numpad7') {
+        else if (event.ctrlKey && event.code === 'Numpad7') {
             const gameRect = ITE.game.getBoundingClientRect();
 
             const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
@@ -193,7 +278,7 @@
             ITF.simulateMouseEvent("mousedown", cordX, cordY);
             console.log(`MouseDown event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
         }
-        else if (event.code === 'Numpad8') {
+        else if (event.ctrlKey && event.code === 'Numpad8') {
             const gameRect = ITE.game.getBoundingClientRect();
 
             const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
@@ -204,7 +289,7 @@
             ITF.simulateMouseEvent("mouseup", cordX, cordY);
             console.log(`MouseUp event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
         }
-        else if (event.code === 'Numpad9') {
+        else if (event.ctrlKey && event.code === 'Numpad9') {
             const gameRect = ITE.game.getBoundingClientRect();
 
             const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
@@ -215,7 +300,7 @@
             ITF.simulateMouseEvent("click", cordX, cordY);
             console.log(`Click event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
         }
-        else if (event.code === 'NumpadAdd') {
+        else if (event.ctrlKey && event.code === 'NumpadAdd') {
             const gameRect = ITE.game.getBoundingClientRect();
 
             const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
@@ -226,6 +311,22 @@
             ITF.simulateMouseEvent("mousedown", cordX, cordY);
             ITF.simulateMouseEvent("mouseup", cordX, cordY);
             console.log(`Full mouse click event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+        }
+        else if (event.ctrlKey && event.code === 'Numpad0')
+        {
+            ITF.utilityDepositAll();
+        }
+        else if (event.ctrlKey && event.code === 'NumpadSubtract')
+        {
+            ITF.setEnabledAutoPickupAndDepositAll();
+        }
+        else if (event.ctrlKey && event.code === 'NumpadMultiply')
+        {
+            ITF.maximizeOverlay({});
+        }
+        else if (event.ctrlKey && event.code === 'NumpadDivide')
+        {
+            ITF.minimizeOverlay({});
         }
     });
 
@@ -269,6 +370,12 @@
     ITF.simulateMouseUpRatio = async function(ratio, delayAfter = 0) {
         let coords = ITF.calculateCords(ratio)
         ITF.simulateMouseEvent("mouseup", coords.X, coords.Y);
+        await ITF.sleep(delayAfter);
+    };
+
+    ITF.simulateMouseMoveRatio = async function(ratio, delayAfter = 0) {
+        let coords = ITF.calculateCords(ratio)
+        ITF.simulateMouseEvent("mousemove", coords.X, coords.Y);
         await ITF.sleep(delayAfter);
     };
 
@@ -331,6 +438,30 @@
         await ITF.sleep(delayAfter);
     }
 
+    ITF.getCurrentMouseRatio = function() {
+        const gameRect = ITE.game.getBoundingClientRect();
+
+        const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
+        const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
+
+        return { "X": ratioX, "Y": ratioY };
+    }
+
+    //Simulate mouse click function with current mouse coordinates
+    ITF.simulateMouseClick = async function(delayAfter = 0) {
+        const gameRect = ITE.game.getBoundingClientRect();
+
+        const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
+        const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
+        const cordX = gameRect.left + gameRect.width * ratioX;
+        const cordY = gameRect.top + gameRect.height * ratioY;
+
+        ITF.simulateMouseEvent("mousedown", cordX, cordY);
+        ITF.simulateMouseEvent("mouseup", cordX, cordY);
+
+        await ITF.sleep(delayAfter);
+    };
+
     ITF.simulateKeyEvent = function(keyName, event) {
         const keyCode = ITG.keyNameToKeyCodeMap[keyName] || 0; // Default to 0 if keyName not found
         const keyboardEvent = new KeyboardEvent(event, {
@@ -354,6 +485,8 @@
         ITF.simulateKeyEvent(keyName, 'keyup')
         await ITF.sleep(delayAfter);
     }
+
+    console.log("Idleon Tools Helper functions declared");
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // DEBUG FUNCTIONS
@@ -394,32 +527,159 @@
     // Call the function to attach the event listeners
     //ITF.attachEventDebugListeners();
 
+    console.log("Idleon Tools Debug functions declared");
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GAME FUNCTIONS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////
-    /// AutoClickGrindTime
+    /// AutoClickAlchemyGrindTime
     //////////////////
-    ITF.setEnabledAutoClickGrindTime = async function (isEnabled) {
-        if (ITG.autoClickGrindTimeEnabled == isEnabled) //Ignore as it already is the same state
+    ITF.setEnabledAutoClickAlchemyGrindTime = async function (isEnabled) {
+        if (ITG.autoClickAlchemyGrindTimeEnabled == isEnabled) //Ignore as it already is the same state
         {
             return;
         }
 
-        if (ITG.autoClickGrindTimeEnabled && !isEnabled)
+        if (ITG.autoClickAlchemyGrindTimeEnabled && !isEnabled)
         {
-            ITG.autoClickGrindTimeEnabled = false;
-            console.log("ITF.setEnabledAutoClickGrindTime stopped.");
+            ITG.autoClickAlchemyGrindTimeEnabled = false;
+            console.log("ITF.setEnabledAutoClickAlchemyGrindTime stopped.");
             return;
         }
 
         //Remaining case start it.
-        ITG.autoClickGrindTimeEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoClickGrindTime started.");
+        ITG.autoClickAlchemyGrindTimeEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoClickAlchemyGrindTime started.");
 
-        while (ITG.autoClickGrindTimeEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_GrindTimeRatio, 7500);
+        while (ITG.autoClickAlchemyGrindTimeEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_AlchemyGrindTimeRatio, 7500);
+        }
+    };
+
+    //////////////////
+    /// AutoClickAlchemyRoadRagin
+    //////////////////
+    ITF.setEnabledAutoClickAlchemyRoadRagin = async function (isEnabled) {
+        if (ITG.autoClickAlchemyRoadRaginEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoClickAlchemyRoadRaginEnabled && !isEnabled)
+        {
+            ITG.autoClickAlchemyRoadRaginEnabled = false;
+            console.log("ITF.setEnabledAutoClickAlchemyRoadRagin stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoClickAlchemyRoadRaginEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoClickAlchemyRoadRagin started.");
+
+        while (ITG.autoClickAlchemyRoadRaginEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_AlchemyRoadRaginRatio, 7500);
+        }
+    };
+
+    //////////////////
+    /// AutoClickAlchemyHeartyDiggy
+    //////////////////
+    ITF.setEnabledAutoClickAlchemyHeartyDiggy = async function (isEnabled) {
+        if (ITG.autoClickAlchemyHeartyDiggyEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoClickAlchemyHeartyDiggyEnabled && !isEnabled)
+        {
+            ITG.autoClickAlchemyHeartyDiggyEnabled = false;
+            console.log("ITF.setEnabledAutoClickAlchemyHeartyDiggy stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoClickAlchemyHeartyDiggyEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoClickAlchemyHeartyDiggy started.");
+
+        while (ITG.autoClickAlchemyHeartyDiggyEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_AlchemyHeartyDiggyRatio, 7500);
+        }
+    };
+
+    //////////////////
+    /// AutoClickAlchemySwiftSteppin
+    //////////////////
+    ITF.setEnabledAutoClickAlchemySwiftSteppin = async function (isEnabled) {
+        if (ITG.autoClickAlchemySwiftSteppinEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoClickAlchemySwiftSteppinEnabled && !isEnabled)
+        {
+            ITG.autoClickAlchemySwiftSteppinEnabled = false;
+            console.log("ITF.setEnabledAutoClickAlchemySwiftSteppin stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoClickAlchemySwiftSteppinEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoClickAlchemySwiftSteppin started.");
+
+        while (ITG.autoClickAlchemySwiftSteppinEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_AlchemySwiftSteppinRatio, 7500);
+        }
+    };
+
+    //////////////////
+    /// AutoClickAlchemyHammerHammer
+    //////////////////
+    ITF.setEnabledAutoClickAlchemyHammerHammer = async function (isEnabled) {
+        if (ITG.autoClickAlchemyHammerHammerEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoClickAlchemyHammerHammerEnabled && !isEnabled)
+        {
+            ITG.autoClickAlchemyHammerHammerEnabled = false;
+            console.log("ITF.setEnabledAutoClickAlchemyHammerHammer stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoClickAlchemyHammerHammerEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoClickAlchemyHammerHammer started.");
+
+        while (ITG.autoClickAlchemyHammerHammerEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_AlchemyHammerHammerRatio, 7500);
+        }
+    };
+
+    //////////////////
+    /// AutoClickAlchemyStableJenius
+    //////////////////
+    ITF.setEnabledAutoClickAlchemyStableJenius = async function (isEnabled) {
+        if (ITG.autoClickAlchemyStableJeniusEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoClickAlchemyStableJeniusEnabled && !isEnabled)
+        {
+            ITG.autoClickAlchemyStableJeniusEnabled = false;
+            console.log("ITF.setEnabledAutoClickAlchemyStableJenius stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoClickAlchemyStableJeniusEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoClickAlchemyStableJenius started.");
+
+        while (ITG.autoClickAlchemyStableJeniusEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_AlchemyStableJeniusRatio, 7500);
         }
     };
 
@@ -475,6 +735,47 @@
             await ITF.simulateMouseUpRatio(ITG.B_W5GamingHarvestAll, 200);
         }
     };
+
+    //////////////////
+    /// W5GamingHarvestNuggets
+    //////////////////
+    ITF.setEnabledAutoW5GamingHarvestNuggets = async function (isEnabled) {
+        if (ITG.autoW5GamingHarvestNuggetsEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoW5GamingHarvestNuggetsEnabled && !isEnabled)
+        {
+            ITG.autoW5GamingHarvestNuggetsEnabled = false;
+            console.log("ITF.setEnabledAutoW5GamingHarvestNuggets stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoW5GamingHarvestNuggetsEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoW5GamingHarvestNuggets started.");
+
+        const rows = 6
+        const columns = 12
+
+        while (ITG.autoW5GamingHarvestNuggetsEnabled) {
+            //Iterate the gaming board to grab chemical plants
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < columns; j++) {
+                    let coordinateString = "R" + i + "C" + j
+                    await ITF.simulateMouseClickRatio(ITG.B_W5GamingPlants[coordinateString], 10);
+                }
+            }
+
+            //Click harvest all
+            await ITF.simulateMouseUpRatio(ITG.B_W5GamingHarvestAll, 200);
+
+            //Click shovel
+            await ITF.simulateMouseUpRatio(ITG.B_W5GamingShovel, 200);
+        }
+    };
+
 
     //////////////////
     /// W5Cave15Search
@@ -780,7 +1081,7 @@
     };
 
     //////////////////
-    /// AutoBossW5
+    /// ToggleFarmingLock
     //////////////////
     ITF.w6ToggleFarmingLock = async function () {
         const rows = 4
@@ -796,8 +1097,48 @@
         }
 
         //Click again behind the button to lock/unlock it again
-        await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants["R1C2"], 10);
+        await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants["R3C5"], 10);
     };
+
+    //////////////////
+    /// DepositAll
+    //////////////////
+    ITF.utilityDepositAll = async function () {
+        await ITF.simulateMouseClickRatio(ITG.B_Codex, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_Items, 250);
+    };
+
+    //////////////////
+    /// PickupAndDepositAll
+    //////////////////
+    ITF.setEnabledAutoPickupAndDepositAll = async function () {
+        if (ITG.autoPickupAndDepositAllEnabled)
+        {
+            ITG.autoPickupAndDepositAllEnabled = false;
+            console.log("ITF.setEnabledAutoPickupAndDepositAll stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoPickupAndDepositAllEnabled = true;
+        console.log("ITF.setEnabledAutoPickupAndDepositAll started.");
+        
+        while (ITG.autoPickupAndDepositAllEnabled) 
+        {
+            let ratio = ITF.getCurrentMouseRatio();
+            await ITF.simulateMouseClickRatio(ITG.B_Codex, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_Items, 200);
+            await ITF.simulateMouseMoveRatio(ratio, 200); // Move mouse back to the original position
+            await ITF.simulateMouseDownRatio(ratio, 200);
+            await ITF.simulateMouseDownRatio(ratio, 200);
+        }
+    };
+
+    console.log("Idleon Tools Game functions declared");
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GUI FUNCTIONS
@@ -884,6 +1225,8 @@
         return container;
     }
 
+    console.log("Idleon Tools GUI functions declared");
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GUI
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -907,6 +1250,15 @@
             align-items: center; /* Center content vertically */
             justify-content: center; /* Center content horizontally */
             overflow: hidden; /* Hide children overflow */
+            border-radius: 4px;
+        }
+
+        #overlay .minimized-indicator {
+            width: 8px;
+            height: 8px;
+            background: #888;
+            border-radius: 50%;
+            display: block;
         }
 
         .dashboard-switch {
@@ -979,14 +1331,61 @@
 
         .checkbox-container {
             display: flex;
-            align-items: center; /* Aligns the checkbox and label vertically */
-            gap: 8px; /* Adds some space between the checkbox and the label text */
+            align-items: center;
+            justify-content: space-between; /* Space between label and switch */
+            gap: 8px;
             padding: 2px 0px;
+            min-width: 180px; /* Set a fixed or min width for all checkboxes */
+            max-width: 220px;
+            width: 200px; /* Or your preferred width */
+            box-sizing: border-box;
+        }
+
+        .checkbox-label {
+            color: white;
+            flex: 1 1 auto;
+            text-align: left; /* Or right, if you prefer */
+            white-space: normal;
+            word-break: break-word;
+            margin-right: 8px;
         }
         
         .checkbox-label {
             color: white;
             /* Your styles for the label text */
+        }
+
+        .columns-container {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+            width: 1280px; /* Base width for scaling */
+            max-width: 100%;
+            align-items: flex-start;
+            justify-content: center;
+            transform-origin: top left;
+            transition: transform 0.2s;
+            position: absolute;
+            left: 50%;
+            top: 40px; /* or whatever vertical offset you want */
+            /* Center horizontally after scaling */
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            min-width: 120px; /* Smaller min-width for small screens */
+            flex: 1 1 120px;  /* Allow columns to shrink and grow */
+            margin-right: 0;
+            box-sizing: border-box;
+            max-width: 220px; /* Prevent columns from being too wide */
+        }
+
+        .column-title {
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
         }
     `;
 
@@ -996,57 +1395,148 @@
     ITE.overlayDiv.setAttribute('id', 'overlay');
     ITE.overlayDiv.style.userSelect = 'none';
 
+    // 1. Create minimized indicator
+    ITE.minimizedIndicator = document.createElement('div');
+    ITE.minimizedIndicator.setAttribute('class', 'minimized-indicator');
+    ITE.overlayDiv.appendChild(ITE.minimizedIndicator);
+
+    // 2. Create contentDiv and columnsContainer
     ITE.contentDiv = document.createElement('div');
-    ITE.contentDiv.style.display = 'none';
+    ITE.contentDiv.style.display = 'none'; // Hidden by default (minimized)
+    ITE.overlayDiv.appendChild(ITE.contentDiv);
 
-    ITE.W1ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW1, "W1 Colo")
-    ITE.contentDiv.appendChild(ITE.W1ColoCheckbox);
-    ITE.W2ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW2, "W2 Colo")
-    ITE.contentDiv.appendChild(ITE.W2ColoCheckbox);
-    ITE.W3ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW3, "W3 Colo")
-    ITE.contentDiv.appendChild(ITE.W3ColoCheckbox);
+    // Create columns container
+    ITE.columnsContainer = document.createElement('div');
+    ITE.columnsContainer.setAttribute('class', 'columns-container');
 
-    ITE.W3BossCheckbox = createCheckbox(ITF.setEnabledAutoBossW3, "W3 Boss")
-    ITE.contentDiv.appendChild(ITE.W3BossCheckbox);
-    ITE.W5BossCheckbox = createCheckbox(ITF.setEnabledAutoBossW5, "W5 Boss")
-    ITE.contentDiv.appendChild(ITE.W5BossCheckbox);
+    // Create each column
+    ITE.utilitiesColumn = document.createElement('div');
+    ITE.utilitiesColumn.setAttribute('class', 'column');
+    ITE.w1Column = document.createElement('div');
+    ITE.w1Column.setAttribute('class', 'column');
+    ITE.w2Column = document.createElement('div');
+    ITE.w2Column.setAttribute('class', 'column');
+    ITE.w3Column = document.createElement('div');
+    ITE.w3Column.setAttribute('class', 'column');
+    ITE.w4Column = document.createElement('div');
+    ITE.w4Column.setAttribute('class', 'column');
+    ITE.w5Column = document.createElement('div');
+    ITE.w5Column.setAttribute('class', 'column');
+    ITE.w6Column = document.createElement('div');
+    ITE.w6Column.setAttribute('class', 'column');
 
-    ITE.AutoW5GamingHarvestAllCheckbox = createCheckbox(ITF.setEnabledAutoW5GamingHarvestAll, "W5 Gaming Auto Harvest")
-    ITE.contentDiv.appendChild(ITE.AutoW5GamingHarvestAllCheckbox);
+    // Add titles
+    ITE.utilitiesColumn.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'Utilities'}));
+    ITE.w1Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 1'}));
+    ITE.w2Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 2'}));
+    ITE.w3Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 3'}));
+    ITE.w4Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 4'}));
+    ITE.w5Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 5'}));
+    ITE.w6Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 6'}));
 
-    ITE.AutoW5Cave15SearchCheckbox = createCheckbox(ITF.setEnabledAutoW5Cave15Search, "W5 Cave 15 Auto Search")
-    ITE.contentDiv.appendChild(ITE.AutoW5Cave15SearchCheckbox);
-
-    ITE.W6FarmingToggleLockButton = createButton(ITF.w6ToggleFarmingLock, "W6 Farming Toggle Lock (Only clicks all plants)")
-    ITE.contentDiv.appendChild(ITE.W6FarmingToggleLockButton);
-    ITE.AutoW6FarmingCollectAllCheckbox = createCheckbox(ITF.setEnabledAutoW6FarmingCollectAll, "W6 Farming Auto Collect")
-    ITE.contentDiv.appendChild(ITE.AutoW6FarmingCollectAllCheckbox);
-
+    // Utilities
     ITE.AutoDepositAllCombatCheckbox = createCheckbox(ITF.setEnabledAutoDepositAllCombat, "Auto combat deposit")
-    ITE.contentDiv.appendChild(ITE.AutoDepositAllCombatCheckbox);
-
-    ITE.AutoClickGrindTimeCheckbox = createCheckbox(ITF.setEnabledAutoClickGrindTime, "Grind Time Spam")
-    ITE.contentDiv.appendChild(ITE.AutoClickGrindTimeCheckbox);
+    ITE.utilitiesColumn.appendChild(ITE.AutoDepositAllCombatCheckbox);
 
     ITE.AutoArcher2MClaimCheckbox = createCheckbox(ITF.setEnabledAutoArcher2MClaim, "Archer 2M claim")
-    ITE.contentDiv.appendChild(ITE.AutoArcher2MClaimCheckbox);
+    ITE.utilitiesColumn.appendChild(ITE.AutoArcher2MClaimCheckbox);
 
-    ITE.AutoW2ClickerShinyFishCheckbox = createCheckbox(ITF.setEnabledAutoW2ClickerShinyFish, "W2 Shiny Fish Claim")
-    ITE.contentDiv.appendChild(ITE.AutoW2ClickerShinyFishCheckbox);
+    ITE.AutoClickAlchemyGrindTimeCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyGrindTime, "Alc GrindTime")
+    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyGrindTimeCheckbox);
+    ITE.AutoClickAlchemyRoadRaginCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyRoadRagin, "Alc RoadRagin")
+    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyRoadRaginCheckbox);
+    ITE.AutoClickAlchemyHeartyDiggyCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyHeartyDiggy, "Alc HeartyDigger")
+    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyHeartyDiggyCheckbox);
+    ITE.AutoClickAlchemySwiftSteppinCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemySwiftSteppin, "Alc SwiftSteppin")
+    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemySwiftSteppinCheckbox);
+    ITE.AutoClickAlchemyHammerHammerCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyHammerHammer, "Alc HammerHammer")
+    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyHammerHammerCheckbox);
+    ITE.AutoClickAlchemyStableJeniusCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyStableJenius, "Alc StableJenius")
+    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyStableJeniusCheckbox);
 
-    ITE.overlayDiv.appendChild(ITE.contentDiv);
+    // W1
+    ITE.W1ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW1, "Colo")
+    ITE.w1Column.appendChild(ITE.W1ColoCheckbox);
+
+    // W2
+    ITE.W2ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW2, "Colo")
+    ITE.w2Column.appendChild(ITE.W2ColoCheckbox);
+
+    ITE.AutoW2ClickerShinyFishCheckbox = createCheckbox(ITF.setEnabledAutoW2ClickerShinyFish, "Shiny Fish Claim")
+    ITE.w2Column.appendChild(ITE.AutoW2ClickerShinyFishCheckbox);
+
+    // W3
+    ITE.W3ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW3, "Colo")
+    ITE.w3Column.appendChild(ITE.W3ColoCheckbox);
+
+    ITE.W3BossCheckbox = createCheckbox(ITF.setEnabledAutoBossW3, "Boss")
+    ITE.w3Column.appendChild(ITE.W3BossCheckbox);
+
+    // W4
+
+    // W5
+    ITE.W5BossCheckbox = createCheckbox(ITF.setEnabledAutoBossW5, "Boss")
+    ITE.w5Column.appendChild(ITE.W5BossCheckbox);
+
+    ITE.AutoW5GamingHarvestAllCheckbox = createCheckbox(ITF.setEnabledAutoW5GamingHarvestAll, "Gaming Auto Harvest")
+    ITE.w5Column.appendChild(ITE.AutoW5GamingHarvestAllCheckbox);
+
+    ITE.AutoW5GamingHarvestNuggetsCheckbox = createCheckbox(ITF.setEnabledAutoW5GamingHarvestNuggets, "Gaming Auto Nuggets")
+    ITE.w5Column.appendChild(ITE.AutoW5GamingHarvestNuggetsCheckbox);
+
+    ITE.AutoW5Cave15SearchCheckbox = createCheckbox(ITF.setEnabledAutoW5Cave15Search, "Cave 15 Auto Search")
+    ITE.w5Column.appendChild(ITE.AutoW5Cave15SearchCheckbox);
+
+    // W6
+    ITE.W6FarmingToggleLockButton = createButton(ITF.w6ToggleFarmingLock, "Farming Toggle Lock (Only clicks all plants)")
+    ITE.w6Column.appendChild(ITE.W6FarmingToggleLockButton);
+    ITE.AutoW6FarmingCollectAllCheckbox = createCheckbox(ITF.setEnabledAutoW6FarmingCollectAll, "Farming Auto Collect")
+    ITE.w6Column.appendChild(ITE.AutoW6FarmingCollectAllCheckbox);
+
+    // Append columns to columns container
+    ITE.columnsContainer.appendChild(ITE.utilitiesColumn);
+    ITE.columnsContainer.appendChild(ITE.w1Column);
+    ITE.columnsContainer.appendChild(ITE.w2Column);
+    ITE.columnsContainer.appendChild(ITE.w3Column);
+    ITE.columnsContainer.appendChild(ITE.w4Column);
+    ITE.columnsContainer.appendChild(ITE.w5Column);
+    ITE.columnsContainer.appendChild(ITE.w6Column);
+
+    // Clear contentDiv and append columns container
+    ITE.contentDiv.innerHTML = '';
+    ITE.contentDiv.appendChild(ITE.columnsContainer);
+
+    console.log("Idleon Tools GUI created");
+
+    ITF.scaleColumnsContainer = function() {
+        const baseWidth = 1280;
+        const gameRect = ITE.game.getBoundingClientRect();
+        const overlayWidth = gameRect.width;
+        let scale = 1;
+        if (overlayWidth < baseWidth) {
+            scale = overlayWidth / baseWidth;
+        }
+        ITE.columnsContainer.style.transform = `scale(${scale}) translateX(-50%)`;
+        ITE.columnsContainer.style.left = "50%";
+        ITE.columnsContainer.style.top = "40px"; // adjust as needed
+        ITE.columnsContainer.style.position = "absolute";
+        ITE.columnsContainer.style.transformOrigin = "top left";
+    };
 
     ITF.maximizeOverlay = function(event) {
         const gameRect = ITE.game.getBoundingClientRect();
         ITE.overlayDiv.style.width = gameRect.width + 'px';
         ITE.overlayDiv.style.height = gameRect.height + 'px';
         ITE.contentDiv.style.display = 'block'; // Show the content when big
+        ITE.minimizedIndicator.style.display = 'none';
+        ITF.scaleColumnsContainer();
     }
     
     ITF.minimizeOverlay = function(event) {
         ITE.overlayDiv.style.width = 15 + 'px';
         ITE.overlayDiv.style.height = 10 + 'px';
         ITE.contentDiv.style.display = 'none'; // Hide the content when small
+        ITE.minimizedIndicator.style.display = 'block';
     }
 
     ITF.stopMousePropagation = function(event) {
@@ -1063,6 +1553,11 @@
             event.stopPropagation();
         }
     });
+    window.addEventListener('resize', function() {
+        if (ITE.contentDiv.style.display === 'block') {
+            scaleColumnsContainer();
+        }
+    });
 
     //Disabled this for now because it also blocks the scripts simulated mouse events
     //window.addEventListener('mousedown', ITF.stopMousePropagation, true);
@@ -1070,4 +1565,6 @@
     //window.addEventListener('click', ITF.stopMousePropagation, true);
 
     ITE.shadowRoot.appendChild(ITE.overlayDiv);
+
+    console.log("Idleon Tools GUI overlay events added");
 })();
