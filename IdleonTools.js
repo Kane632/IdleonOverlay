@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.14
+// @version      0.15
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -74,6 +74,27 @@
     ITG.B_W3BossEnterButton = { "X": 0.766667, "Y": 0.449301 };
     ITG.B_W3BossExitPortal = { "X": 0.955208, "Y": 0.484266 };
 
+    ITG.B_W3Cogs = {
+        "0": { "X": 0.0253, "Y": 0.1789 },
+        "1": { "X": 0.0746, "Y": 0.1777 },
+        "2": { "X": 0.1233, "Y": 0.1801 },
+        "3": { "X": 0.0267, "Y": 0.2647 },
+        "4": { "X": 0.0743, "Y": 0.2672 },
+        "5": { "X": 0.1233, "Y": 0.2696 },
+        "6": { "X": 0.0253, "Y": 0.3512 },
+        "7": { "X": 0.0736, "Y": 0.3518 },
+        "8": { "X": 0.1246, "Y": 0.3530 },
+        "9": { "X": 0.0253, "Y": 0.4412 },
+        "10": { "X": 0.0729, "Y": 0.4388 },
+        "11": { "X": 0.1297, "Y": 0.4425 },
+        "12": { "X": 0.0243, "Y": 0.5126 },
+        "13": { "X": 0.0736, "Y": 0.5210 },
+        "14": { "X": 0.1270, "Y": 0.5186 },
+        "PreviousPage": { "X": 0.0185, "Y": 0.5857 },
+        "NextPage": { "X": 0.1290, "Y": 0.5912 },
+        "TrashToggle": { "X": 0.6734, "Y": 0.0713 },
+    }
+
     ITG.B_W5Boss = { "X": 0.7177777920765959, "Y": 0.5051244509516838 }
     ITG.B_W5BossEnterPortal = { "X": 0.4183948575730473, "Y": 0.4355783308931186 }
     ITG.B_W5BossEnterButton = { "X": 0.47687130420235113, "Y": 0.2613469985358712 }
@@ -81,6 +102,8 @@
     ITG.B_W5GamingHarvestAll = { "X": 0.7150, "Y": 0.0469 }
     ITG.B_W5GamingShovel = { "X": 0.6360, "Y": 0.1559 }
     ITG.B_W5Cave15Search = { "X": 0.5115, "Y": 0.2020 }
+    ITG.B_W5GamingStartGrid = { "X": 0.0512, "Y": 0.2539 }
+    ITG.B_W5GamingEndGrid = { "X": 0.7407, "Y": 0.7979 }
     ITG.B_W5GamingPlants = {
         "R0C0": { "X": 0.0893, "Y": 0.2799 },
         "R0C1": { "X": 0.1389, "Y": 0.2780 },
@@ -213,6 +236,35 @@
     ITG.B_PlayerMenuP4 = { "X": 0.333333, "Y": 0.580420};
     ITG.B_PlayerMenuP5 = { "X": 0.517708, "Y": 0.580420};
     ITG.B_PlayerMenuP6 = { "X": 0.717708, "Y": 0.580420};
+
+    ITG.B_Inv = {
+        "R0C0": { "X": 0.7074, "Y": 0.3294 },
+        "R0C1": { "X": 0.7815, "Y": 0.3204 },
+        "R0C2": { "X": 0.8614, "Y": 0.3228 },
+        "R0C3": { "X": 0.9352, "Y": 0.3179 },
+        "R1C0": { "X": 0.7064, "Y": 0.4576 },
+        "R1C1": { "X": 0.7843, "Y": 0.4564 },
+        "R1C2": { "X": 0.8591, "Y": 0.4533 },
+        "R1C3": { "X": 0.9359, "Y": 0.4588 },
+        "R2C0": { "X": 0.7027, "Y": 0.5936 },
+        "R2C1": { "X": 0.7809, "Y": 0.5893 },
+        "R2C2": { "X": 0.8591, "Y": 0.5978 },
+        "R2C3": { "X": 0.9311, "Y": 0.5948 },
+        "R3C0": { "X": 0.7027, "Y": 0.7265 },
+        "R3C1": { "X": 0.7894, "Y": 0.7235 },
+        "R3C2": { "X": 0.8550, "Y": 0.7211 },
+        "R3C3": { "X": 0.9332, "Y": 0.7259 },
+    }
+
+    ITG.B_InvBag = {
+        "0": { "X": 0.6792, "Y": 0.1850 },
+        "1": { "X": 0.7271, "Y": 0.1801 },
+        "2": { "X": 0.7754, "Y": 0.1850 },
+        "3": { "X": 0.8189, "Y": 0.1874 },
+        "4": { "X": 0.8713, "Y": 0.1922 },
+        "5": { "X": 0.9141, "Y": 0.1850 },
+        "6": { "X": 0.9638, "Y": 0.1838 },
+    }
 
     ITG.keyNameToKeyCodeMap = {
         'a': 65, 'b': 66, 'c': 67, 'd': 68, 'e': 69, 'f': 70, 'g': 71, 'h': 72, 'i': 73, 'j': 74, 
@@ -354,9 +406,13 @@
     }
 
     //Simulate mouse click function by screen game window ratio (0 - 1.0)
-    ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0) {
+    ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0, delayHold = 0) {
         let coords = ITF.calculateCords(ratio)
         ITF.simulateMouseEvent("mousedown", coords.X, coords.Y);
+        if (delayHold > 0)
+        {
+            await ITF.sleep(delayHold);
+        }
         ITF.simulateMouseEvent("mouseup", coords.X, coords.Y);
         await ITF.sleep(delayAfter);
     };
@@ -393,6 +449,30 @@
             let finalRatio = { "X": startRatio.X + xDeltaRatio, "Y": startRatio.Y + yDeltaRatio };
 
             await ITF.simulateMouseClickRatio(finalRatio, clickDelay);
+        }
+
+        await ITF.sleep(delayAfter);
+    }
+
+    ITF.simulateMouseClicksInGridRangeRatios = async function(startRatio, endRatio, clicksPerRow, clicksPerColumn, clickDelay = 10, delayAfter = 0)
+    {
+        let xRatioDiff = endRatio.X - startRatio.X;
+        let yRatioDiff = endRatio.Y - startRatio.Y;
+        let xDeltaRatioPerClick = xRatioDiff / clicksPerRow;
+        let yDeltaRatioPerClick = yRatioDiff / clicksPerColumn;
+
+        // How many rows are there (clicks per column)
+        for (let i = 0; i < clicksPerColumn; ++i) {
+            let yDeltaRatio = yDeltaRatioPerClick * i;
+
+            // How many columns are there (clicks per row)
+            for (let j = 0; j < clicksPerRow; ++j) {
+                let xDeltaRatio = xDeltaRatioPerClick * j;
+
+                let finalRatio = { "X": startRatio.X + xDeltaRatio, "Y": startRatio.Y + yDeltaRatio };
+
+                await ITF.simulateMouseClickRatio(finalRatio, clickDelay);
+            }
         }
 
         await ITF.sleep(delayAfter);
@@ -531,7 +611,194 @@
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GAME FUNCTIONS
+    // https://patorjk.com/software/taag/#p=display&f=Blocks&t=MISC&x=none&v=4&h=4&w=80&we=false
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//  .----------------.  .----------------.  .----------------.  .----------------. 
+// | .--------------. || .--------------. || .--------------. || .--------------. |
+// | | ____    ____ | || |     _____    | || |    _______   | || |     ______   | |
+// | ||_   \  /   _|| || |    |_   _|   | || |   /  ___  |  | || |   .' ___  |  | |
+// | |  |   \/   |  | || |      | |     | || |  |  (__ \_|  | || |  / .'   \_|  | |
+// | |  | |\  /| |  | || |      | |     | || |   '.___`-.   | || |  | |         | |
+// | | _| |_\/_| |_ | || |     _| |_    | || |  |`\____) |  | || |  \ `.___.'\  | |
+// | ||_____||_____|| || |    |_____|   | || |  |_______.'  | || |   `._____.'  | |
+// | |              | || |              | || |              | || |              | |
+// | '--------------' || '--------------' || '--------------' || '--------------' |
+//  '----------------'  '----------------'  '----------------'  '----------------' 
+
+    //////////////////
+    /// AutoDepositAllCombat
+    //////////////////
+    ITF.setEnabledAutoDepositAllCombat = async function (isEnabled) {
+        if (ITG.autoDepositAllCombatEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoDepositAllCombatEnabled && !isEnabled)
+        {
+            ITG.autoDepositAllCombatEnabled = false;
+            console.log("ITF.setEnabledAutoDepositAllCombat stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoDepositAllCombatEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoDepositAllCombat started.");
+
+        while (ITG.autoDepositAllCombatEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_Codex, 500);
+            await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 500);
+            await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 500);
+            await ITF.simulateMouseClickRatio(ITG.B_Items, 60000); //To close and wait one more minute
+        }
+    };
+
+    //////////////////
+    /// AutoArchers2MClaim
+    //////////////////
+    ITF.setEnabledAutoArcher2MClaim = async function (isEnabled) {
+        if (ITG.AutoArcher2MClaimEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.AutoArcher2MClaimEnabled && !isEnabled)
+        {
+            ITG.AutoArcher2MClaimEnabled = false;
+            console.log("ITF.setEnabledAutoArcher2MClaim stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.AutoArcher2MClaimEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoArcher2MClaim started.");
+
+        while (ITG.AutoArcher2MClaimEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuLeft, 500); //Ensure is first page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP2, 2000); //Click first archer
+            await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
+
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuRight, 500); //Ensure is second page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP2, 2000); //Click second archer
+            await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
+
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuRight, 500); //Ensure is second page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP4, 2000); //Click third and last archer
+            await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
+
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuLeft, 500); //Ensure is first page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP1, 2000); //Click active character
+
+            //Sleep for 100 seconds in order to start again with a 2 min mark. 
+            // Also add the 2 seconds from the last Enter key that is not needed plus an extra 13 seconds just in case
+            await ITF.sleep(115000) 
+        }
+    };
+
+    //////////////////
+    /// DepositAll
+    //////////////////
+    ITF.utilityDepositAll = async function () {
+        await ITF.simulateMouseClickRatio(ITG.B_Codex, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_Items, 250);
+    };
+
+    //////////////////
+    /// PickupAndDepositAll
+    //////////////////
+    ITF.setEnabledAutoPickupAndDepositAll = async function () {
+        if (ITG.autoPickupAndDepositAllEnabled)
+        {
+            ITG.autoPickupAndDepositAllEnabled = false;
+            console.log("ITF.setEnabledAutoPickupAndDepositAll stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoPickupAndDepositAllEnabled = true;
+        console.log("ITF.setEnabledAutoPickupAndDepositAll started.");
+        
+        while (ITG.autoPickupAndDepositAllEnabled) 
+        {
+            let ratio = ITF.getCurrentMouseRatio();
+            await ITF.simulateMouseClickRatio(ITG.B_Codex, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_Items, 200);
+            await ITF.simulateMouseMoveRatio(ratio, 200); // Move mouse back to the original position
+            await ITF.simulateMouseDownRatio(ratio, 200);
+            await ITF.simulateMouseDownRatio(ratio, 200);
+        }
+    };
+
+//  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
+// | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
+// | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |     __       | |
+// | ||_   _||_   _|| || |   .'    `.   | || | |_   __ \    | || |  |_   _|     | || | |_   ___ `.  | | | |    /  |      | |
+// | |  | | /\ | |  | || |  /  .--.  \  | || |   | |__) |   | || |    | |       | || |   | |   `. \ | | | |    `| |      | |
+// | |  | |/  \| |  | || |  | |    | |  | || |   |  __ /    | || |    | |   _   | || |   | |    | | | | | |     | |      | |
+// | |  |   /\   |  | || |  \  `--'  /  | || |  _| |  \ \_  | || |   _| |__/ |  | || |  _| |___.' / | | | |    _| |_     | |
+// | |  |__/  \__|  | || |   `.____.'   | || | |____| |___| | || |  |________|  | || | |________.'  | | | |   |_____|    | |
+// | |              | || |              | || |              | || |              | || |              | | | |              | |
+// | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' |
+//  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'   '----------------' 
+
+    //////////////////
+    /// AutoColoW1
+    //////////////////
+    ITF.setEnabledAutoColoW1 = async function (isEnabled) {
+        if (ITG.autoColoW1Enabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoColoW1Enabled && !isEnabled)
+        {
+            ITG.autoColoW1Enabled = false;
+            console.log("ITF.setEnabledAutoColoW1 stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoColoW1Enabled = isEnabled;
+        console.log("ITF.setEnabledAutoColoW1 started.");
+        
+        while (ITG.autoColoW1Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W1Colo, 6000); //Click Colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W1ColoEnterUp, 2000); //Enter Colosseum. First try to enter with the button Y location from when we already completed one colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W1ColoEnterLow, 2000); //Enter Colosseum. Just in case click the lower one (This will only work the first time we enter the map)
+            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
+            //The orb duration is about 155 seconds at lvl 312. In W1 maybe we can squeeze two runs per orb.
+            //155 seconds Minus (13) = 142 seconds → half each round = 71 seconds → 71 seconds * 10 next wave spam = 710
+            for (let i = 0; i < 710; ++i)
+            {
+                await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
+            }
+
+            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
+            await ITF.simulateMouseClickRatio(ITG.B_W1ColoExit, 2850); //Click Exit Portal
+        }
+    };
+
+//  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
+// | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
+// | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |    _____     | |
+// | ||_   _||_   _|| || |   .'    `.   | || | |_   __ \    | || |  |_   _|     | || | |_   ___ `.  | | | |   / ___ `.   | |
+// | |  | | /\ | |  | || |  /  .--.  \  | || |   | |__) |   | || |    | |       | || |   | |   `. \ | | | |  |_/___) |   | |
+// | |  | |/  \| |  | || |  | |    | |  | || |   |  __ /    | || |    | |   _   | || |   | |    | | | | | |   .'____.'   | |
+// | |  |   /\   |  | || |  \  `--'  /  | || |  _| |  \ \_  | || |   _| |__/ |  | || |  _| |___.' / | | | |  / /____     | |
+// | |  |__/  \__|  | || |   `.____.'   | || | |____| |___| | || |  |________|  | || | |________.'  | | | |  |_______|   | |
+// | |              | || |              | || |              | || |              | || |              | | | |              | |
+// | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' |
+//  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'   '----------------' 
 
     //////////////////
     /// AutoClickAlchemyGrindTime
@@ -684,32 +951,178 @@
     };
 
     //////////////////
-    /// AutoDepositAllCombat
+    /// AutoW2ClickerShinyFish
     //////////////////
-    ITF.setEnabledAutoDepositAllCombat = async function (isEnabled) {
-        if (ITG.autoDepositAllCombatEnabled == isEnabled) //Ignore as it already is the same state
+    ITF.setEnabledAutoW2ClickerShinyFish = async function (isEnabled) {
+        if (ITG.AutoW2ClickerShinyFishEnabled == isEnabled) //Ignore as it already is the same state
         {
             return;
         }
 
-        if (ITG.autoDepositAllCombatEnabled && !isEnabled)
+        if (ITG.AutoW2ClickerShinyFishEnabled && !isEnabled)
         {
-            ITG.autoDepositAllCombatEnabled = false;
-            console.log("ITF.setEnabledAutoDepositAllCombat stopped.");
+            ITG.AutoW2ClickerShinyFishEnabled = false;
+            console.log("ITF.setEnabledAutoW2ClickerShinyFish stopped.");
             return;
         }
 
         //Remaining case start it.
-        ITG.autoDepositAllCombatEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoDepositAllCombat started.");
+        ITG.AutoW2ClickerShinyFishEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoW2ClickerShinyFish started.");
 
-        while (ITG.autoDepositAllCombatEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_Codex, 500);
-            await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 500);
-            await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 500);
-            await ITF.simulateMouseClickRatio(ITG.B_Items, 60000); //To close and wait one more minute
+        while (ITG.AutoW2ClickerShinyFishEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_W2ClickerShinyFish, (3 * 60 + 0) * 1000); //Click Shiny Fish
         }
     };
+
+    //////////////////
+    /// AutoColoW2
+    //////////////////
+    ITF.setEnabledAutoColoW2 = async function (isEnabled) {
+        if (ITG.autoColoW2Enabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoColoW2Enabled && !isEnabled)
+        {
+            ITG.autoColoW2Enabled = false;
+            console.log("ITF.setEnabledAutoColoW2 stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoColoW2Enabled = isEnabled;
+        console.log("ITF.setEnabledAutoColoW2 started.");
+        
+        while (ITG.autoColoW2Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W2Colo, 6000); //Click Colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W2ColoEnterUp, 2000); //Enter Colosseum. First try to enter with the button Y location from when we already completed one colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W2ColoEnterLow, 2000); //Enter Colosseum. Just in case click the lower one (This will only work the first time we enter the map)
+            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
+            //The orb duration is about 155 seconds at lvl 312. In W2 we cannot squeze two runs per orb as the this colo is slower... 1 run per orb better.
+            //155 seconds Minus (13) = 142 seconds → full duration each round = 144 seconds → 144 seconds * 10 next wave spam = 1440
+            for (let i = 0; i < 1440; ++i)
+            {
+                await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
+            }
+
+            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
+            await ITF.simulateMouseClickRatio(ITG.B_W2ColoExit, 2850); //Click Exit Portal
+        }
+    };
+
+//  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
+// | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
+// | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |    ______    | |
+// | ||_   _||_   _|| || |   .'    `.   | || | |_   __ \    | || |  |_   _|     | || | |_   ___ `.  | | | |   / ____ `.  | |
+// | |  | | /\ | |  | || |  /  .--.  \  | || |   | |__) |   | || |    | |       | || |   | |   `. \ | | | |   `'  __) |  | |
+// | |  | |/  \| |  | || |  | |    | |  | || |   |  __ /    | || |    | |   _   | || |   | |    | | | | | |   _  |__ '.  | |
+// | |  |   /\   |  | || |  \  `--'  /  | || |  _| |  \ \_  | || |   _| |__/ |  | || |  _| |___.' / | | | |  | \____) |  | |
+// | |  |__/  \__|  | || |   `.____.'   | || | |____| |___| | || |  |________|  | || | |________.'  | | | |   \______.'  | |
+// | |              | || |              | || |              | || |              | || |              | | | |              | |
+// | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' |
+//  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'   '----------------' 
+
+    //////////////////
+    /// AutoColoW3
+    //////////////////
+    ITF.setEnabledAutoColoW3 = async function (isEnabled) {
+        if (ITG.autoColoW3Enabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoColoW3Enabled && !isEnabled)
+        {
+            ITG.autoColoW3Enabled = false;
+            console.log("ITF.setEnabledAutoColoW3 stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoColoW3Enabled = isEnabled;
+        console.log("ITF.setEnabledAutoColoW3 started.");
+        
+        while (ITG.autoColoW3Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W3Colo, 6000); //Click Colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_W3ColoEnter, 2000); //Enter Colosseum
+            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
+            //The orb duration is about 155 seconds at lvl 312. In W3 maybe we could squeeze two runs per orb but we will wait to ensure always a full orb when opening chests
+            //155 seconds Minus (13) = 142 seconds → full duration each round = 144 seconds → 144 seconds * 10 next wave spam = 1440
+            for (let i = 0; i < 1350; ++i)
+            {
+                await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
+            }
+
+            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
+            await ITF.simulateMouseClickRatio(ITG.B_W3ColoExit, 13850); //Click Exit Portal and wait for orb cooldown
+        }
+    };
+
+    //////////////////
+    /// AutoBossW3
+    //////////////////
+    ITF.setEnabledAutoBossW3 = async function (isEnabled) {
+        if (ITG.autoBossW3Enabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoBossW3Enabled && !isEnabled)
+        {
+            ITG.autoBossW3Enabled = false;
+            console.log("ITF.setEnabledAutoBossW3 stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoBossW3Enabled = isEnabled;
+        console.log("ITF.setEnabledAutoBossW3 started.");
+        
+        while (ITG.autoBossW3Enabled) 
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossEnterPortal, 450); //Click Enter Portal   
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossEnterButton, 2500); //Click Enter Button  
+            await ITF.simulateMouseClickRatio(ITG.B_W3Boss, 12000); //Boss
+            await ITF.simulateMouseDrag(ITG.B_W3BossItemsStart, ITG.B_W3BossItemsEnd, 750, 30, 100);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 2000);
+            await ITF.simulateMouseDrag(ITG.B_W3BossItemsStart, ITG.B_W3BossItemsEnd, 750, 30, 100);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 2000);
+            await ITF.simulateMouseClickRatio(ITG.B_W3BossExitPortal, 750); //Click Exit Portal
+            await ITF.simulateKeyPress('w', 3250); //Try to go through the portal with the W key and wait for the map to change
+        }
+    };
+
+//  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
+// | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
+// | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |   _    _     | |
+// | ||_   _||_   _|| || |   .'    `.   | || | |_   __ \    | || |  |_   _|     | || | |_   ___ `.  | | | |  | |  | |    | |
+// | |  | | /\ | |  | || |  /  .--.  \  | || |   | |__) |   | || |    | |       | || |   | |   `. \ | | | |  | |__| |_   | |
+// | |  | |/  \| |  | || |  | |    | |  | || |   |  __ /    | || |    | |   _   | || |   | |    | | | | | |  |____   _|  | |
+// | |  |   /\   |  | || |  \  `--'  /  | || |  _| |  \ \_  | || |   _| |__/ |  | || |  _| |___.' / | | | |      _| |_   | |
+// | |  |__/  \__|  | || |   `.____.'   | || | |____| |___| | || |  |________|  | || | |________.'  | | | |     |_____|  | |
+// | |              | || |              | || |              | || |              | || |              | | | |              | |
+// | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' |
+//  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'   '----------------' 
+
+//  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
+// | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
+// | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |   _______    | |
+// | ||_   _||_   _|| || |   .'    `.   | || | |_   __ \    | || |  |_   _|     | || | |_   ___ `.  | | | |  |  _____|   | |
+// | |  | | /\ | |  | || |  /  .--.  \  | || |   | |__) |   | || |    | |       | || |   | |   `. \ | | | |  | |____     | |
+// | |  | |/  \| |  | || |  | |    | |  | || |   |  __ /    | || |    | |   _   | || |   | |    | | | | | |  '_.____''.  | |
+// | |  |   /\   |  | || |  \  `--'  /  | || |  _| |  \ \_  | || |   _| |__/ |  | || |  _| |___.' / | | | |  | \____) |  | |
+// | |  |__/  \__|  | || |   `.____.'   | || | |____| |___| | || |  |________|  | || | |________.'  | | | |   \______.'  | |
+// | |              | || |              | || |              | || |              | || |              | | | |              | |
+// | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' |
+//  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'   '----------------' 
 
     //////////////////
     /// W5GamingHarvestAll
@@ -761,12 +1174,7 @@
 
         while (ITG.autoW5GamingHarvestNuggetsEnabled) {
             //Iterate the gaming board to grab chemical plants
-            for (let i = 0; i < rows; i++) {
-                for (let j = 0; j < columns; j++) {
-                    let coordinateString = "R" + i + "C" + j
-                    await ITF.simulateMouseClickRatio(ITG.B_W5GamingPlants[coordinateString], 10);
-                }
-            }
+            await ITF.simulateMouseClicksInGridRangeRatios(ITG.B_W5GamingStartGrid, ITG.B_W5GamingEndGrid, 20, 8);
 
             //Click harvest all
             await ITF.simulateMouseUpRatio(ITG.B_W5GamingHarvestAll, 200);
@@ -802,254 +1210,6 @@
         }
     };
 
-
-    //////////////////
-    /// W6FarmingCollectAll
-    //////////////////
-    ITF.setEnabledAutoW6FarmingCollectAll = async function (isEnabled) {
-        if (ITG.autoW6FarmingCollectAllEnabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoW6FarmingCollectAllEnabled && !isEnabled)
-        {
-            ITG.autoW6FarmingCollectAllEnabled = false;
-            console.log("ITF.setEnabledAutoW6FarmingCollectAll stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoW6FarmingCollectAllEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoW6FarmingCollectAll started.");
-
-        while (ITG.autoW6FarmingCollectAllEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_W6FarmingCollectAll, 500);
-        }
-    };
-
-    //////////////////
-    /// AutoArchers2MClaim
-    //////////////////
-    ITF.setEnabledAutoArcher2MClaim = async function (isEnabled) {
-        if (ITG.AutoArcher2MClaimEnabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.AutoArcher2MClaimEnabled && !isEnabled)
-        {
-            ITG.AutoArcher2MClaimEnabled = false;
-            console.log("ITF.setEnabledAutoArcher2MClaim stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.AutoArcher2MClaimEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoArcher2MClaim started.");
-
-        while (ITG.AutoArcher2MClaimEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuLeft, 500); //Ensure is first page
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP2, 2000); //Click first archer
-            await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
-
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuRight, 500); //Ensure is second page
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP2, 2000); //Click second archer
-            await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
-
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuRight, 500); //Ensure is second page
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP4, 2000); //Click third and last archer
-            await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
-
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuLeft, 500); //Ensure is first page
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP1, 2000); //Click active character
-
-            //Sleep for 100 seconds in order to start again with a 2 min mark. 
-            // Also add the 2 seconds from the last Enter key that is not needed plus an extra 13 seconds just in case
-            await ITF.sleep(115000) 
-        }
-    };
-
-    //////////////////
-    /// AutoW2ClickerShinyFish
-    //////////////////
-    ITF.setEnabledAutoW2ClickerShinyFish = async function (isEnabled) {
-        if (ITG.AutoW2ClickerShinyFishEnabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.AutoW2ClickerShinyFishEnabled && !isEnabled)
-        {
-            ITG.AutoW2ClickerShinyFishEnabled = false;
-            console.log("ITF.setEnabledAutoW2ClickerShinyFish stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.AutoW2ClickerShinyFishEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoW2ClickerShinyFish started.");
-
-        while (ITG.AutoW2ClickerShinyFishEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_W2ClickerShinyFish, (3 * 60 + 0) * 1000); //Click Shiny Fish
-        }
-    };
-
-    //////////////////
-    /// AutoColoW1
-    //////////////////
-    ITF.setEnabledAutoColoW1 = async function (isEnabled) {
-        if (ITG.autoColoW1Enabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoColoW1Enabled && !isEnabled)
-        {
-            ITG.autoColoW1Enabled = false;
-            console.log("ITF.setEnabledAutoColoW1 stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoColoW1Enabled = isEnabled;
-        console.log("ITF.setEnabledAutoColoW1 started.");
-        
-        while (ITG.autoColoW1Enabled) 
-        {
-            await ITF.simulateMouseClickRatio(ITG.B_W1Colo, 6000); //Click Colosseum
-            await ITF.simulateMouseClickRatio(ITG.B_W1ColoEnterUp, 2000); //Enter Colosseum. First try to enter with the button Y location from when we already completed one colosseum
-            await ITF.simulateMouseClickRatio(ITG.B_W1ColoEnterLow, 2000); //Enter Colosseum. Just in case click the lower one (This will only work the first time we enter the map)
-	        await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
-            //The orb duration is about 155 seconds at lvl 312. In W1 maybe we can squeeze two runs per orb.
-            //155 seconds Minus (13) = 142 seconds → half each round = 71 seconds → 71 seconds * 10 next wave spam = 710
-            for (let i = 0; i < 710; ++i)
-            {
-                await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
-            }
-
-            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
-            await ITF.simulateMouseClickRatio(ITG.B_W1ColoExit, 2850); //Click Exit Portal
-        }
-    };
-
-    //////////////////
-    /// AutoColoW2
-    //////////////////
-    ITF.setEnabledAutoColoW2 = async function (isEnabled) {
-        if (ITG.autoColoW2Enabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoColoW2Enabled && !isEnabled)
-        {
-            ITG.autoColoW2Enabled = false;
-            console.log("ITF.setEnabledAutoColoW2 stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoColoW2Enabled = isEnabled;
-        console.log("ITF.setEnabledAutoColoW2 started.");
-        
-        while (ITG.autoColoW2Enabled) 
-        {
-            await ITF.simulateMouseClickRatio(ITG.B_W2Colo, 6000); //Click Colosseum
-            await ITF.simulateMouseClickRatio(ITG.B_W2ColoEnterUp, 2000); //Enter Colosseum. First try to enter with the button Y location from when we already completed one colosseum
-            await ITF.simulateMouseClickRatio(ITG.B_W2ColoEnterLow, 2000); //Enter Colosseum. Just in case click the lower one (This will only work the first time we enter the map)
-	        await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
-            //The orb duration is about 155 seconds at lvl 312. In W2 we cannot squeze two runs per orb as the this colo is slower... 1 run per orb better.
-            //155 seconds Minus (13) = 142 seconds → full duration each round = 144 seconds → 144 seconds * 10 next wave spam = 1440
-            for (let i = 0; i < 1440; ++i)
-            {
-                await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
-            }
-
-            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
-            await ITF.simulateMouseClickRatio(ITG.B_W2ColoExit, 2850); //Click Exit Portal
-        }
-    };
-
-    //////////////////
-    /// AutoColoW3
-    //////////////////
-    ITF.setEnabledAutoColoW3 = async function (isEnabled) {
-        if (ITG.autoColoW3Enabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoColoW3Enabled && !isEnabled)
-        {
-            ITG.autoColoW3Enabled = false;
-            console.log("ITF.setEnabledAutoColoW3 stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoColoW3Enabled = isEnabled;
-        console.log("ITF.setEnabledAutoColoW3 started.");
-        
-        while (ITG.autoColoW3Enabled) 
-        {
-            await ITF.simulateMouseClickRatio(ITG.B_W3Colo, 6000); //Click Colosseum
-            await ITF.simulateMouseClickRatio(ITG.B_W3ColoEnter, 2000); //Enter Colosseum
-	        await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
-            //The orb duration is about 155 seconds at lvl 312. In W3 maybe we could squeeze two runs per orb but we will wait to ensure always a full orb when opening chests
-            //155 seconds Minus (13) = 142 seconds → full duration each round = 144 seconds → 144 seconds * 10 next wave spam = 1440
-            for (let i = 0; i < 1350; ++i)
-            {
-                await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
-            }
-
-            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
-            await ITF.simulateMouseClickRatio(ITG.B_W3ColoExit, 13850); //Click Exit Portal and wait for orb cooldown
-        }
-    };
-
-    //////////////////
-    /// AutoBossW3
-    //////////////////
-    ITF.setEnabledAutoBossW3 = async function (isEnabled) {
-        if (ITG.autoBossW3Enabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoBossW3Enabled && !isEnabled)
-        {
-            ITG.autoBossW3Enabled = false;
-            console.log("ITF.setEnabledAutoBossW3 stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoBossW3Enabled = isEnabled;
-        console.log("ITF.setEnabledAutoBossW3 started.");
-        
-        while (ITG.autoBossW3Enabled) 
-        {
-            await ITF.simulateMouseClickRatio(ITG.B_W3BossEnterPortal, 450); //Click Enter Portal	
-            await ITF.simulateMouseClickRatio(ITG.B_W3BossEnterButton, 2500); //Click Enter Button	
-	        await ITF.simulateMouseClickRatio(ITG.B_W3Boss, 12000); //Boss
-            await ITF.simulateMouseDrag(ITG.B_W3BossItemsStart, ITG.B_W3BossItemsEnd, 750, 30, 100);
-            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
-            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
-            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 2000);
-            await ITF.simulateMouseDrag(ITG.B_W3BossItemsStart, ITG.B_W3BossItemsEnd, 750, 30, 100);
-            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
-            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 25);
-            await ITF.simulateMouseClickRatio(ITG.B_W3BossItemsEnd, 2000);
-            await ITF.simulateMouseClickRatio(ITG.B_W3BossExitPortal, 750); //Click Exit Portal
-            await ITF.simulateKeyPress('w', 3250); //Try to go through the portal with the W key and wait for the map to change
-        }
-    };
-
     //////////////////
     /// AutoBossW5
     //////////////////
@@ -1080,6 +1240,43 @@
         }
     };
 
+//  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
+// | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
+// | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |    ______    | |
+// | ||_   _||_   _|| || |   .'    `.   | || | |_   __ \    | || |  |_   _|     | || | |_   ___ `.  | | | |  .' ____ \   | |
+// | |  | | /\ | |  | || |  /  .--.  \  | || |   | |__) |   | || |    | |       | || |   | |   `. \ | | | |  | |____\_|  | |
+// | |  | |/  \| |  | || |  | |    | |  | || |   |  __ /    | || |    | |   _   | || |   | |    | | | | | |  | '____`'.  | |
+// | |  |   /\   |  | || |  \  `--'  /  | || |  _| |  \ \_  | || |   _| |__/ |  | || |  _| |___.' / | | | |  | (____) |  | |
+// | |  |__/  \__|  | || |   `.____.'   | || | |____| |___| | || |  |________|  | || | |________.'  | | | |  '.______.'  | |
+// | |              | || |              | || |              | || |              | || |              | | | |              | |
+// | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' |
+//  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'   '----------------' 
+
+    //////////////////
+    /// W6FarmingCollectAll
+    //////////////////
+    ITF.setEnabledAutoW6FarmingCollectAll = async function (isEnabled) {
+        if (ITG.autoW6FarmingCollectAllEnabled == isEnabled) //Ignore as it already is the same state
+        {
+            return;
+        }
+
+        if (ITG.autoW6FarmingCollectAllEnabled && !isEnabled)
+        {
+            ITG.autoW6FarmingCollectAllEnabled = false;
+            console.log("ITF.setEnabledAutoW6FarmingCollectAll stopped.");
+            return;
+        }
+
+        //Remaining case start it.
+        ITG.autoW6FarmingCollectAllEnabled = isEnabled;
+        console.log("ITF.setEnabledAutoW6FarmingCollectAll started.");
+
+        while (ITG.autoW6FarmingCollectAllEnabled) {
+            await ITF.simulateMouseClickRatio(ITG.B_W6FarmingCollectAll, 500);
+        }
+    };
+
     //////////////////
     /// ToggleFarmingLock
     //////////////////
@@ -1100,43 +1297,17 @@
         await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants["R3C5"], 10);
     };
 
-    //////////////////
-    /// DepositAll
-    //////////////////
-    ITF.utilityDepositAll = async function () {
-        await ITF.simulateMouseClickRatio(ITG.B_Codex, 250);
-        await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 250);
-        await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 250);
-        await ITF.simulateMouseClickRatio(ITG.B_Items, 250);
-    };
-
-    //////////////////
-    /// PickupAndDepositAll
-    //////////////////
-    ITF.setEnabledAutoPickupAndDepositAll = async function () {
-        if (ITG.autoPickupAndDepositAllEnabled)
-        {
-            ITG.autoPickupAndDepositAllEnabled = false;
-            console.log("ITF.setEnabledAutoPickupAndDepositAll stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoPickupAndDepositAllEnabled = true;
-        console.log("ITF.setEnabledAutoPickupAndDepositAll started.");
-        
-        while (ITG.autoPickupAndDepositAllEnabled) 
-        {
-            let ratio = ITF.getCurrentMouseRatio();
-            await ITF.simulateMouseClickRatio(ITG.B_Codex, 200);
-            await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 200);
-            await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 200);
-            await ITF.simulateMouseClickRatio(ITG.B_Items, 200);
-            await ITF.simulateMouseMoveRatio(ratio, 200); // Move mouse back to the original position
-            await ITF.simulateMouseDownRatio(ratio, 200);
-            await ITF.simulateMouseDownRatio(ratio, 200);
-        }
-    };
+//  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
+// | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
+// | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |   _______    | |
+// | ||_   _||_   _|| || |   .'    `.   | || | |_   __ \    | || |  |_   _|     | || | |_   ___ `.  | | | |  |  ___  |   | |
+// | |  | | /\ | |  | || |  /  .--.  \  | || |   | |__) |   | || |    | |       | || |   | |   `. \ | | | |  |_/  / /    | |
+// | |  | |/  \| |  | || |  | |    | |  | || |   |  __ /    | || |    | |   _   | || |   | |    | | | | | |      / /     | |
+// | |  |   /\   |  | || |  \  `--'  /  | || |  _| |  \ \_  | || |   _| |__/ |  | || |  _| |___.' / | | | |     / /      | |
+// | |  |__/  \__|  | || |   `.____.'   | || | |____| |___| | || |  |________|  | || | |________.'  | | | |    /_/       | |
+// | |              | || |              | || |              | || |              | || |              | | | |              | |
+// | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' |
+//  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'   '----------------' 
 
     console.log("Idleon Tools Game functions declared");
 
