@@ -1443,18 +1443,27 @@
     ITE.styleElement.textContent = `
         #overlay {
             position: absolute;
-            top: 0; /* Adjusted to be in the top left corner */
-            left: 0; /* Adjusted to be in the top left corner */
-            width: 15px; /* Small mode default width */
-            height: 10px; /* Small mode default height */
+            top: 0;
+            left: 0;
+            width: 1280px; /* Fixed base width */
+            height: 720px; /* Fixed base height */
             background-color: rgba(0, 0, 0, 0.5);
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex; /* To center content */
-            align-items: center; /* Center content vertically */
-            justify-content: center; /* Center content horizontally */
-            overflow: hidden; /* Hide children overflow */
+            transform-origin: top left; /* Scale from top-left corner */
+            transition: none; /* Remove transition for immediate scaling */
+            overflow: visible; /* Allow content to be visible during scaling */
+        }
+        
+        #overlay.minimized {
+            width: 15px;
+            height: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
             border-radius: 4px;
+            transform: none !important; /* No scaling when minimized */
         }
 
         #overlay .minimized-indicator {
@@ -1563,16 +1572,12 @@
             display: flex;
             flex-direction: row;
             gap: 24px;
-            width: 1280px; /* Base width for scaling */
-            max-width: 100%;
+            width: 1280px;
             align-items: flex-start;
             justify-content: center;
-            transform-origin: top left;
-            transition: transform 0.2s;
             position: absolute;
-            left: 50%;
-            top: 40px; /* or whatever vertical offset you want */
-            /* Center horizontally after scaling */
+            left: 0;
+            top: 40px;
         }
 
         .column {
@@ -1720,34 +1725,29 @@
 
     console.log("Idleon Tools GUI created");
 
-    ITF.scaleColumnsContainer = function() {
+    ITF.scaleOverlay = function() {
         const baseWidth = 1280;
+        const baseHeight = 720;
         const gameRect = ITE.game.getBoundingClientRect();
-        const overlayWidth = gameRect.width;
-        let scale = 1;
-        if (overlayWidth < baseWidth) {
-            scale = overlayWidth / baseWidth;
-        }
-        ITE.columnsContainer.style.transform = `scale(${scale}) translateX(-50%)`;
-        ITE.columnsContainer.style.left = "50%";
-        ITE.columnsContainer.style.top = "40px"; // adjust as needed
-        ITE.columnsContainer.style.position = "absolute";
-        ITE.columnsContainer.style.transformOrigin = "top left";
+        
+        // Calculate scale to fit the game window while maintaining aspect ratio
+        const scaleX = gameRect.width / baseWidth;
+        const scaleY = gameRect.height / baseHeight;
+        const scale = Math.min(scaleX, scaleY); // Use the smaller scale to ensure it fits
+        
+        ITE.overlayDiv.style.transform = `scale(${scale})`;
     };
 
     ITF.maximizeOverlay = function(event) {
-        const gameRect = ITE.game.getBoundingClientRect();
-        ITE.overlayDiv.style.width = gameRect.width + 'px';
-        ITE.overlayDiv.style.height = gameRect.height + 'px';
-        ITE.contentDiv.style.display = 'block'; // Show the content when big
+        ITE.overlayDiv.classList.remove('minimized');
+        ITE.contentDiv.style.display = 'block';
         ITE.minimizedIndicator.style.display = 'none';
-        ITF.scaleColumnsContainer();
+        ITF.scaleOverlay();
     }
     
     ITF.minimizeOverlay = function(event) {
-        ITE.overlayDiv.style.width = 15 + 'px';
-        ITE.overlayDiv.style.height = 10 + 'px';
-        ITE.contentDiv.style.display = 'none'; // Hide the content when small
+        ITE.overlayDiv.classList.add('minimized');
+        ITE.contentDiv.style.display = 'none';
         ITE.minimizedIndicator.style.display = 'block';
     }
 
@@ -1767,7 +1767,7 @@
     });
     window.addEventListener('resize', function() {
         if (ITE.contentDiv.style.display === 'block') {
-            scaleColumnsContainer();
+            ITF.scaleOverlay();
         }
     });
 
