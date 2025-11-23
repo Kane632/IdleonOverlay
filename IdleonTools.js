@@ -1569,25 +1569,26 @@
         }
 
         .columns-container {
-            display: flex;
-            flex-direction: row;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns */
+            grid-template-rows: auto auto; /* 2 rows */
             gap: 24px;
             width: 1280px;
-            align-items: flex-start;
-            justify-content: center;
+            padding: 20px;
             position: absolute;
             left: 0;
-            top: 40px;
+            top: 20px;
+            box-sizing: border-box;
         }
 
         .column {
             display: flex;
             flex-direction: column;
-            min-width: 120px; /* Smaller min-width for small screens */
-            flex: 1 1 120px;  /* Allow columns to shrink and grow */
-            margin-right: 0;
             box-sizing: border-box;
-            max-width: 220px; /* Prevent columns from being too wide */
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .column-title {
@@ -1602,6 +1603,7 @@
 
     ITE.overlayDiv = document.createElement('div');
     ITE.overlayDiv.setAttribute('id', 'overlay');
+    ITE.overlayDiv.classList.add('minimized'); // Start in minimized state
     ITE.overlayDiv.style.userSelect = 'none';
 
     // 1. Create minimized indicator
