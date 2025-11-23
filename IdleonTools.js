@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.16
+// @version      0.17
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -374,11 +374,11 @@
         {
             ITF.setEnabledAutoPickupAndDepositAll();
         }
-        else if (event.ctrlKey && event.code === 'NumpadMultiply')
+        else if (event.shiftKey && event.code === 'NumpadMultiply')
         {
             ITF.maximizeOverlay({});
         }
-        else if (event.ctrlKey && event.code === 'NumpadDivide')
+        else if (event.shiftKey && event.code === 'NumpadDivide')
         {
             ITF.minimizeOverlay({});
         }
@@ -1296,7 +1296,7 @@
         }
 
         //Click again behind the button to lock/unlock it again
-        await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants["R3C5"], 10);
+        await ITF.simulateMouseClickRatio({ "X": 0.5138, "Y": 0.6263 }, 10);
     };
 
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
@@ -1477,9 +1477,10 @@
         .dashboard-switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 34px;
+            width: 44px; /* Smaller switch */
+            height: 24px; /* Smaller switch */
             border-radius: 4px;
+            flex-shrink: 0; /* Prevent switch from shrinking */
         }
           
         .dashboard-switch input { 
@@ -1491,15 +1492,23 @@
         .dashboard-button {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 34px;
+            width: 44px; /* Match checkbox width */
+            height: 24px; /* Match checkbox height */
+            flex-shrink: 0; /* Prevent button from shrinking */
         }
 
         .dashboard-button button{
             display: block;
-            width: 25%;
+            width: 100%; /* Full width of container */
             height: 100%;
             border-radius: 4px;
+            background-color: #ccc;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dashboard-button button:hover {
+            background-color: #aaa;
         }
           
         .slider {
@@ -1518,10 +1527,10 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
+            height: 18px; /* Smaller slider circle */
+            width: 18px; /* Smaller slider circle */
+            left: 3px;
+            bottom: 3px;
             background-color: white;
             -webkit-transition: .4s;
             transition: .4s;
@@ -1537,35 +1546,30 @@
         }
           
         input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
+            -webkit-transform: translateX(20px); /* Adjusted for smaller size */
+            -ms-transform: translateX(20px);
+            transform: translateX(20px);
         }
 
         .checkbox-container {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Space between label and switch */
-            gap: 8px;
-            padding: 2px 0px;
-            min-width: 180px; /* Set a fixed or min width for all checkboxes */
-            max-width: 220px;
-            width: 200px; /* Or your preferred width */
+            justify-content: space-between;
+            gap: 6px;
+            padding: 3px 0px;
+            width: 100%; /* Take full width of column */
             box-sizing: border-box;
         }
 
         .checkbox-label {
             color: white;
             flex: 1 1 auto;
-            text-align: left; /* Or right, if you prefer */
-            white-space: normal;
-            word-break: break-word;
-            margin-right: 8px;
-        }
-        
-        .checkbox-label {
-            color: white;
-            /* Your styles for the label text */
+            text-align: left;
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Show ... if too long */
+            font-size: 0.9em; /* Slightly smaller text */
+            line-height: 1.2;
         }
 
         .columns-container {
@@ -1594,8 +1598,11 @@
         .column-title {
             color: #FFD700;
             font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 1.1em;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+            text-align: center;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
         }
     `;
 
