@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.15
+// @version      0.16
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -95,15 +95,15 @@
         "TrashToggle": { "X": 0.6734, "Y": 0.0713 },
     }
 
-    ITG.B_W5Boss = { "X": 0.7177777920765959, "Y": 0.5051244509516838 }
-    ITG.B_W5BossEnterPortal = { "X": 0.4183948575730473, "Y": 0.4355783308931186 }
-    ITG.B_W5BossEnterButton = { "X": 0.47687130420235113, "Y": 0.2613469985358712 }
-    ITG.B_W5BossExitPortal = { "X": 0.17831198162315895, "Y": 0.7459736456808199 }
-    ITG.B_W5GamingHarvestAll = { "X": 0.7150, "Y": 0.0469 }
-    ITG.B_W5GamingShovel = { "X": 0.6360, "Y": 0.1559 }
-    ITG.B_W5Cave15Search = { "X": 0.5115, "Y": 0.2020 }
-    ITG.B_W5GamingStartGrid = { "X": 0.0512, "Y": 0.2539 }
-    ITG.B_W5GamingEndGrid = { "X": 0.7407, "Y": 0.7979 }
+    ITG.B_W5Boss = { "X": 0.7177777920765959, "Y": 0.5051244509516838 };
+    ITG.B_W5BossEnterPortal = { "X": 0.4183948575730473, "Y": 0.4355783308931186 };
+    ITG.B_W5BossEnterButton = { "X": 0.47687130420235113, "Y": 0.2613469985358712 };
+    ITG.B_W5BossExitPortal = { "X": 0.17831198162315895, "Y": 0.7459736456808199 };
+    ITG.B_W5GamingHarvestAll = { "X": 0.7150, "Y": 0.0469 };
+    ITG.B_W5GamingShovel = { "X": 0.6360, "Y": 0.1559 };
+    ITG.B_W5Cave15Search = { "X": 0.5115, "Y": 0.2020 };
+    ITG.B_W5GamingStartGrid = { "X": 0.0512, "Y": 0.2539 };
+    ITG.B_W5GamingEndGrid = { "X": 0.7407, "Y": 0.7979 };
     ITG.B_W5GamingPlants = {
         "R0C0": { "X": 0.0893, "Y": 0.2799 },
         "R0C1": { "X": 0.1389, "Y": 0.2780 },
@@ -182,9 +182,9 @@
         "R5C9": { "X": 0.6163, "Y": 0.6963 },
         "R5C10": { "X": 0.6714, "Y": 0.6963 },
         "R5C11": { "X": 0.7210, "Y": 0.6963 },
-    }
+    };
 
-    ITG.B_W6FarmingCollectAll = { "X": 0.1042, "Y": 0.2357 }
+    ITG.B_W6FarmingCollectAll = { "X": 0.1042, "Y": 0.2357 };
     ITG.B_W6FarmingPlants = {
         "R0C0": { "X": 0.2442, "Y": 0.7306 },
         "R0C1": { "X": 0.3360, "Y": 0.7306 },
@@ -225,7 +225,9 @@
         "R3C6": { "X": 0.7803, "Y": 0.1105 },
         "R3C7": { "X": 0.8771, "Y": 0.1105 },
         "R3C8": { "X": 0.9582, "Y": 0.1105 },
-    }
+    };
+
+    ITG.B_W7SpelunkingDescend = { "X": 0.1086, "Y": 0.1572 };
 
     ITG.B_PlayerMenu = { "X": 0.888542, "Y": 0.935315};
     ITG.B_PlayerMenuLeft = { "X": 0.295833, "Y": 0.750000};
@@ -254,7 +256,7 @@
         "R3C1": { "X": 0.7894, "Y": 0.7235 },
         "R3C2": { "X": 0.8550, "Y": 0.7211 },
         "R3C3": { "X": 0.9332, "Y": 0.7259 },
-    }
+    };
 
     ITG.B_InvBag = {
         "0": { "X": 0.6792, "Y": 0.1850 },
@@ -264,7 +266,7 @@
         "4": { "X": 0.8713, "Y": 0.1922 },
         "5": { "X": 0.9141, "Y": 0.1850 },
         "6": { "X": 0.9638, "Y": 0.1838 },
-    }
+    };
 
     ITG.keyNameToKeyCodeMap = {
         'a': 65, 'b': 66, 'c': 67, 'd': 68, 'e': 69, 'f': 70, 'g': 71, 'h': 72, 'i': 73, 'j': 74, 
@@ -1309,6 +1311,37 @@
 // | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' | | '--------------' |
 //  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'   '----------------' 
 
+    //////////////////
+    /// W7 Spelunking Hotkeys
+    //////////////////
+    ITG.w7SpelunkingHotkeyHandler = null;
+
+    ITF.setW7EnableSpelunkingHotkeysCheckbox = function(isEnabled) {
+        if (ITG.w7EnableSpelunkingHotkeys === isEnabled) {
+            return; // Already in the desired state
+        }
+
+        ITG.w7EnableSpelunkingHotkeys = isEnabled;
+
+        if (isEnabled) {
+            // Create and add the event listener
+            ITG.w7SpelunkingHotkeyHandler = async function(event) {
+                if (event.key === 'd' || event.key === 'D') {
+                    await ITF.simulateMouseClickRatio(ITG.B_W7SpelunkingDescend, 0);
+                }
+            };
+            window.addEventListener('keydown', ITG.w7SpelunkingHotkeyHandler);
+            console.log("W7 Spelunking hotkeys enabled (press 'd' to descend)");
+        } else {
+            // Remove the event listener
+            if (ITG.w7SpelunkingHotkeyHandler) {
+                window.removeEventListener('keydown', ITG.w7SpelunkingHotkeyHandler);
+                ITG.w7SpelunkingHotkeyHandler = null;
+            }
+            console.log("W7 Spelunking hotkeys disabled");
+        }
+    }
+
     console.log("Idleon Tools Game functions declared");
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1595,6 +1628,8 @@
     ITE.w5Column.setAttribute('class', 'column');
     ITE.w6Column = document.createElement('div');
     ITE.w6Column.setAttribute('class', 'column');
+    ITE.w7Column = document.createElement('div');
+    ITE.w7Column.setAttribute('class', 'column');
 
     // Add titles
     ITE.utilitiesColumn.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'Utilities'}));
@@ -1604,6 +1639,7 @@
     ITE.w4Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 4'}));
     ITE.w5Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 5'}));
     ITE.w6Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 6'}));
+    ITE.w7Column.appendChild(Object.assign(document.createElement('div'), {className: 'column-title', textContent: 'World 7'}));
 
     // Utilities
     ITE.AutoDepositAllCombatCheckbox = createCheckbox(ITF.setEnabledAutoDepositAllCombat, "Auto combat deposit")
@@ -1664,6 +1700,10 @@
     ITE.AutoW6FarmingCollectAllCheckbox = createCheckbox(ITF.setEnabledAutoW6FarmingCollectAll, "Farming Auto Collect")
     ITE.w6Column.appendChild(ITE.AutoW6FarmingCollectAllCheckbox);
 
+    // W7
+    ITE.W7EnableSpelunkingHotkeysCheckbox = createCheckbox(ITF.setW7EnableSpelunkingHotkeysCheckbox, "Spelunking Hotkeys")
+    ITE.w7Column.appendChild(ITE.W7EnableSpelunkingHotkeysCheckbox);
+
     // Append columns to columns container
     ITE.columnsContainer.appendChild(ITE.utilitiesColumn);
     ITE.columnsContainer.appendChild(ITE.w1Column);
@@ -1672,6 +1712,7 @@
     ITE.columnsContainer.appendChild(ITE.w4Column);
     ITE.columnsContainer.appendChild(ITE.w5Column);
     ITE.columnsContainer.appendChild(ITE.w6Column);
+    ITE.columnsContainer.appendChild(ITE.w7Column);
 
     // Clear contentDiv and append columns container
     ITE.contentDiv.innerHTML = '';
