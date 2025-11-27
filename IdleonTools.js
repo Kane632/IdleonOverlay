@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.17
+// @version      0.18
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -74,6 +74,11 @@
     ITG.B_W3BossEnterButton = { "X": 0.766667, "Y": 0.449301 };
     ITG.B_W3BossExitPortal = { "X": 0.955208, "Y": 0.484266 };
 
+    ITG.B_W3CogsPreviousPage = { "X": 0.0185, "Y": 0.5857 };
+    ITG.B_W3CogsNextPage = { "X": 0.1290, "Y": 0.5912 };
+    ITG.B_W3CogsTrashToggle = { "X": 0.6734, "Y": 0.0713 };
+    ITG.B_W3CogsCogShelfToggle = { "X": 0.3136, "Y": 0.0670 };
+    ITG.B_W3CogsUltimateCog = { "X": 0.3039, "Y": 0.7152 };
     ITG.B_W3Cogs = {
         "0": { "X": 0.0253, "Y": 0.1789 },
         "1": { "X": 0.0746, "Y": 0.1777 },
@@ -89,11 +94,8 @@
         "11": { "X": 0.1297, "Y": 0.4425 },
         "12": { "X": 0.0243, "Y": 0.5126 },
         "13": { "X": 0.0736, "Y": 0.5210 },
-        "14": { "X": 0.1270, "Y": 0.5186 },
-        "PreviousPage": { "X": 0.0185, "Y": 0.5857 },
-        "NextPage": { "X": 0.1290, "Y": 0.5912 },
-        "TrashToggle": { "X": 0.6734, "Y": 0.0713 },
-    }
+        "14": { "X": 0.1270, "Y": 0.5186 },    
+    };
 
     ITG.B_W5Boss = { "X": 0.7177777920765959, "Y": 0.5051244509516838 };
     ITG.B_W5BossEnterPortal = { "X": 0.4183948575730473, "Y": 0.4355783308931186 };
@@ -185,6 +187,9 @@
     };
 
     ITG.B_W6FarmingCollectAll = { "X": 0.1042, "Y": 0.2357 };
+    ITG.B_W6FarmingHandymanTools = { "X": 0.0809, "Y": 0.3280 };
+    ITG.B_W6FarmingInstaGrow = { "X": 0.0396, "Y": 0.3663 };
+    ITG.B_W6FarmingHandymanToolsBack = { "X": 0.0746, "Y": 0.5182 };
     ITG.B_W6FarmingPlants = {
         "R0C0": { "X": 0.2442, "Y": 0.7306 },
         "R0C1": { "X": 0.3360, "Y": 0.7306 },
@@ -408,15 +413,27 @@
     }
 
     //Simulate mouse click function by screen game window ratio (0 - 1.0)
-    ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0, delayHold = 0) {
+    ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0, delayHold = 0, repeat = 1, repeatDelay = -1) {
         let coords = ITF.calculateCords(ratio)
-        ITF.simulateMouseEvent("mousedown", coords.X, coords.Y);
-        if (delayHold > 0)
+
+        for (let i = 0; i < repeat; ++i)
         {
-            await ITF.sleep(delayHold);
+            ITF.simulateMouseEvent("mousedown", coords.X, coords.Y);
+            if (delayHold > 0)
+            {
+                await ITF.sleep(delayHold);
+            }
+            ITF.simulateMouseEvent("mouseup", coords.X, coords.Y);
+
+            if (repeatDelay >= 0)
+            {
+                await ITF.sleep(repeatDelay);
+            }
+            else
+            {
+                await ITF.sleep(delayAfter);
+            }
         }
-        ITF.simulateMouseEvent("mouseup", coords.X, coords.Y);
-        await ITF.sleep(delayAfter);
     };
 
     ITF.simulateMouseDownRatio = async function(ratio, delayAfter = 0) {
@@ -928,6 +945,36 @@
     };
 
     //////////////////
+    /// W2SpamPostOfficeSimpleShippin
+    //////////////////
+    ITF.spamPostOfficeSimpleShippin = async function (count = 1) {
+        if (ITG.spamPostOfficeSimpleShippinRunning)
+        {
+            return; 
+        }
+
+        let B_Pen = { "X": 0.0497, "Y": 0.8249 }
+        let B_Order = { "X": 0.1132, "Y": 0.7394 }
+
+        //ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0, delayHold = 0, repeat = 1, repeatDelay = -1)
+        ITG.spamPostOfficeSimpleShippinRunning = true;
+        console.log("ITF.spamPostOfficeSimpleShippin started. Count: " + count);
+
+        for (var i = 0; i < count; i++) {
+            await ITF.simulateMouseClickRatio(B_Order, 10);
+            await ITF.simulateMouseClickRatio(B_Pen, 10);
+            await ITF.simulateMouseClickRatio(B_Order, 10);
+            if (i % 1000 == 0)
+            {
+                console.log("Post Office simple shippin loop: " + i);
+            }
+        }
+
+        ITG.spamPostOfficeSimpleShippinRunning = false;
+        console.log("ITF.spamPostOfficeSimpleShippin ended. Count: " + count);
+    };
+
+    //////////////////
     /// AutoClickAlchemyStableJenius
     //////////////////
     ITF.setEnabledAutoClickAlchemyStableJenius = async function (isEnabled) {
@@ -1100,6 +1147,56 @@
             await ITF.simulateMouseClickRatio(ITG.B_W3BossExitPortal, 750); //Click Exit Portal
             await ITF.simulateKeyPress('w', 3250); //Try to go through the portal with the W key and wait for the map to change
         }
+    };
+
+    //////////////////
+    /// W3fillCogPages
+    //////////////////
+    ITF.fillCogPages = async function (pageCount = 1) {
+        if (ITG.fillCogPagesRunning)
+        {
+            return;
+        }
+
+        let maxPageCount = 8;
+        let cogsPerPage = 15;
+
+        //ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0, delayHold = 0, repeat = 1, repeatDelay = -1)
+        ITG.fillCogPagesRunning = true;
+        console.log("ITF.fillCogPages started. Pagecount: " + pageCount);
+
+        //Ensure we are at the first page
+        await ITF.simulateMouseClickRatio(ITG.B_W3CogsPreviousPage, 50, 0, maxPageCount - 1); //-1 because these are transitions not page count really
+
+        //Toggle trash to clear cogs
+        await ITF.simulateMouseClickRatio(ITG.B_W3CogsTrashToggle, 50);
+
+        //Clear all cogs until pageCount
+        for (let x = 0; x < pageCount; x++) {
+            for (let y = 0; y < 15; y++) {
+                await ITF.simulateMouseClickRatio(ITG.B_W3Cogs[y.toString()], 50);
+            }
+            
+            if (x + 1 < pageCount)
+            {
+                await ITF.simulateMouseClickRatio(ITG.B_W3CogsNextPage, 50);
+            }
+        }
+
+        //Disable trash mode and go back to first page
+        await ITF.simulateMouseClickRatio(ITG.B_W3CogsTrashToggle, 50);
+        await ITF.simulateMouseClickRatio(ITG.B_W3CogsPreviousPage, 50, 0, pageCount - 1); //-1 because these are transitions not page count really
+
+        //Fill all cogs
+        await ITF.simulateMouseClickRatio(ITG.B_W3CogsCogShelfToggle, 750);
+        for (let x = 0; x < pageCount * cogsPerPage; x++)
+        {
+            await ITF.simulateMouseClickRatio(ITG.B_W3CogsUltimateCog, 125);
+        }
+        await ITF.simulateMouseClickRatio(ITG.B_W3CogsCogShelfToggle, 750);
+
+        ITG.fillCogPagesRunning = false;
+        console.log("ITF.fillCogPages ended. Pagecount: " + pageCount);
     };
 
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
@@ -1297,6 +1394,67 @@
 
         //Click again behind the button to lock/unlock it again
         await ITF.simulateMouseClickRatio({ "X": 0.5138, "Y": 0.6263 }, 10);
+    };
+
+    ITG.w6FarmingHotkeyHandler = null;
+    ITF.setW6EnableFarmingHotkeysCheckbox = function(isEnabled) {
+        const columns = 9
+
+        if (ITG.w6EnableFarmingHotkeys === isEnabled) {
+            return; // Already in the desired state
+        }
+
+        ITG.w6EnableFarmingHotkeys = isEnabled;
+
+        if (isEnabled) {
+            // Create and add the event listener
+            ITG.w6FarmingHotkeyHandler = async function(event) {
+                if (event.key === 'f' || event.key === 'F') {
+                    for (let j = 0; j < columns; j++) {
+                        let coordinateString = "R0C" + j
+                        await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants[coordinateString], 25);
+                    }
+                }
+            };
+            window.addEventListener('keydown', ITG.w6FarmingHotkeyHandler);
+            console.log("W6 Farming hotkeys enabled (press 'f' to click all bottom row columns)");
+        } else {
+            // Remove the event listener
+            if (ITG.w6FarmingHotkeyHandler) {
+                window.removeEventListener('keydown', ITG.w6FarmingHotkeyHandler);
+                ITG.w6FarmingHotkeyHandler = null;
+            }
+            console.log("W6 Farming hotkeys disabled");
+        }
+    };
+
+    ITF.W6InstantGrowAndCollect = async function (count = 1) {
+        const columns = 9
+
+        if (ITG.W6InstantGrowAndCollectEnabled == true) {
+            return; // Already running
+        }
+
+        ITG.W6InstantGrowAndCollectEnabled = true;
+
+        for (let i = 0; i < count; i++) {
+            await ITF.simulateMouseClickRatio(ITG.B_W6FarmingHandymanTools, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W6FarmingInstaGrow, 25);
+            
+            for (let j = 0; j < columns; j++) {
+                let coordinateString = "R0C" + j
+                await ITF.simulateMouseClickRatio(ITG.B_W6FarmingPlants[coordinateString], 25);
+            }
+
+            await ITF.sleep(500);
+
+            await ITF.simulateMouseClickRatio(ITG.B_W6FarmingHandymanToolsBack, 25);
+            await ITF.simulateMouseClickRatio(ITG.B_W6FarmingCollectAll, 25);
+
+            await ITF.sleep(250);
+        }
+
+        ITG.W6InstantGrowAndCollectEnabled = false;
     };
 
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
@@ -1713,6 +1871,8 @@
     ITE.w6Column.appendChild(ITE.W6FarmingToggleLockButton);
     ITE.AutoW6FarmingCollectAllCheckbox = createCheckbox(ITF.setEnabledAutoW6FarmingCollectAll, "Farming Auto Collect")
     ITE.w6Column.appendChild(ITE.AutoW6FarmingCollectAllCheckbox);
+    ITE.W6EnableFarmingHotkeysCheckbox = createCheckbox(ITF.setW6EnableFarmingHotkeysCheckbox, "Farming Hotkeys")
+    ITE.w6Column.appendChild(ITE.W6EnableFarmingHotkeysCheckbox);
 
     // W7
     ITE.W7EnableSpelunkingHotkeysCheckbox = createCheckbox(ITF.setW7EnableSpelunkingHotkeysCheckbox, "Spelunking Hotkeys")
