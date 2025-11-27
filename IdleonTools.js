@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.18
+// @version      0.19
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -757,6 +757,36 @@
         }
     };
 
+    //////////////////
+    /// DepositAll Hotkey
+    //////////////////
+    ITG.DepositAllHotkeyHandler = null;
+    ITF.setEnableDepositAllHotkeysCheckbox = function(isEnabled) {
+        if (ITG.EnableDepositAllHotkeys === isEnabled) {
+            return; // Already in the desired state
+        }
+
+        ITG.EnableDepositAllHotkeys = isEnabled;
+
+        if (isEnabled) {
+            // Create and add the event listener
+            ITG.DepositAllHotkeyHandler = async function(event) {
+                if (event.key === 'd' || event.key === 'D') {
+                    await ITF.utilityDepositAll();
+                }
+            };
+            window.addEventListener('keydown', ITG.DepositAllHotkeyHandler);
+            console.log("DepositAll hotkeys enabled (press 'd' to deposit all)");
+        } else {
+            // Remove the event listener
+            if (ITG.DepositAllHotkeyHandler) {
+                window.removeEventListener('keydown', ITG.DepositAllHotkeyHandler);
+                ITG.DepositAllHotkeyHandler = null;
+            }
+            console.log("DepositAll hotkeys disabled");
+        }
+    }
+
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
 // | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |     __       | |
@@ -1473,7 +1503,6 @@
     /// W7 Spelunking Hotkeys
     //////////////////
     ITG.w7SpelunkingHotkeyHandler = null;
-
     ITF.setW7EnableSpelunkingHotkeysCheckbox = function(isEnabled) {
         if (ITG.w7EnableSpelunkingHotkeys === isEnabled) {
             return; // Already in the desired state
@@ -1820,18 +1849,8 @@
     ITE.AutoArcher2MClaimCheckbox = createCheckbox(ITF.setEnabledAutoArcher2MClaim, "Archer 2M claim")
     ITE.utilitiesColumn.appendChild(ITE.AutoArcher2MClaimCheckbox);
 
-    ITE.AutoClickAlchemyGrindTimeCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyGrindTime, "Alc GrindTime")
-    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyGrindTimeCheckbox);
-    ITE.AutoClickAlchemyRoadRaginCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyRoadRagin, "Alc RoadRagin")
-    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyRoadRaginCheckbox);
-    ITE.AutoClickAlchemyHeartyDiggyCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyHeartyDiggy, "Alc HeartyDigger")
-    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyHeartyDiggyCheckbox);
-    ITE.AutoClickAlchemySwiftSteppinCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemySwiftSteppin, "Alc SwiftSteppin")
-    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemySwiftSteppinCheckbox);
-    ITE.AutoClickAlchemyHammerHammerCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyHammerHammer, "Alc HammerHammer")
-    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyHammerHammerCheckbox);
-    ITE.AutoClickAlchemyStableJeniusCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyStableJenius, "Alc StableJenius")
-    ITE.utilitiesColumn.appendChild(ITE.AutoClickAlchemyStableJeniusCheckbox);
+    ITE.EnableDepositAllHotkeysCheckbox = createCheckbox(ITF.setEnableDepositAllHotkeysCheckbox, "DepositAll Hotkey")
+    ITE.utilitiesColumn.appendChild(ITE.EnableDepositAllHotkeysCheckbox);
 
     // W1
     ITE.W1ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW1, "Colo")
@@ -1843,6 +1862,19 @@
 
     ITE.AutoW2ClickerShinyFishCheckbox = createCheckbox(ITF.setEnabledAutoW2ClickerShinyFish, "Shiny Fish Claim")
     ITE.w2Column.appendChild(ITE.AutoW2ClickerShinyFishCheckbox);
+
+    ITE.AutoClickAlchemyGrindTimeCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyGrindTime, "Alc GrindTime")
+    ITE.w2Column.appendChild(ITE.AutoClickAlchemyGrindTimeCheckbox);
+    ITE.AutoClickAlchemyRoadRaginCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyRoadRagin, "Alc RoadRagin")
+    ITE.w2Column.appendChild(ITE.AutoClickAlchemyRoadRaginCheckbox);
+    ITE.AutoClickAlchemyHeartyDiggyCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyHeartyDiggy, "Alc HeartyDigger")
+    ITE.w2Column.appendChild(ITE.AutoClickAlchemyHeartyDiggyCheckbox);
+    ITE.AutoClickAlchemySwiftSteppinCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemySwiftSteppin, "Alc SwiftSteppin")
+    ITE.w2Column.appendChild(ITE.AutoClickAlchemySwiftSteppinCheckbox);
+    ITE.AutoClickAlchemyHammerHammerCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyHammerHammer, "Alc HammerHammer")
+    ITE.w2Column.appendChild(ITE.AutoClickAlchemyHammerHammerCheckbox);
+    ITE.AutoClickAlchemyStableJeniusCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyStableJenius, "Alc StableJenius")
+    ITE.w2Column.appendChild(ITE.AutoClickAlchemyStableJeniusCheckbox);
 
     // W3
     ITE.W3ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW3, "Colo")
