@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.19
+// @version      0.20
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -321,55 +321,50 @@
             const gameRect = ITE.game.getBoundingClientRect();
 
             // Calculate the coordinates relative to ITE.game. Subtract game rect x and y positions
-            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
-            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
+            const ratio = ITF.getCurrentMouseRatio();
 
-            console.log(`Mouse coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+            console.log(`Mouse coordinates relative to ITE.game: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }`);
         } 
         else if (event.ctrlKey && event.code === 'Numpad7') {
             const gameRect = ITE.game.getBoundingClientRect();
 
-            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
-            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
-            const cordX = gameRect.left + gameRect.width * ratioX;
-            const cordY = gameRect.top + gameRect.height * ratioY;
+            const ratio = ITF.getCurrentMouseRatio();
+            const cordX = gameRect.left + gameRect.width * ratio.X;
+            const cordY = gameRect.top + gameRect.height * ratio.Y;
 
             ITF.simulateMouseEvent("mousedown", cordX, cordY);
-            console.log(`MouseDown event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+            console.log(`MouseDown event at coordinates relative to ITE.game: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }`);
         }
         else if (event.ctrlKey && event.code === 'Numpad8') {
             const gameRect = ITE.game.getBoundingClientRect();
 
-            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
-            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
-            const cordX = gameRect.left + gameRect.width * ratioX;
-            const cordY = gameRect.top + gameRect.height * ratioY;
+            const ratio = ITF.getCurrentMouseRatio();
+            const cordX = gameRect.left + gameRect.width * ratio.X;
+            const cordY = gameRect.top + gameRect.height * ratio.Y;
 
             ITF.simulateMouseEvent("mouseup", cordX, cordY);
-            console.log(`MouseUp event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+            console.log(`MouseUp event at coordinates relative to ITE.game: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }`);
         }
         else if (event.ctrlKey && event.code === 'Numpad9') {
             const gameRect = ITE.game.getBoundingClientRect();
 
-            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
-            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
-            const cordX = gameRect.left + gameRect.width * ratioX;
-            const cordY = gameRect.top + gameRect.height * ratioY;
+            const ratio = ITF.getCurrentMouseRatio();
+            const cordX = gameRect.left + gameRect.width * ratio.X;
+            const cordY = gameRect.top + gameRect.height * ratio.Y;
 
             ITF.simulateMouseEvent("click", cordX, cordY);
-            console.log(`Click event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+            console.log(`Click event at coordinates relative to ITE.game: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }`);
         }
         else if (event.ctrlKey && event.code === 'NumpadAdd') {
             const gameRect = ITE.game.getBoundingClientRect();
 
-            const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
-            const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
-            const cordX = gameRect.left + gameRect.width * ratioX;
-            const cordY = gameRect.top + gameRect.height * ratioY;
+            const ratio = ITF.getCurrentMouseRatio();
+            const cordX = gameRect.left + gameRect.width * ratio.X;
+            const cordY = gameRect.top + gameRect.height * ratio.Y;
 
             ITF.simulateMouseEvent("mousedown", cordX, cordY);
             ITF.simulateMouseEvent("mouseup", cordX, cordY);
-            console.log(`Full mouse click event at coordinates relative to ITE.game: { "X": ${ratioX.toFixed(4)}, "Y": ${ratioY.toFixed(4)} }`);
+            console.log(`Full mouse click event at coordinates relative to ITE.game: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }`);
         }
         else if (event.ctrlKey && event.code === 'Numpad0')
         {
@@ -412,6 +407,13 @@
         return { "X": gameRect.left + gameRect.width * ratio.X, "Y": gameRect.top + gameRect.height * ratio.Y };
     }
 
+    ITF.getCurrentMouseRatio = function() {
+        const gameRect = ITE.game.getBoundingClientRect();
+        const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
+        const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
+        return { "X": ratioX, "Y": ratioY };
+    }
+
     //Simulate mouse click function by screen game window ratio (0 - 1.0)
     ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0, delayHold = 0, repeat = 1, repeatDelay = -1) {
         let coords = ITF.calculateCords(ratio)
@@ -434,6 +436,15 @@
                 await ITF.sleep(delayAfter);
             }
         }
+    };
+
+    ITF.simulateMouseClick = async function(delayAfter = 0, delayHold = 0, repeat = 1, repeatDelay = -1) {
+        const gameRect = ITE.game.getBoundingClientRect();
+
+        const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
+        const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
+
+        await ITF.simulateMouseClickRatio({ "X": ratioX, "Y": ratioY }, delayAfter, delayHold, repeat, repeatDelay);
     };
 
     ITF.simulateMouseDownRatio = async function(ratio, delayAfter = 0) {
@@ -545,21 +556,6 @@
 
         return { "X": ratioX, "Y": ratioY };
     }
-
-    //Simulate mouse click function with current mouse coordinates
-    ITF.simulateMouseClick = async function(delayAfter = 0) {
-        const gameRect = ITE.game.getBoundingClientRect();
-
-        const ratioX = clamp(ITG.CurrentMouse.X - gameRect.left, 0, gameRect.right) / gameRect.width;
-        const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
-        const cordX = gameRect.left + gameRect.width * ratioX;
-        const cordY = gameRect.top + gameRect.height * ratioY;
-
-        ITF.simulateMouseEvent("mousedown", cordX, cordY);
-        ITF.simulateMouseEvent("mouseup", cordX, cordY);
-
-        await ITF.sleep(delayAfter);
-    };
 
     ITF.simulateKeyEvent = function(keyName, event) {
         const keyCode = ITG.keyNameToKeyCodeMap[keyName] || 0; // Default to 0 if keyName not found
@@ -761,7 +757,35 @@
     /// DepositAll Hotkey
     //////////////////
     ITG.DepositAllHotkeyHandler = null;
-    ITF.setEnableDepositAllHotkeysCheckbox = function(isEnabled) {
+    // Loop control state
+    ITG.depositAllLoopRunning = false;
+    ITG.depositAllLoopLastToggle = 0; // debounce toggles
+
+    // Start the automatic click+deposit loop
+    ITF.startDepositAllLoop = async function() {
+        if (ITG.depositAllLoopRunning) return; // already running
+        ITG.depositAllLoopRunning = true;
+        const ratio = ITF.getCurrentMouseRatio();
+        console.log(`DepositAll loop started at current mouse position: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }. Press Shift + D to stop.`);
+
+        while (ITG.depositAllLoopRunning) {
+            // Click at current mouse position (simulated) and hold
+            await ITF.simulateMouseClickRatio(ratio, 100, 500);
+
+            // Then deposit all
+            await ITF.utilityDepositAll();
+            await ITF.sleep(500); // small delay after deposit
+        }
+
+        console.log("DepositAll loop stopped");
+    };
+
+    ITF.stopDepositAllLoop = function() {
+        if (!ITG.depositAllLoopRunning) return;
+        ITG.depositAllLoopRunning = false;
+    };
+
+    ITF.setEnableDepositAllHotkeysCheckbox = async function(isEnabled) {
         if (ITG.EnableDepositAllHotkeys === isEnabled) {
             return; // Already in the desired state
         }
@@ -771,18 +795,48 @@
         if (isEnabled) {
             // Create and add the event listener
             ITG.DepositAllHotkeyHandler = async function(event) {
-                if (event.key === 'd' || event.key === 'D') {
+                // Normalize key
+                const key = (event.key || '').toLowerCase();
+
+                if (key !== 'd') return; // we only care about D
+
+                // If Shift+D -> toggle loop (debounced)
+                if (event.shiftKey) {
+                    const now = Date.now();
+                    if (now - ITG.depositAllLoopLastToggle < 500) return; // debounce
+                    ITG.depositAllLoopLastToggle = now;
+
+                    if (ITG.depositAllLoopRunning) {
+                        ITF.stopDepositAllLoop();
+                    } else {
+                        ITF.startDepositAllLoop();
+                    }
+
+                    // Prevent the game from receiving this keypress
+                    return;
+                }
+
+                // Plain D: only trigger single deposit if loop is not running
+                if (!ITG.depositAllLoopRunning) 
+                {
                     await ITF.utilityDepositAll();
                 }
             };
+
             window.addEventListener('keydown', ITG.DepositAllHotkeyHandler);
-            console.log("DepositAll hotkeys enabled (press 'd' to deposit all)");
+            console.log("DepositAll hotkeys enabled (press 'd' to deposit all; Shift + d toggles auto-click+deposit loop)");
         } else {
             // Remove the event listener
             if (ITG.DepositAllHotkeyHandler) {
                 window.removeEventListener('keydown', ITG.DepositAllHotkeyHandler);
                 ITG.DepositAllHotkeyHandler = null;
             }
+
+            // Ensure the loop is stopped when disabling
+            if (ITG.depositAllLoopRunning) {
+                ITF.stopDepositAllLoop();
+            }
+
             console.log("DepositAll hotkeys disabled");
         }
     }
