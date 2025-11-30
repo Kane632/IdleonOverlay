@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.22
+// @version      0.23
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -37,13 +37,8 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ITG.CurrentMouse = { "X": 0.0, "Y": 0.0 };
+    ITG.SavedMouse = { "X": -1, "Y": -1 };
 
-    ITG.B_AlchemyGrindTimeRatio = { "X": 0.6172, "Y": 0.5332 };
-    ITG.B_AlchemyRoadRaginRatio = { "X": 0.5067, "Y": 0.7296 };
-    ITG.B_AlchemyHeartyDiggyRatio = { "X": 0.5090, "Y": 0.6183 };
-    ITG.B_AlchemySwiftSteppinRatio = { "X": 0.6940, "Y": 0.7346 };
-    ITG.B_AlchemyHammerHammerRatio = { "X": 0.7024, "Y": 0.5835 };
-    ITG.B_AlchemyStableJeniusRatio = { "X": 0.3792, "Y": 0.7286 };
     ITG.B_Codex = { "X": 0.7451, "Y": 0.9296 };
     ITG.B_Items = { "X": 0.6089, "Y": 0.9391 };
     ITG.B_StorageInCodex = { "X": 0.5860, "Y": 0.3369 };
@@ -609,14 +604,17 @@
 
     window.addEventListener('keyup', (event) => {
         if (event.key === 'Home') {
-            // Get the position of ITE.game relative to the viewport
-            const gameRect = ITE.game.getBoundingClientRect();
-
             // Calculate the coordinates relative to ITE.game. Subtract game rect x and y positions
             const ratio = ITF.getCurrentMouseRatio();
 
             console.log(`Mouse coordinates relative to ITE.game: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }`);
-        } 
+        }
+        else if (event.key === 'PageUp') {
+            ITF.saveCurrentMouseRatio();
+        }
+        else if (event.key === 'PageDown') {
+            ITF.clearSavedMouseRatio();
+        }
         else if (event.ctrlKey && event.code === 'Numpad7') {
             const gameRect = ITE.game.getBoundingClientRect();
 
@@ -708,6 +706,12 @@
 
     //Simulate mouse click function by screen game window ratio (0 - 1.0)
     ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0, delayHold = 0, repeat = 1, repeatDelay = -1) {
+        if (ratio == null && ITF.isSavedMouseRatioValid())
+        {
+            ratio = ITF.getSavedMouseRatio();
+            console.log(`Ratio was null. Using saved mouse coordinates for simulateMouseClickRatio: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }`);
+        }
+
         let coords = ITF.calculateCords(ratio)
 
         for (let i = 0; i < repeat; ++i)
@@ -859,6 +863,24 @@
         const ratioY = clamp(ITG.CurrentMouse.Y - gameRect.top, 0, gameRect.bottom) / gameRect.height;
 
         return { "X": ratioX, "Y": ratioY };
+    }
+
+    ITF.saveCurrentMouseRatio = function() {
+        ITG.SavedMouse = ITF.getCurrentMouseRatio();
+        console.log(`Saved mouse coordinates relative to ITE.game: { "X": ${ITG.SavedMouse.X.toFixed(4)}, "Y": ${ITG.SavedMouse.Y.toFixed(4)} }`);
+    }
+
+    ITF.clearSavedMouseRatio = function() {
+        ITG.SavedMouse = { "X": -1, "Y": -1 };
+        console.log(`Cleared saved mouse coordinates`);
+    }
+
+    ITF.getSavedMouseRatio = function() {
+        return ITG.SavedMouse;
+    }
+
+    ITF.isSavedMouseRatioValid = function() {
+        return ITG.SavedMouse.X >= 0 && ITG.SavedMouse.Y >= 0;
     }
 
     ITF.simulateKeyEvent = function(keyName, event) {
@@ -1094,8 +1116,16 @@
     ITF.startDepositAllLoop = async function() {
         if (ITG.depositAllLoopRunning) return; // already running
         ITG.depositAllLoopRunning = true;
-        const ratio = ITF.getCurrentMouseRatio();
-        console.log(`DepositAll loop started at current mouse position: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }. Press Shift + D to stop.`);
+        let ratio;
+        if (ITF.isSavedMouseRatioValid()) {
+            ratio = ITF.getSavedMouseRatio();
+            console.log(`DepositAll loop started at saved mouse position: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }. Press Shift + D to stop.`);
+        }
+        else
+        {
+            ratio = ITF.getCurrentMouseRatio();
+            console.log(`DepositAll loop started at current mouse position: { "X": ${ratio.X.toFixed(4)}, "Y": ${ratio.Y.toFixed(4)} }. Press Shift + D to stop.`);
+        }
 
         while (ITG.depositAllLoopRunning) {
             // Click at current mouse position (simulated) and hold
@@ -1233,131 +1263,6 @@
 //  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'   '----------------' 
 
     //////////////////
-    /// AutoClickAlchemyGrindTime
-    //////////////////
-    ITF.setEnabledAutoClickAlchemyGrindTime = async function (isEnabled) {
-        if (ITG.autoClickAlchemyGrindTimeEnabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoClickAlchemyGrindTimeEnabled && !isEnabled)
-        {
-            ITG.autoClickAlchemyGrindTimeEnabled = false;
-            console.log("ITF.setEnabledAutoClickAlchemyGrindTime stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoClickAlchemyGrindTimeEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoClickAlchemyGrindTime started.");
-
-        while (ITG.autoClickAlchemyGrindTimeEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_AlchemyGrindTimeRatio, 7500);
-        }
-    };
-
-    //////////////////
-    /// AutoClickAlchemyRoadRagin
-    //////////////////
-    ITF.setEnabledAutoClickAlchemyRoadRagin = async function (isEnabled) {
-        if (ITG.autoClickAlchemyRoadRaginEnabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoClickAlchemyRoadRaginEnabled && !isEnabled)
-        {
-            ITG.autoClickAlchemyRoadRaginEnabled = false;
-            console.log("ITF.setEnabledAutoClickAlchemyRoadRagin stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoClickAlchemyRoadRaginEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoClickAlchemyRoadRagin started.");
-
-        while (ITG.autoClickAlchemyRoadRaginEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_AlchemyRoadRaginRatio, 7500);
-        }
-    };
-
-    //////////////////
-    /// AutoClickAlchemyHeartyDiggy
-    //////////////////
-    ITF.setEnabledAutoClickAlchemyHeartyDiggy = async function (isEnabled) {
-        if (ITG.autoClickAlchemyHeartyDiggyEnabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoClickAlchemyHeartyDiggyEnabled && !isEnabled)
-        {
-            ITG.autoClickAlchemyHeartyDiggyEnabled = false;
-            console.log("ITF.setEnabledAutoClickAlchemyHeartyDiggy stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoClickAlchemyHeartyDiggyEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoClickAlchemyHeartyDiggy started.");
-
-        while (ITG.autoClickAlchemyHeartyDiggyEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_AlchemyHeartyDiggyRatio, 7500);
-        }
-    };
-
-    //////////////////
-    /// AutoClickAlchemySwiftSteppin
-    //////////////////
-    ITF.setEnabledAutoClickAlchemySwiftSteppin = async function (isEnabled) {
-        if (ITG.autoClickAlchemySwiftSteppinEnabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoClickAlchemySwiftSteppinEnabled && !isEnabled)
-        {
-            ITG.autoClickAlchemySwiftSteppinEnabled = false;
-            console.log("ITF.setEnabledAutoClickAlchemySwiftSteppin stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoClickAlchemySwiftSteppinEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoClickAlchemySwiftSteppin started.");
-
-        while (ITG.autoClickAlchemySwiftSteppinEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_AlchemySwiftSteppinRatio, 7500);
-        }
-    };
-
-    //////////////////
-    /// AutoClickAlchemyHammerHammer
-    //////////////////
-    ITF.setEnabledAutoClickAlchemyHammerHammer = async function (isEnabled) {
-        if (ITG.autoClickAlchemyHammerHammerEnabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoClickAlchemyHammerHammerEnabled && !isEnabled)
-        {
-            ITG.autoClickAlchemyHammerHammerEnabled = false;
-            console.log("ITF.setEnabledAutoClickAlchemyHammerHammer stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoClickAlchemyHammerHammerEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoClickAlchemyHammerHammer started.");
-
-        while (ITG.autoClickAlchemyHammerHammerEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_AlchemyHammerHammerRatio, 7500);
-        }
-    };
-
-    //////////////////
     /// W2SpamPostOfficeSimpleShippin
     //////////////////
     ITF.spamPostOfficeSimpleShippin = async function (count = 1) {
@@ -1385,31 +1290,6 @@
 
         ITG.spamPostOfficeSimpleShippinRunning = false;
         console.log("ITF.spamPostOfficeSimpleShippin ended. Count: " + count);
-    };
-
-    //////////////////
-    /// AutoClickAlchemyStableJenius
-    //////////////////
-    ITF.setEnabledAutoClickAlchemyStableJenius = async function (isEnabled) {
-        if (ITG.autoClickAlchemyStableJeniusEnabled == isEnabled) //Ignore as it already is the same state
-        {
-            return;
-        }
-
-        if (ITG.autoClickAlchemyStableJeniusEnabled && !isEnabled)
-        {
-            ITG.autoClickAlchemyStableJeniusEnabled = false;
-            console.log("ITF.setEnabledAutoClickAlchemyStableJenius stopped.");
-            return;
-        }
-
-        //Remaining case start it.
-        ITG.autoClickAlchemyStableJeniusEnabled = isEnabled;
-        console.log("ITF.setEnabledAutoClickAlchemyStableJenius started.");
-
-        while (ITG.autoClickAlchemyStableJeniusEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_AlchemyStableJeniusRatio, 7500);
-        }
     };
 
     //////////////////
@@ -2277,19 +2157,6 @@
 
     ITE.AutoW2ClickerShinyFishCheckbox = createCheckbox(ITF.setEnabledAutoW2ClickerShinyFish, "Shiny Fish Claim")
     ITE.w2Column.appendChild(ITE.AutoW2ClickerShinyFishCheckbox);
-
-    ITE.AutoClickAlchemyGrindTimeCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyGrindTime, "Alc GrindTime")
-    ITE.w2Column.appendChild(ITE.AutoClickAlchemyGrindTimeCheckbox);
-    ITE.AutoClickAlchemyRoadRaginCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyRoadRagin, "Alc RoadRagin")
-    ITE.w2Column.appendChild(ITE.AutoClickAlchemyRoadRaginCheckbox);
-    ITE.AutoClickAlchemyHeartyDiggyCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyHeartyDiggy, "Alc HeartyDigger")
-    ITE.w2Column.appendChild(ITE.AutoClickAlchemyHeartyDiggyCheckbox);
-    ITE.AutoClickAlchemySwiftSteppinCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemySwiftSteppin, "Alc SwiftSteppin")
-    ITE.w2Column.appendChild(ITE.AutoClickAlchemySwiftSteppinCheckbox);
-    ITE.AutoClickAlchemyHammerHammerCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyHammerHammer, "Alc HammerHammer")
-    ITE.w2Column.appendChild(ITE.AutoClickAlchemyHammerHammerCheckbox);
-    ITE.AutoClickAlchemyStableJeniusCheckbox = createCheckbox(ITF.setEnabledAutoClickAlchemyStableJenius, "Alc StableJenius")
-    ITE.w2Column.appendChild(ITE.AutoClickAlchemyStableJeniusCheckbox);
 
     // W3
     ITE.W3ColoCheckbox = createCheckbox(ITF.setEnabledAutoColoW3, "Colo")
