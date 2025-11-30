@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.21
+// @version      0.22
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -62,6 +62,12 @@
     ITG.B_W2ColoEnterLow = { "X": 0.820833, "Y": 0.314685 };
     ITG.B_W2ColoExit = { "X": 0.898958, "Y": 0.349650 };
     ITG.B_W2ClickerShinyFish = { "X": 0.060417, "Y": 0.804196 };
+
+    ITG.B_W2WeeklyBoss = {
+        "1": { "X": 0.6381, "Y": 0.5554 },
+        "2": { "X": 0.6399, "Y": 0.6772 },
+        "3": { "X": 0.6364, "Y": 0.7848 },
+    }
 
     ITG.B_W2AlchemyBubbles = {
         "O1": { "X": 0.1453, "Y": 0.5212 },
@@ -1468,6 +1474,38 @@
             await ITF.simulateMouseClickRatio(ITG.B_W2ColoExit, 2850); //Click Exit Portal
         }
     };
+
+    //////////////////
+    /// WeeklyBossBattle
+    //////////////////
+    ITF.w2WeeklyBossBattle = async function (rotationStr) {
+        console.log("ITF.w2WeeklyBossBattle started with rotation:", rotationStr);
+        
+        // Extract all numbers (1, 2, 3) from the input string, ignoring everything else
+        const bossNumbers = rotationStr.match(/[1-3]/g) || [];
+        
+        if (bossNumbers.length === 0) {
+            console.warn("No valid boss numbers (1-3) found in rotation string");
+            return;
+        }
+        
+        console.log("Extracted boss sequence:", bossNumbers);
+        
+        // Click each boss in the sequence
+        for (let i = 0; i < bossNumbers.length; i++) {
+            const bossNum = bossNumbers[i];
+            
+            if (!ITG.B_W2WeeklyBoss[bossNum]) {
+                console.warn(`Invalid boss number: ${bossNum}`);
+                continue;
+            }
+            
+            console.log(`Clicking boss ${bossNum} (${i + 1}/${bossNumbers.length})`);
+            await ITF.simulateMouseClickRatio(ITG.B_W2WeeklyBoss[bossNum], 500); // 500ms delay between clicks
+        }
+        
+        console.log("ITF.w2WeeklyBossBattle completed.");
+    }
 
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
