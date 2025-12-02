@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.23
+// @version      0.24
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -33,19 +33,281 @@
     console.log("Idleon Tools Elements Retrieved");
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // GLOBAL VARS
+    // GLOBAL VARS - MISC
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ITG.ShopData = {
+        "W1": {
+            "nomwich": {"buy": false, "count": 1},
+            "hotdog": {"buy": false, "count": 1},
+            "cheezy-pizza": {"buy": false, "count": 1},
+            "cue-tape": {"buy":  true, "count": 1},
+            "small-mana-potion": {"buy": false, "count": 1},
+            "small-strength-potion": {"buy": false, "count": 1},
+            "small-life-potion": {"buy": false, "count": 1},
+            "small-speed-potion": {"buy": false, "count": 1},
+            "crude-oil": {"buy": false, "count": 1},
+            "weapon-upgrade-stone-1": {"buy": false, "count": 1},
+            "armor-upgrade-stone-1": {"buy": false, "count": 1},
+            "tool-upgrade-stone-1": {"buy": false, "count": 1},
+            "pugilist-demise": {"buy": false, "count": 1},
+            "power-statue": {"buy": false, "count": 1},
+            "sculpting-tools": {"buy": false, "count": 1},
+            "target-stamp": {"buy": false, "count": 1},
+            "shield-stamp": {"buy": false, "count": 1},
+            "mana-stamp": {"buy": false, "count": 1},
+            "bummo-bag": {"buy": false, "count": 1},
+            "storage-chest-2": {"buy": false, "count": 1},
+            "storage-chest-6": {"buy": false, "count": 1},
+            "storage-chest-7": {"buy": false, "count": 1},
+            "basketball": {"buy": false, "count": 1},
+            "darts": {"buy": false, "count": 1},
+            "bottled-town-teleport": {"buy": false, "count": 1},
+            "talent-point-reset-fragment": {"buy": false, "count": 1},
+        },
+        "W1b": {
+            "hotdog": {"buy": false, "count": 1},
+            "cheezy-pizza": {"buy": false, "count": 1},
+            "cranberry-jam": {"buy": false, "count": 1},
+            "average-strength-potion": {"buy": false, "count": 1},
+            "small-exp-potion": {"buy": false, "count": 1},
+            "armor-upgrade-stone-2": {"buy": false, "count": 1},
+            "vitality-stamp": {"buy": false, "count": 1},
+            "tarantulight": {"buy": false, "count": 1},
+            "silver-antique": {"buy":  true, "count": 1},
+            "capitalist-case": {"buy":  true, "count": 3},
+            "storage-chest-8": {"buy": false, "count": 1},
+            "storage-chest-12": {"buy": false, "count": 1},
+            "bottled-town-teleport": {"buy": false, "count": 1},
+            "talent-point-reset-fragment": {"buy": false, "count": 1},
+        },
+        "W2": {
+            "kebab-sticks": {"buy": false, "count": 1},
+            "meat-pie": {"buy": false, "count": 1},
+            "saucy-weiner": {"buy":  true, "count": 1},
+            "golden-doubloon": {"buy":  true, "count": 1},
+            "bobjoepickle": {"buy":  true, "count": 1},
+            "weapon-upgrade-stone-2": {"buy": false, "count": 1},
+            "armor-upgrade-stone-2": {"buy": false, "count": 1},
+            "tool-upgrade-stone-2": {"buy": false, "count": 1},
+            "average-strength-potion": {"buy": false, "count": 1},
+            "average-speed-potion": {"buy": false, "count": 1},
+            "average-life-potion": {"buy": false, "count": 1},
+            "wealthy-wallet": {"buy": false, "count": 1},
+            "storage-chest-9": {"buy": false, "count": 1},
+            "storage-chest-10": {"buy": false, "count": 1},
+            "storage-chest-13": {"buy": false, "count": 1},
+            "storage-chest-15": {"buy": false, "count": 1},
+            "guilding-tools": {"buy": false, "count": 1},
+            "vendor-stamp": {"buy": false, "count": 1},
+            "bottled-town-teleport": {"buy": false, "count": 1},
+            "talent-point-reset-fragment": {"buy": false, "count": 1},
+            "secret-map": {"buy": false, "count": 1},
+        },
+        "W2b": {
+            "copper-twine": {"buy": false, "count": 1},
+            "wormie-weights": {"buy": false, "count": 1},
+            "leafy-vines": {"buy": false, "count": 1},
+            "one-pound-of-steel": {"buy": false, "count": 1},
+            "dynamite": {"buy": false, "count": 1},
+            "needledrop": {"buy": false, "count": 1},
+            "not-dynamite": {"buy": false, "count": 1},
+            "tool-upgrade-stone-1": {"buy": false, "count": 1},
+            "tool-upgrade-stone-2": {"buy": false, "count": 1},
+            "matty-bag-stamp": {"buy": false, "count": 1},
+            "clover-stamp": {"buy": false, "count": 1},
+            "cattleprod-token": {"buy": false, "count": 1},
+            "talent-point-reset-fragment": {"buy": false, "count": 1},
+        },
+        "W3": {
+            "mountain-bread": {"buy": false, "count": 1},
+            "yeti-ham": {"buy": false, "count": 1},
+            "sheepie-dairy": {"buy": false, "count": 1},
+            "cardboard-traps": {"buy": false, "count": 1},
+            "wax-skull": {"buy": false, "count": 1},
+            "weapon-upgrade-stone-3": {"buy": false, "count": 1},
+            "armor-upgrade-stone-3": {"buy": false, "count": 1},
+            "tool-upgrade-stone-3": {"buy": false, "count": 1},
+            "decent-strength-potion": {"buy": false, "count": 1},
+            "decent-speed-potion": {"buy": false, "count": 1},
+            "decent-life-potion": {"buy": false, "count": 1},
+            "prosperous-pouch": {"buy": false, "count": 1},
+            "storage-chest-16": {"buy": false, "count": 1},
+            "storage-chest-17": {"buy": false, "count": 1},
+            "storage-chest-18": {"buy": false, "count": 1},
+            "storage-chest-19": {"buy": false, "count": 1},
+            "storage-chest-20": {"buy": false, "count": 1},
+            "storage-chest-21": {"buy": false, "count": 1},
+            "bottled-town-teleport": {"buy": false, "count": 1},
+            "talent-point-reset-fragment": {"buy": false, "count": 1},
+            "damaged-cog": {"buy": false, "count": 1},
+            "bottled-world-town-teleport": {"buy": false, "count": 1},
+            "anvil-reset-whetstone": {"buy": false, "count": 1},
+        },
+        "W4": {
+            "pile-of-processor-chips": {"buy": false, "count": 1},
+            "strung-jewels": {"buy": false, "count": 1},
+            "cupcake": {"buy": false, "count": 1},
+            "spicy-space-ribs": {"buy": false, "count": 1},
+            "sappy-dna-splicer": {"buy": false, "count": 1},
+            "weapon-upgrade-stone-4": {"buy": false, "count": 1},
+            "armor-upgrade-stone-4": {"buy": false, "count": 1},
+            "tool-upgrade-stone-4": {"buy": false, "count": 1},
+            "potent-strength-potion": {"buy": false, "count": 1},
+            "potent-speed-potion": {"buy": false, "count": 1},
+            "potent-life-potion": {"buy": false, "count": 1},
+            "potent-exp-potion": {"buy": false, "count": 1},
+            "sack-of-success": {"buy": false, "count": 1},
+            "egg-stamp": {"buy": false, "count": 1},
+            "spice-stamp": {"buy": false, "count": 1},
+            "sigil-stamp": {"buy": false, "count": 1},
+            "blue-tome-pages": {"buy": false, "count": 1},
+        },
+        "W5": {
+            "lemon-slice": {"buy": false, "count": 1},
+            "grilled-cheese-nomwich": {"buy": false, "count": 1},
+            "magma-barrel": {"buy":  true, "count": 1},
+            "weapon-upgrade-stone-5": {"buy": false, "count": 1},
+            "armor-upgrade-stone-5": {"buy": false, "count": 1},
+            "tool-upgrade-stone-5": {"buy": false, "count": 1},
+            "refinery-stamp": {"buy": false, "count": 1},
+            "treasure-totebag": {"buy": false, "count": 1},
+            "red-tome-pages": {"buy": false, "count": 1},
+        },
+        "W6": {
+            "bonejoepickle": {"buy":  true, "count": 1},
+            "crop-transfer-ticket": {"buy":  true, "count": 1},
+            "raw-nigiri": {"buy": false, "count": 1},
+            "dumpling": {"buy": false, "count": 1},
+            "plasma-barrel": {"buy":  true, "count": 1},
+            "weapon-upgrade-stone-6": {"buy": false, "count": 1},
+            "armor-upgrade-stone-6": {"buy": false, "count": 1},
+            "tool-upgrade-stone-6": {"buy": false, "count": 1},
+            "forge-stamp": {"buy": false, "count": 1},
+            "rucksack-of-riches": {"buy": false, "count": 1},
+            "storage-chest-26": {"buy": false, "count": 1},
+            "storage-chest-27": {"buy": false, "count": 1},
+            "storage-chest-28": {"buy": false, "count": 1},
+        },
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // GLOBAL VARS - MOUSE BUTTONS POSITIONS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ITG.CurrentMouse = { "X": 0.0, "Y": 0.0 };
     ITG.SavedMouse = { "X": -1, "Y": -1 };
 
-    ITG.B_Codex = { "X": 0.7451, "Y": 0.9296 };
-    ITG.B_Items = { "X": 0.6089, "Y": 0.9391 };
-    ITG.B_StorageInCodex = { "X": 0.5860, "Y": 0.3369 };
-    ITG.B_DepositAll = { "X": 0.0943, "Y": 0.3478 };
-    ITG.B_ToggleAutoAttack = { "X": 0.4619, "Y": 0.9378 };
+    ITG.B_BarAutoAttack = { "X": 0.4619, "Y": 0.9378 };
+    ITG.B_BarAttacks = { "X": 0.5300, "Y": 0.9315 }; //Also binded as Q
+    ITG.B_BarItems = { "X": 0.6089, "Y": 0.9391 }; //Also binded as I
+    ITG.B_BarTalents = { "X": 0.6783, "Y": 0.9410 }; //Also binded as T
+    ITG.B_BarCodex = { "X": 0.7451, "Y": 0.9296 }; //Also binded as C
+    ITG.B_BarMap = { "X": 0.8070, "Y": 0.9331 }; //Also binded as M
+    ITG.B_BarPlayers = { "X": 0.888542, "Y": 0.935315};
+
+    ITG.B_CodexQuests = { "X": 0.4599, "Y": 0.1818 };
+    ITG.B_CodexHints = { "X": 0.5371, "Y": 0.1850 };
+    ITG.B_CodexQuickRef = { "X": 0.6197, "Y": 0.1787 };
+    ITG.B_CodexCards = { "X": 0.7013, "Y": 0.1818 };
+    ITG.B_CodexFamily = { "X": 0.7777, "Y": 0.1834 };
+    ITG.B_CodexFriends = { "X": 0.8594, "Y": 0.1787 };
+    ITG.B_CodexGuild = { "X": 0.9339, "Y": 0.1818 };
+
+    ITG.B_CodexQuickRefAnvil = { "X": 0.4750, "Y": 0.3365 };
+    ITG.B_CodexQuickRefStorage = { "X": 0.5842, "Y": 0.3318 };
+    ITG.B_CodexQuickRefStamps = { "X": 0.6996, "Y": 0.3254 };
+    ITG.B_CodexQuickRefTasks = { "X": 0.8105, "Y": 0.3270 };
+    ITG.B_CodexQuickRefObols = { "X": 0.9251, "Y": 0.3318 };
+    ITG.B_CodexQuickRefAlchemy = { "X": 0.4732, "Y": 0.5290 };
+    ITG.B_CodexQuickRefClickers = { "X": 0.5824, "Y": 0.5275 };
+    ITG.B_CodexQuickRefArcade = { "X": 0.6969, "Y": 0.5275 };
+    ITG.B_CodexQuickRefConstruction = { "X": 0.8070, "Y": 0.5322 };
+    ITG.B_CodexQuickRefGaming = { "X": 0.9339, "Y": 0.5306 };
+    ITG.B_CodexQuickRef3dPrinter = { "X": 0.4776, "Y": 0.6884 };
+    ITG.B_CodexQuickRefSneaking = { "X": 0.5833, "Y": 0.6900 };
+    ITG.B_CodexQuickRefSpelunking = { "X": 0.6969, "Y": 0.6916 };
+
+    ITG.B_AnvilCraftTab = { "X": 0.3285, "Y": 0.1881 };
+    ITG.B_AnvilProduceTab = { "X": 0.5336, "Y": 0.1913 };
+    ITG.B_AnvilQuickDeposit = { "X": 0.4528, "Y": 0.1834 };
+
+    ITG.B_ChestDepositAll = { "X": 0.0943, "Y": 0.3478 };
+
     ITG.B_ColoNextWave = { "X": 0.355208, "Y": 0.106209 };
     ITG.B_RestartBoss = { "X": 0.243789, "Y": 0.132812 };
+
+    ITG.B_PlayerMenu = {
+        "Left": { "X": 0.295833, "Y": 0.750000},
+        "Right": { "X": 0.755208, "Y": 0.750000},
+        "P1": { "X": 0.333333, "Y": 0.332168},
+        "P2": { "X": 0.517708, "Y": 0.332168},
+        "P3": { "X": 0.717708, "Y": 0.332168},
+        "P4": { "X": 0.333333, "Y": 0.580420},
+        "P5": { "X": 0.517708, "Y": 0.580420},
+        "P6": { "X": 0.717708, "Y": 0.580420},
+    }
+
+    ITG.B_EzAccess = {
+        "BossKeys": { "X": 0.3622, "Y": 0.3144 },
+        "ColosseumTickets": { "X": 0.3658, "Y": 0.4122 },
+        "W1": { "X": 0.2399, "Y": 0.7373 },
+        "W1b": { "X": 0.2800, "Y": 0.7373 },
+        "W2": { "X": 0.3245, "Y": 0.7342 },
+        "W2b": { "X": 0.3672, "Y": 0.7373 },
+        "W3": { "X": 0.2372, "Y": 0.8149 },
+        "W4": { "X": 0.2818, "Y": 0.8085 },
+        "W5": { "X": 0.3271, "Y": 0.8101 },
+        "W6": { "X": 0.3734, "Y": 0.8085 },
+    };
+    
+    ITG.B_QuickShop = { "X": 0.3209, "Y": 0.8307 };
+    ITG.B_ShopSlots = {
+        "0": { "X": 0.3405, "Y": 0.3465 },
+        "0-": { "X": 0.4865, "Y": 0.3070 },
+        "0+": { "X": 0.5461, "Y": 0.3038 },
+
+        "1": { "X": 0.3396, "Y": 0.4763 },
+        "1-": { "X": 0.4865, "Y": 0.4367 },
+        "1+": { "X": 0.5470, "Y": 0.4367 },
+
+        "2": { "X": 0.3432, "Y": 0.6155 },
+        "2-": { "X": 0.4856, "Y": 0.5744 },
+        "2+": { "X": 0.5461, "Y": 0.5744 },
+
+        "3": { "X": 0.3405, "Y": 0.7468 },
+        "3-": { "X": 0.4865, "Y": 0.7025 },
+        "3+": { "X": 0.5452, "Y": 0.7041 },
+    };
+
+    ITG.B_Inv = {
+        "R0C0": { "X": 0.7074, "Y": 0.3294 },
+        "R0C1": { "X": 0.7815, "Y": 0.3204 },
+        "R0C2": { "X": 0.8614, "Y": 0.3228 },
+        "R0C3": { "X": 0.9352, "Y": 0.3179 },
+        "R1C0": { "X": 0.7064, "Y": 0.4576 },
+        "R1C1": { "X": 0.7843, "Y": 0.4564 },
+        "R1C2": { "X": 0.8591, "Y": 0.4533 },
+        "R1C3": { "X": 0.9359, "Y": 0.4588 },
+        "R2C0": { "X": 0.7027, "Y": 0.5936 },
+        "R2C1": { "X": 0.7809, "Y": 0.5893 },
+        "R2C2": { "X": 0.8591, "Y": 0.5978 },
+        "R2C3": { "X": 0.9311, "Y": 0.5948 },
+        "R3C0": { "X": 0.7027, "Y": 0.7265 },
+        "R3C1": { "X": 0.7894, "Y": 0.7235 },
+        "R3C2": { "X": 0.8550, "Y": 0.7211 },
+        "R3C3": { "X": 0.9332, "Y": 0.7259 },
+    };
+
+    ITG.B_InvBag = {
+        "0": { "X": 0.6792, "Y": 0.1850 },
+        "1": { "X": 0.7271, "Y": 0.1801 },
+        "2": { "X": 0.7754, "Y": 0.1850 },
+        "3": { "X": 0.8189, "Y": 0.1874 },
+        "4": { "X": 0.8713, "Y": 0.1922 },
+        "5": { "X": 0.9141, "Y": 0.1850 },
+        "6": { "X": 0.9638, "Y": 0.1838 },
+    };
 
     ITG.B_W1Colo = { "X": 0.733333, "Y": 0.419580 };
     ITG.B_W1ColoEnterUp = { "X": 0.677083, "Y": 0.419580 };
@@ -521,45 +783,6 @@
 
     ITG.B_W7SpelunkingDescend = { "X": 0.1086, "Y": 0.1572 };
 
-    ITG.B_PlayerMenu = { "X": 0.888542, "Y": 0.935315};
-    ITG.B_PlayerMenuLeft = { "X": 0.295833, "Y": 0.750000};
-    ITG.B_PlayerMenuRight = { "X": 0.755208, "Y": 0.750000};
-    ITG.B_PlayerMenuP1 = { "X": 0.333333, "Y": 0.332168};
-    ITG.B_PlayerMenuP2 = { "X": 0.517708, "Y": 0.332168};
-    ITG.B_PlayerMenuP3 = { "X": 0.717708, "Y": 0.332168};
-    ITG.B_PlayerMenuP4 = { "X": 0.333333, "Y": 0.580420};
-    ITG.B_PlayerMenuP5 = { "X": 0.517708, "Y": 0.580420};
-    ITG.B_PlayerMenuP6 = { "X": 0.717708, "Y": 0.580420};
-
-    ITG.B_Inv = {
-        "R0C0": { "X": 0.7074, "Y": 0.3294 },
-        "R0C1": { "X": 0.7815, "Y": 0.3204 },
-        "R0C2": { "X": 0.8614, "Y": 0.3228 },
-        "R0C3": { "X": 0.9352, "Y": 0.3179 },
-        "R1C0": { "X": 0.7064, "Y": 0.4576 },
-        "R1C1": { "X": 0.7843, "Y": 0.4564 },
-        "R1C2": { "X": 0.8591, "Y": 0.4533 },
-        "R1C3": { "X": 0.9359, "Y": 0.4588 },
-        "R2C0": { "X": 0.7027, "Y": 0.5936 },
-        "R2C1": { "X": 0.7809, "Y": 0.5893 },
-        "R2C2": { "X": 0.8591, "Y": 0.5978 },
-        "R2C3": { "X": 0.9311, "Y": 0.5948 },
-        "R3C0": { "X": 0.7027, "Y": 0.7265 },
-        "R3C1": { "X": 0.7894, "Y": 0.7235 },
-        "R3C2": { "X": 0.8550, "Y": 0.7211 },
-        "R3C3": { "X": 0.9332, "Y": 0.7259 },
-    };
-
-    ITG.B_InvBag = {
-        "0": { "X": 0.6792, "Y": 0.1850 },
-        "1": { "X": 0.7271, "Y": 0.1801 },
-        "2": { "X": 0.7754, "Y": 0.1850 },
-        "3": { "X": 0.8189, "Y": 0.1874 },
-        "4": { "X": 0.8713, "Y": 0.1922 },
-        "5": { "X": 0.9141, "Y": 0.1850 },
-        "6": { "X": 0.9638, "Y": 0.1838 },
-    };
-
     ITG.keyNameToKeyCodeMap = {
         'a': 65, 'b': 66, 'c': 67, 'd': 68, 'e': 69, 'f': 70, 'g': 71, 'h': 72, 'i': 73, 'j': 74, 
         'k': 75, 'l': 76, 'm': 77, 'n': 78, 'o': 79, 'p': 80, 'q': 81, 'r': 82, 's': 83, 't': 84, 
@@ -856,6 +1079,77 @@
         await ITF.sleep(delayAfter);
     }
 
+    //Simulate wheel event function. Sends one or more WheelEvent events at the given
+    //client coordinates. `count` controls how many wheel ticks to send.
+    //`isHorizontal` controls axis (false=vertical, true=horizontal).
+    //`deltaDirection` controls direction: negative=up/left, positive=down/right.
+    ITF.simulateWheelEvent = async function (eventName, clientX, clientY, count = 1, isHorizontal = false, deltaDirection = 1, intervalMs = 75) {
+        // Clamp count
+        const ticks = Math.max(1, Math.floor(count));
+        // Normalize deltaDirection to -1 or 1
+        const dir = Math.sign(deltaDirection) || 1;
+        const delta = 100 * dir; // 100px per tick in the given direction
+
+        for (let i = 0; i < ticks; ++i) {
+            const ev = new WheelEvent(eventName, {
+                view: window,
+                bubbles: true,
+                cancelable: true,
+                clientX: clientX,
+                clientY: clientY,
+                // Standard wheel deltaMode: 0 (pixels). Direction controlled by sign.
+                deltaX: isHorizontal ? delta : 0,
+                deltaY: isHorizontal ? 0 : delta,
+                deltaMode: 0
+            });
+
+            ITE.game.dispatchEvent(ev);
+
+            // Small pause between ticks so the target can react (and to allow stop checks)
+            if (i < ticks - 1) await ITF.sleep(intervalMs);
+        }
+    };
+
+    // Simulate mouse wheel at a given ratio inside the game window.
+    // `ratio` is an object {X: 0..1, Y: 0..1}. `count` is number of wheel ticks.
+    // `isHorizontal` controls axis (false=vertical, true=horizontal).
+    // `deltaDirection` controls direction: negative=up/left, positive=down/right.
+    ITF.simulateMouseWheelRatio = async function(ratio, count = 1, delayAfter = 0, isHorizontal = false, deltaDirection = 1, intervalMs = 75) {
+        if (ratio == null) return;
+        let coords = ITF.calculateCords(ratio);
+
+        // Move mouse to the target location first so any mouse-over state is correct
+        ITF.simulateMouseEvent("mousemove", coords.X, coords.Y);
+
+        // Send wheel events
+        await ITF.simulateWheelEvent('wheel', coords.X, coords.Y, count, isHorizontal, deltaDirection, intervalMs);
+
+        if (delayAfter > 0)
+        {
+            await ITF.sleep(delayAfter);
+        }
+    };
+
+    // Scroll down (vertical, positive direction)
+    ITF.simulateScrollDown = async function(ratio, count = 1, delayAfter = 0, intervalMs = 75) {
+        return ITF.simulateMouseWheelRatio(ratio, count, delayAfter, false, 1, intervalMs);
+    };
+
+    // Scroll up (vertical, negative direction)
+    ITF.simulateScrollUp = async function(ratio, count = 1, delayAfter = 0, intervalMs = 75) {
+        return ITF.simulateMouseWheelRatio(ratio, count, delayAfter, false, -1, intervalMs);
+    };
+
+    // Scroll right (horizontal, positive direction)
+    ITF.simulateScrollRight = async function(ratio, count = 1, delayAfter = 0, intervalMs = 75) {
+        return ITF.simulateMouseWheelRatio(ratio, count, delayAfter, true, 1, intervalMs);
+    };
+
+    // Scroll left (horizontal, negative direction)
+    ITF.simulateScrollLeft = async function(ratio, count = 1, delayAfter = 0, intervalMs = 75) {
+        return ITF.simulateMouseWheelRatio(ratio, count, delayAfter, true, -1, intervalMs);
+    };
+
     ITF.getCurrentMouseRatio = function() {
         const gameRect = ITE.game.getBoundingClientRect();
 
@@ -1013,10 +1307,10 @@
         console.log("ITF.setEnabledAutoDepositAllCombat started.");
 
         while (ITG.autoDepositAllCombatEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_Codex, 500);
-            await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 500);
-            await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 500);
-            await ITF.simulateMouseClickRatio(ITG.B_Items, 60000); //To close and wait one more minute
+            await ITF.simulateMouseClickRatio(ITG.B_BarCodex, 500);
+            await ITF.simulateMouseClickRatio(ITG.B_CodexQuickRefStorage, 500);
+            await ITF.simulateMouseClickRatio(ITG.B_ChestDepositAll, 500);
+            await ITF.simulateMouseClickRatio(ITG.B_BarItems, 60000); //To close and wait one more minute
         }
     };
 
@@ -1041,24 +1335,24 @@
         console.log("ITF.setEnabledAutoArcher2MClaim started.");
 
         while (ITG.AutoArcher2MClaimEnabled) {
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuLeft, 500); //Ensure is first page
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP2, 2000); //Click first archer
+            await ITF.simulateMouseClickRatio(ITG.B_BarPlayers, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu["Left"], 500); //Ensure is first page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu["P2"], 2000); //Click first archer
             await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
 
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuRight, 500); //Ensure is second page
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP2, 2000); //Click second archer
+            await ITF.simulateMouseClickRatio(ITG.B_BarPlayers, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu["Right"], 500); //Ensure is second page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu["P2"], 2000); //Click second archer
             await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
 
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuRight, 500); //Ensure is second page
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP4, 2000); //Click third and last archer
+            await ITF.simulateMouseClickRatio(ITG.B_BarPlayers, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu["Right"], 500); //Ensure is second page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu["P4"], 2000); //Click third and last archer
             await ITF.simulateKeyPress('Enter', 2000); //Send Key 'Enter' to claim afk time
 
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu, 500); //Open player menu
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuLeft, 500); //Ensure is first page
-            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenuP1, 2000); //Click active character
+            await ITF.simulateMouseClickRatio(ITG.B_BarPlayers, 500); //Open player menu
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu["Left"], 500); //Ensure is first page
+            await ITF.simulateMouseClickRatio(ITG.B_PlayerMenu["P1"], 2000); //Click active character
 
             //Sleep for 100 seconds in order to start again with a 2 min mark. 
             // Also add the 2 seconds from the last Enter key that is not needed plus an extra 13 seconds just in case
@@ -1070,10 +1364,10 @@
     /// DepositAll
     //////////////////
     ITF.utilityDepositAll = async function () {
-        await ITF.simulateMouseClickRatio(ITG.B_Codex, 250);
-        await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 250);
-        await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 250);
-        await ITF.simulateMouseClickRatio(ITG.B_Items, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_BarCodex, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_CodexQuickRefStorage, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_ChestDepositAll, 250);
+        await ITF.simulateMouseClickRatio(ITG.B_BarItems, 250);
     };
 
     //////////////////
@@ -1094,10 +1388,10 @@
         while (ITG.autoPickupAndDepositAllEnabled) 
         {
             let ratio = ITF.getCurrentMouseRatio();
-            await ITF.simulateMouseClickRatio(ITG.B_Codex, 200);
-            await ITF.simulateMouseClickRatio(ITG.B_StorageInCodex, 200);
-            await ITF.simulateMouseClickRatio(ITG.B_DepositAll, 200);
-            await ITF.simulateMouseClickRatio(ITG.B_Items, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_BarCodex, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_CodexQuickRefStorage, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_ChestDepositAll, 200);
+            await ITF.simulateMouseClickRatio(ITG.B_BarItems, 200);
             await ITF.simulateMouseMoveRatio(ratio, 200); // Move mouse back to the original position
             await ITF.simulateMouseDownRatio(ratio, 200);
             await ITF.simulateMouseDownRatio(ratio, 200);
@@ -1200,6 +1494,142 @@
         }
     }
 
+    ITF.shopHasAnythingToDailyBuy = function(shopKey) {
+        let shopInfo = ITG.ShopData[shopKey];
+        for (let itemName in shopInfo) 
+        {
+            if (shopInfo[itemName].buy)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    ITF.shopCountItemsToDailyBuy = function(shopKey) {
+        let shopInfo = ITG.ShopData[shopKey];
+        let count = 0
+        for (let itemName in shopInfo) 
+        {
+            if (shopInfo[itemName].buy)
+            {
+                count += 1;
+            }
+        }
+
+        return count;
+    }
+
+    ITF.dailyQuickAccess = async function() {
+        await ITF.simulateKeyPress('Escape', 350); //Close any open menu
+        await ITF.simulateKeyPress('c', 350); //Codex
+        await ITF.simulateMouseClickRatio(ITG.B_CodexQuickRef, 350); //Quick Ref
+        await ITF.simulateMouseClickRatio(ITG.B_EzAccess["BossKeys"], 350);
+        await ITF.simulateMouseClickRatio(ITG.B_EzAccess["ColosseumTickets"], 350);
+        let QuickBuyClicked = false;
+
+        const shopNames = Object.keys(ITG.ShopData);
+        for (let i = 0; i < shopNames.length; ++i)
+        {
+            let shopKey = shopNames[i];
+            let shopInfo = ITG.ShopData[shopKey];
+
+            console.log(`Checking shop ${shopKey} for daily buys. HasAnthingToBuy: ${ITF.shopHasAnythingToDailyBuy(shopKey)}`);
+
+            //If shop has nothing to daily buy return
+            if (ITF.shopHasAnythingToDailyBuy(shopKey) == false)
+            {
+                console.log(`Skipping shop ${shopKey} as nothing to daily buy.`);
+                continue;
+            }
+
+            console.log(`Accessing shop ${shopKey} as it has something to daily buy.`);
+            await ITF.simulateMouseClickRatio(ITG.B_EzAccess[shopKey], 350); //Open shop
+
+            //Enable quick buy the first time only
+            if (!QuickBuyClicked)
+            {
+                console.log(`Enabling quick buy for the first time.`);
+                await ITF.simulateMouseClickRatio(ITG.B_QuickShop, 150);
+                QuickBuyClicked = true;
+            }
+
+            const itemNames = Object.keys(shopInfo);
+            const itemsCount = itemNames.length;
+            let itemsToBuyCount = ITF.shopCountItemsToDailyBuy(shopKey);
+            console.log(`Shop ${shopKey} has ${itemsCount} items, ${itemsToBuyCount} of which need to be daily bought.`);
+
+            await ITF.simulateMouseMoveRatio(ITG.B_ShopSlots["0"], 150); //Move mouse to first shop slot so the first scroll registers correctly
+
+            itemsToBuyLoop: while (itemsToBuyCount > 0)
+            {
+                for (let k = 0; k <= itemsCount - 4; ++k)
+                {
+                    if (shopInfo[itemNames[k]].buy)
+                    {
+                        await ITF.simulateMouseClickRatio(ITG.B_ShopSlots["0+"], 150); //Max it
+                        await ITF.simulateMouseClickRatio(ITG.B_ShopSlots["0"], 150, 0, shopInfo[itemNames[k]].count, 150); //Buy it
+                        console.log(`Bought item ${itemNames[k]} from shop ${shopKey}. ItemIndex: ${k} of ${itemsCount}`);
+                        itemsToBuyCount -= 1;
+
+                        if (itemsToBuyCount <= 0)
+                        {
+                            break itemsToBuyLoop;
+                        }
+                    }
+                    else
+                    {
+                        console.log(`Skipping item ${itemNames[k]} from shop ${shopKey} as it does not need to be daily bought. ItemIndex: ${k} of ${itemsCount}`);
+                    }
+
+                    //Always scroll down except for last three items
+                    await ITF.simulateScrollDown(ITG.B_ShopSlots["0"], 1, 150); //Scroll down
+                }
+                
+                for (let k = 1; k < 4; ++k)
+                {
+                    if (shopInfo[itemNames[itemsCount - k]].buy)
+                    {
+                        await ITF.simulateMouseClickRatio(ITG.B_ShopSlots[`${k}+`], 150); //Max it
+                        await ITF.simulateMouseClickRatio(ITG.B_ShopSlots[`${k}`], 150, 0, shopInfo[itemNames[itemsCount - k]].count, 150); //Buy it
+                        console.log(`_Bought item ${itemNames[itemsCount - k]} from shop ${shopKey}. ItemIndex: ${itemsCount - k} of ${itemsCount}`);
+                        itemsToBuyCount -= 1;
+                    }
+                    else
+                    {
+                        console.log(`_Skipping item ${itemNames[itemsCount - k]} from shop ${shopKey} as it does not need to be daily bought. ItemIndex: ${itemsCount - k} of ${itemsCount}`);
+                    }
+                }
+            }
+            
+
+            if (i < shopNames.length - 1)
+            {
+                let foundMoreToBuy = false;
+                for (let k = i + 1; k < shopNames.length && !foundMoreToBuy; ++k)
+                {
+                    if (ITF.shopHasAnythingToDailyBuy(shopNames[k]))
+                    {
+                        console.log(`There is more to buy in shop ${shopNames[k]}. Continuing to next shop.`);
+                        await ITF.simulateKeyPress('Escape', 350); //Close any open menu
+                        await ITF.simulateKeyPress('c', 350); //Codex
+                        await ITF.simulateMouseClickRatio(ITG.B_CodexQuickRef, 350); //Quick Ref
+                        foundMoreToBuy = true;
+                    }
+                }
+
+                if (!foundMoreToBuy)
+                {
+                    console.log(`There is no more shops with items to daily buy. Finishing daily quick access.`);
+                    break;
+                }
+            }
+        }
+
+        await ITF.simulateKeyPress('Escape', 500); //Close any open menu
+    }
+
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
 // | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |     __       | |
@@ -1237,7 +1667,7 @@
             await ITF.simulateMouseClickRatio(ITG.B_W1Colo, 6000); //Click Colosseum
             await ITF.simulateMouseClickRatio(ITG.B_W1ColoEnterUp, 2000); //Enter Colosseum. First try to enter with the button Y location from when we already completed one colosseum
             await ITF.simulateMouseClickRatio(ITG.B_W1ColoEnterLow, 2000); //Enter Colosseum. Just in case click the lower one (This will only work the first time we enter the map)
-            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
+            await ITF.simulateMouseClickRatio(ITG.B_BarAutoAttack, 150); //Start auto
             //The orb duration is about 155 seconds at lvl 312. In W1 maybe we can squeeze two runs per orb.
             //155 seconds Minus (13) = 142 seconds → half each round = 71 seconds → 71 seconds * 10 next wave spam = 710
             for (let i = 0; i < 710; ++i)
@@ -1245,7 +1675,7 @@
                 await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
             }
 
-            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
+            await ITF.simulateMouseClickRatio(ITG.B_BarAutoAttack, 100); //Stop auto
             await ITF.simulateMouseClickRatio(ITG.B_W1ColoExit, 2850); //Click Exit Portal
         }
     };
@@ -1342,7 +1772,7 @@
             await ITF.simulateMouseClickRatio(ITG.B_W2Colo, 6000); //Click Colosseum
             await ITF.simulateMouseClickRatio(ITG.B_W2ColoEnterUp, 2000); //Enter Colosseum. First try to enter with the button Y location from when we already completed one colosseum
             await ITF.simulateMouseClickRatio(ITG.B_W2ColoEnterLow, 2000); //Enter Colosseum. Just in case click the lower one (This will only work the first time we enter the map)
-            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
+            await ITF.simulateMouseClickRatio(ITG.B_BarAutoAttack, 150); //Start auto
             //The orb duration is about 155 seconds at lvl 312. In W2 we cannot squeze two runs per orb as the this colo is slower... 1 run per orb better.
             //155 seconds Minus (13) = 142 seconds → full duration each round = 144 seconds → 144 seconds * 10 next wave spam = 1440
             for (let i = 0; i < 1440; ++i)
@@ -1350,7 +1780,7 @@
                 await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
             }
 
-            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
+            await ITF.simulateMouseClickRatio(ITG.B_BarAutoAttack, 100); //Stop auto
             await ITF.simulateMouseClickRatio(ITG.B_W2ColoExit, 2850); //Click Exit Portal
         }
     };
@@ -1381,7 +1811,7 @@
             }
             
             console.log(`Clicking boss ${bossNum} (${i + 1}/${bossNumbers.length})`);
-            await ITF.simulateMouseClickRatio(ITG.B_W2WeeklyBoss[bossNum], 500); // 500ms delay between clicks
+            await ITF.simulateMouseClickRatio(ITG.B_W2WeeklyBoss[bossNum], 50); // 50ms delay between clicks
         }
         
         console.log("ITF.w2WeeklyBossBattle completed.");
@@ -1423,7 +1853,7 @@
         {
             await ITF.simulateMouseClickRatio(ITG.B_W3Colo, 6000); //Click Colosseum
             await ITF.simulateMouseClickRatio(ITG.B_W3ColoEnter, 2000); //Enter Colosseum
-            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 150); //Start auto
+            await ITF.simulateMouseClickRatio(ITG.B_BarAutoAttack, 150); //Start auto
             //The orb duration is about 155 seconds at lvl 312. In W3 maybe we could squeeze two runs per orb but we will wait to ensure always a full orb when opening chests
             //155 seconds Minus (13) = 142 seconds → full duration each round = 144 seconds → 144 seconds * 10 next wave spam = 1440
             for (let i = 0; i < 1350; ++i)
@@ -1431,7 +1861,7 @@
                 await ITF.simulateMouseClickRatio(ITG.B_ColoNextWave, 100); //Next Wave Spam
             }
 
-            await ITF.simulateMouseClickRatio(ITG.B_ToggleAutoAttack, 100); //Stop auto
+            await ITF.simulateMouseClickRatio(ITG.B_BarAutoAttack, 100); //Stop auto
             await ITF.simulateMouseClickRatio(ITG.B_W3ColoExit, 13850); //Click Exit Portal and wait for orb cooldown
         }
     };
