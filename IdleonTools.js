@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.24
+// @version      0.25
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -36,7 +36,7 @@
     // GLOBAL VARS - MISC
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ITG.ShopData = {
+    ITG.M_ShopData = {
         "W1": {
             "nomwich": {"buy": false, "count": 1},
             "hotdog": {"buy": false, "count": 1},
@@ -191,6 +191,110 @@
         },
     }
 
+    ITG.M_CardData = {
+        "0": {
+            "name": "blunder hills",
+            "scroll": 0,
+            "startY": 0.3257,
+        },
+        "1": {
+            "name": "yum-yum desert",
+            "scroll": 0,
+            "startY": 0.5518,
+        },
+        "2": {
+            "name": "easy resources",
+            "scroll": 1,
+            "startY": 0.4654,
+        },
+        "3": {
+            "name": "medium resources",
+            "scroll": 2,
+            "startY": 0.3728,
+        },
+        "4": {
+            "name": "frostbite tundra",
+            "scroll": 3,
+            "startY": 0.4497,
+        },
+        "5": {
+            "name": "hard resources",
+            "scroll": 4,
+            "startY": 0.3621 ,
+        },
+        "6": {
+            "name": "hyperion nebula",
+            "scroll": 5,
+            "startY": 0.5016,
+        },
+        "7": {
+            "name": "smoulderin plateau",
+            "scroll": 6,
+            "startY": 0.4122,
+        },
+        "8": {
+            "name": "spirited valley",
+            "scroll": 7,
+            "startY": 0.3260,
+        },
+        "9": {
+            "name": "shimmerifin deep",
+            "scroll": 7,
+            "startY": 0.5549,
+        },
+        "10": {
+            "name": "dungeons",
+            "scroll": 8,
+            "startY": 0.4577,
+        },
+        "11": {
+            "name": "bosses and nightmares",
+            "scroll": 9,
+            "startY": 0.4467,
+        },
+        "12": {
+            "name": "events",
+            "scroll": 10,
+            "startY": 0.6410,
+        },
+        "startX": 0.4346,
+        "ratioOffsetX": 0.0325,
+        "ratioOffsetY": 0.0794,
+        "maxScroll": 10,
+        "cardsPerRow": 8,
+    }
+
+    //Helper card positions index per group
+    // 00 - 01 - 02 - 03 - 04 - 05 - 06 - 07
+    // 08 - 09 - 10 - 11 - 12 - 13 - 14 - 15
+    // 16 - 17 - 18 - 19 - 20 - 21 - 22 - 23
+    // 24 - 25 - 26 - 27 - 28 - 29 - 30 - 31
+    // 32 - 33 - 34 - 35 - 36 - 37 - 38 - 39
+    // and so on...
+
+    ITG.M_CardPresets = {
+        //https://docs.google.com/spreadsheets/d/1at-y9t5ohYky33nOLoSxHYeyRX-3T91paj-nTSHrB3c/edit?gid=1826222324#gid=1826222324
+        //AlmostPsycho's sampling sheet
+        "rare-drops-db-dk": ["11-25", "11-8", "0-13", "11-5", "8-12", "7-2", "11-24", "9-11"],
+        "candy-setup-monster-mats-db": ["11-5", "11-24", "8-12", "11-25", "9-11", "7-0", "8-4", "11-27"],
+        "afk-fight-gmush-db": ["", "", "", "", "", "", "", ""],
+        "mana-snapshot": ["", "", "", "", "", "", "", ""],
+        "hp-snapshot": ["", "", "", "", "", "", "", ""],
+        //chopping, mining, fishing and catching are the same
+        "chopping": ["11-4", "8-7", "5-20", "11-15", "8-2", "7-12", "6-12", "11-18"],
+        "mining": ["11-4", "8-7", "5-20", "11-15", "8-2", "7-12", "6-12", "11-18"],
+        "fishing": ["11-4", "8-7", "5-20", "11-15", "8-2", "7-12", "6-12", "11-18"],
+        "catching": ["11-4", "8-7", "5-20", "11-15", "8-2", "7-12", "6-12", "11-18"],
+        "vman-sampling": ["", "", "", "", "", "", "", ""],
+        "trapping-efficiency-bm": ["", "", "", "", "", "", "", ""],
+        "trapping-xp-vman": ["", "", "", "", "", "", "", ""],
+        "lab": ["11-4", "8-7", "5-20", "11-15", "8-2", "7-12", "6-6", "11-18"],
+        "laddle": ["", "", "", "", "", "", "", ""],
+        //https://docs.google.com/spreadsheets/d/19GM0RDazB4k7z4nHrKOeiKRw41w1nB4y7K7C5tlPVDs/edit?gid=145697753#gid=145697753
+        //W7 guide sheet by Trickzbunny
+        "crystal-active-xp": ["1-8", "0-10", "2-11", "12-0", "11-22", "11-9", "7-8", "6-3"],
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GLOBAL VARS - MOUSE BUTTONS POSITIONS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,6 +331,60 @@
     ITG.B_CodexQuickRef3dPrinter = { "X": 0.4776, "Y": 0.6884 };
     ITG.B_CodexQuickRefSneaking = { "X": 0.5833, "Y": 0.6900 };
     ITG.B_CodexQuickRefSpelunking = { "X": 0.6969, "Y": 0.6916 };
+    
+    ITG.B_CodexCardsSets = {
+        "Open": { "X": 0.3858, "Y": 0.2876 },
+        "Close": { "X": 0.0584, "Y": 0.2876 },
+        "PreviousPage": { "X": 0.1000, "Y": 0.8477 },
+        "NextPage": { "X": 0.3664, "Y": 0.8477 },
+        "0": { "X": 0.3504, "Y": 0.6054 },
+        "1": { "X": 0.3504, "Y": 0.6935 },
+        "2": { "X": 0.3522, "Y": 0.7800 },
+    };
+
+    ITG.B_CodexCardsFilter = {
+        "Open": { "X": 0.3867, "Y": 0.4261 },
+        "Close": { "X": 0.0593, "Y": 0.4308 },
+        "PreviousPage": { "X": 0.1027, "Y": 0.1791 },
+        "NextPage": { "X": 0.3646, "Y": 0.1791 },
+        "R0C0": { "X": 0.1115, "Y": 0.2483 },
+        "R0C1": { "X": 0.2602, "Y": 0.2483 },
+        "R1C0": { "X": 0.1115, "Y": 0.3380 },
+        "R1C1": { "X": 0.2602, "Y": 0.3380 },
+        "R2C0": { "X": 0.1115, "Y": 0.4119 },
+        "R2C1": { "X": 0.2602, "Y": 0.4119 },
+        "R3C0": { "X": 0.1115, "Y": 0.4984 },
+        "R3C1": { "X": 0.2602, "Y": 0.4984 },
+        "R4C0": { "X": 0.1115, "Y": 0.5771 },
+        "R4C1": { "X": 0.2602, "Y": 0.5771 },
+        "R5C0": { "X": 0.1115, "Y": 0.6652 },
+        "R5C1": { "X": 0.2602, "Y": 0.6652 },
+        "R6C0": { "X": 0.1115, "Y": 0.7407 },
+        "R6C1": { "X": 0.2602, "Y": 0.7407 },
+        "R7C0": { "X": 0.1115, "Y": 0.8257 },
+        "R7C1": { "X": 0.2602, "Y": 0.8257 },
+    };
+
+    ITG.B_CodexCardsEquippedSlots = {
+        "0": { "X": 0.7299, "Y": 0.6144 },
+        "1": { "X": 0.8048, "Y": 0.6175 },
+        "2": { "X": 0.8745, "Y": 0.6207 },
+        "3": { "X": 0.9494, "Y": 0.6097 },
+        "4": { "X": 0.7308, "Y": 0.7774 },
+        "5": { "X": 0.7969, "Y": 0.7758 },
+        "6": { "X": 0.8745, "Y": 0.7758 },
+        "7": { "X": 0.9388, "Y": 0.7821 },
+    };
+
+    ITG.B_CodexCardsPresets = {
+        "0": { "X": 0.7246, "Y": 0.4326 },
+        "1": { "X": 0.7625, "Y": 0.4326 },
+        "2": { "X": 0.8004, "Y": 0.4326 },
+        "3": { "X": 0.8357, "Y": 0.4326 },
+        "4": { "X": 0.8727, "Y": 0.4326 },
+        "5": { "X": 0.9133, "Y": 0.4326 },
+        "6": { "X": 0.9494, "Y": 0.4326 },
+    };
 
     ITG.B_AnvilCraftTab = { "X": 0.3285, "Y": 0.1881 };
     ITG.B_AnvilProduceTab = { "X": 0.5336, "Y": 0.1913 };
@@ -1121,6 +1279,8 @@
         // Move mouse to the target location first so any mouse-over state is correct
         ITF.simulateMouseEvent("mousemove", coords.X, coords.Y);
 
+        await ITF.sleep(20);
+
         // Send wheel events
         await ITF.simulateWheelEvent('wheel', coords.X, coords.Y, count, isHorizontal, deltaDirection, intervalMs);
 
@@ -1495,7 +1655,7 @@
     }
 
     ITF.shopHasAnythingToDailyBuy = function(shopKey) {
-        let shopInfo = ITG.ShopData[shopKey];
+        let shopInfo = ITG.M_ShopData[shopKey];
         for (let itemName in shopInfo) 
         {
             if (shopInfo[itemName].buy)
@@ -1508,7 +1668,7 @@
     }
 
     ITF.shopCountItemsToDailyBuy = function(shopKey) {
-        let shopInfo = ITG.ShopData[shopKey];
+        let shopInfo = ITG.M_ShopData[shopKey];
         let count = 0
         for (let itemName in shopInfo) 
         {
@@ -1529,11 +1689,11 @@
         await ITF.simulateMouseClickRatio(ITG.B_EzAccess["ColosseumTickets"], 350);
         let QuickBuyClicked = false;
 
-        const shopNames = Object.keys(ITG.ShopData);
+        const shopNames = Object.keys(ITG.M_ShopData);
         for (let i = 0; i < shopNames.length; ++i)
         {
             let shopKey = shopNames[i];
-            let shopInfo = ITG.ShopData[shopKey];
+            let shopInfo = ITG.M_ShopData[shopKey];
 
             console.log(`Checking shop ${shopKey} for daily buys. HasAnthingToBuy: ${ITF.shopHasAnythingToDailyBuy(shopKey)}`);
 
@@ -1630,6 +1790,90 @@
         await ITF.simulateKeyPress('Escape', 500); //Close any open menu
     }
 
+    //Returns card ratio based on group and index. Ensure that the scroll position is correct before using this.
+    ITF.getCardRatio = function(group, index) {
+        let indexInt = parseInt(index);
+        let ratioX = ITG.M_CardData["startX"];
+        let ratioY = ITG.M_CardData[group]["startY"];
+        ratioX += ITG.M_CardData["ratioOffsetX"] * (indexInt % ITG.M_CardData["cardsPerRow"]);
+        ratioY += ITG.M_CardData["ratioOffsetY"] * Math.floor(indexInt / ITG.M_CardData["cardsPerRow"]);
+        return {"X": ratioX, "Y": ratioY};
+    }
+
+    ITF.setupCards = async function(cardSetups) {
+        const scrollPosition = ITF.getCardRatio("0", "0"); //Top left card position so that scroll registers in a correct position
+
+        await ITF.simulateKeyPress('Escape', 350); //Close any open menu
+        await ITF.simulateKeyPress('c', 350); //Codex
+        await ITF.simulateMouseClickRatio(ITG.B_CodexCards, 350); //Cards
+
+        await ITF.simulateMouseMoveRatio(scrollPosition, 150); //Move mouse to any card position so the scroll registers correctly
+        await ITF.simulateScrollUp(scrollPosition, ITG.M_CardData["maxScroll"], 75); //Scroll to top
+
+        let currentScroll = 0;
+
+        for (let i = 0; i < cardSetups.length; ++i)
+        {
+            let setup = cardSetups[i];
+            let preset = setup.preset;
+            let cards = setup.cards;
+            console.log(`Setting up card set ${i + 1} of ${cardSetups.length}. Using preset ${preset}, equipping cards: ${cards.join(", ")}`);
+
+            //Select Preset
+            await ITF.simulateMouseClickRatio(ITG.B_CodexCardsPresets[setup.preset], 350); //Select preset selection
+
+            //unequip all cards first
+            for (const [key, value] of Object.entries(ITG.B_CodexCardsEquippedSlots))
+            {
+                console.log(`Unequipping card from slot ${key}`);
+                await ITF.simulateMouseClickRatio(value, 150); //Click card to unequip
+            }
+
+            await ITF.simulateMouseMoveRatio(scrollPosition, 150); //Move mouse to any card position so the scroll registers correctly
+
+            //Equip cards
+            for (var card of cards)
+            {
+                const cardInfo = card.split("-");
+                const group = cardInfo[0];
+                const index = cardInfo[1];
+
+                //Reset scroll if in last position
+                if (currentScroll == ITG.M_CardData["maxScroll"])
+                {
+                    console.log("Resetting scroll level as we were in the last position.")
+                    await ITF.simulateMouseMoveRatio(scrollPosition, 150); //Move mouse to any card position so the scroll registers correctly
+                    await ITF.simulateScrollUp(scrollPosition, ITG.M_CardData["maxScroll"], 75); //Scroll to top
+                    currentScroll = 0;
+                }
+
+                //Move to scroll target
+                const scrollTarget = ITG.M_CardData[group]["scroll"];
+                const scrollDiff = scrollTarget - currentScroll;
+                for (let s = 0; s < Math.abs(scrollDiff); ++s)
+                {
+                    if (scrollDiff > 0) //Need to scroll down
+                    {
+                        await ITF.simulateScrollDown(scrollPosition, 1, 75);
+                    }
+                    else if (scrollDiff < 0) //Need to scroll up
+                    {
+                        await ITF.simulateScrollUp(scrollPosition, 1, 75);
+                    }
+                }
+
+                currentScroll = scrollTarget;
+
+                //Calculate card ratio and click to equip
+                const cardRatio = ITF.getCardRatio(group, index);
+                console.log(`Equipping card ${card} at ratio X: ${cardRatio.X.toFixed(4)}, Y: ${cardRatio.Y.toFixed(4)}`);
+                await ITF.simulateMouseClickRatio(cardRatio, 250, 0, 2, 500); //Click card to equip (two times to select and use)
+            }
+
+            console.log(`Finished setting up card set ${i + 1} of ${cardSetups.length}. Preset slot used ${preset}, cards equipped: ${cards.join(", ")}`);
+        }
+    }
+
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. | | .--------------. |
 // | | _____  _____ | || |     ____     | || |  _______     | || |   _____      | || |  ________    | | | |     __       | |
@@ -1704,7 +1948,6 @@
         let B_Pen = { "X": 0.0497, "Y": 0.8249 }
         let B_Order = { "X": 0.1132, "Y": 0.7394 }
 
-        //ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0, delayHold = 0, repeat = 1, repeatDelay = -1)
         ITG.spamPostOfficeSimpleShippinRunning = true;
         console.log("ITF.spamPostOfficeSimpleShippin started. Count: " + count);
 
@@ -1916,7 +2159,6 @@
         let maxPageCount = 8;
         let cogsPerPage = 15;
 
-        //ITF.simulateMouseClickRatio = async function(ratio, delayAfter = 0, delayHold = 0, repeat = 1, repeatDelay = -1)
         ITG.fillCogPagesRunning = true;
         console.log("ITF.fillCogPages started. Pagecount: " + pageCount);
 
