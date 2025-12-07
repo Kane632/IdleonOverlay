@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Idleon Tools
 // @namespace    http://tampermonkey.net/
-// @version      0.25
+// @version      0.26
 // @description  Bad Lava F
 // @author       Kane
 // @match        https://www.legendsofidleon.com/ytGl5oc/
@@ -46,7 +46,7 @@
             "small-strength-potion": {"buy": false, "count": 1},
             "small-life-potion": {"buy": false, "count": 1},
             "small-speed-potion": {"buy": false, "count": 1},
-            "crude-oil": {"buy": false, "count": 1},
+            "crude-oil": {"buy": true, "count": 1},
             "weapon-upgrade-stone-1": {"buy": false, "count": 1},
             "armor-upgrade-stone-1": {"buy": false, "count": 1},
             "tool-upgrade-stone-1": {"buy": false, "count": 1},
@@ -275,9 +275,9 @@
     ITG.M_CardPresets = {
         //https://docs.google.com/spreadsheets/d/1at-y9t5ohYky33nOLoSxHYeyRX-3T91paj-nTSHrB3c/edit?gid=1826222324#gid=1826222324
         //AlmostPsycho's sampling sheet
-        "rare-drops-db-dk": ["11-25", "11-8", "0-13", "11-5", "8-12", "7-2", "11-24", "9-11"],
+        "rare-drops-db-dk": ["11-25", "11-8", "0-14", "11-5", "8-12", "7-2", "11-24", "9-11"],
         "candy-setup-monster-mats-db": ["11-5", "11-24", "8-12", "11-25", "9-11", "7-0", "8-4", "11-27"],
-        "afk-fight-gmush-db": ["", "", "", "", "", "", "", ""],
+        "afk-fight-gmush-db": ["", "", "", "", "", "", "", ""], //use "akf-mk-dmg"
         "mana-snapshot": ["", "", "", "", "", "", "", ""],
         "hp-snapshot": ["", "", "", "", "", "", "", ""],
         //chopping, mining, fishing and catching are the same
@@ -292,8 +292,21 @@
         "laddle": ["", "", "", "", "", "", "", ""],
         //https://docs.google.com/spreadsheets/d/19GM0RDazB4k7z4nHrKOeiKRw41w1nB4y7K7C5tlPVDs/edit?gid=145697753#gid=145697753
         //W7 guide sheet by Trickzbunny
+        "akf-mk-dmg": ["11-27", "11-26", "11-5", "11-3", "8-4", "7-0", "6-9", "11-24"],
         "crystal-active-xp": ["1-8", "0-10", "2-11", "12-0", "11-22", "11-9", "7-8", "6-3"],
+        "max-damage": ["9-1", "8-0", "7-7", "4-5", "4-14", "11-2", "11-19", "11-26"],
+        "empty": [], // To clear out preset cards
     }
+
+    ITG.M_DefaultCardPresets = [
+        {"preset":"0", cards: ITG.M_CardPresets["akf-mk-dmg"]}, //Combat AFK
+        {"preset":"1", cards: ITG.M_CardPresets["crystal-active-xp"]}, //Combat Active XP
+        {"preset":"2", cards: ITG.M_CardPresets["candy-setup-monster-mats-db"]}, //Combat AFK Drops (has MK)
+        {"preset":"3", cards: ITG.M_CardPresets["rare-drops-db-dk"]}, // Combat drops (No MK, instead more DR for rare drops)
+        {"preset":"4", cards: ITG.M_CardPresets["empty"]}, // Filler
+        {"preset":"5", cards: ITG.M_CardPresets["lab"]}, //Lab - filler
+        {"preset":"6", cards: ITG.M_CardPresets["chopping"]}, //Skill
+    ]
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // GLOBAL VARS - MOUSE BUTTONS POSITIONS
@@ -1872,6 +1885,11 @@
 
             console.log(`Finished setting up card set ${i + 1} of ${cardSetups.length}. Preset slot used ${preset}, cards equipped: ${cards.join(", ")}`);
         }
+    }
+
+    ITF.setupDefaultCardPresets = async function()
+    {
+        await ITF.setupCards(ITG.M_DefaultCardPresets);
     }
 
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.   .----------------. 
